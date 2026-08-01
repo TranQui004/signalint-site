@@ -49,13 +49,13 @@ const loopStatus = `{
   "signatures": [{
     "signature": "no-unused-vars:<identifier> is unused",
     "occurrences": 3,
-    "hint": "This issue has disappeared and returned repeatedly."
+    "hint": "This issue was fixed and reappeared 3 times — consider a different approach"
   }]
 }`;
 const timeoutResponse = `{
   "status": "timeout",
   "engine": "tsc",
-  "message": "tsc exceeded its 120000ms timeout."
+  "message": "tsc did not complete within 120s"
 }`;
 const staleResponse = `{
   "status": "stale",
@@ -83,7 +83,7 @@ const staleResponse = `{
 		<code>["."]</code>.
 	</p>
 	<pre><code>{checkProjectArgs}</code></pre>
-	<p>Returns the <a href="#check-response">CheckResponse</a> shape, or a structured engine timeout/output-limit response.</p>
+	<p>Returns the <a href="#check-response">CheckResponse</a> shape. Built-in engine failures are retained under the corresponding <code>engines</code> status so other completed diagnostics survive.</p>
 
 	<h2>check_files</h2>
 	<p>
@@ -144,6 +144,7 @@ const staleResponse = `{
 	</p>
 
 	<h2>Exceptional responses</h2>
+	<p>These low-level structured contracts apply when a timeout or output-limit failure reaches the MCP handler directly. Normal built-in fan-out records the same message in that engine's <code>status: "error"</code> entry.</p>
 	<h3>Engine timeout</h3>
 	<pre><code>{timeoutResponse}</code></pre>
 	<h3>Engine output limit</h3>
@@ -151,6 +152,6 @@ const staleResponse = `{
   "status": "error",
   "code": "engine_output_exceeded",
   "engine": "oxlint",
-  "message": "oxlint output exceeded the configured byte limit."
+  "message": "oxlint output exceeded the 10 MiB limit"
 }`}</code></pre>
 </DocsLayout>

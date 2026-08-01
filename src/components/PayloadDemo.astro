@@ -4,10 +4,12 @@ const rawPayload = `[
     "issueId": "ts-01",
     "file": "src/file01.ts",
     "line": 10,
+    "col": 5,
     "engine": "tsc",
     "rule": "TS2322",
     "severity": "error",
-    "message": "Type 'string' is not assignable to type 'number'."
+    "message": "Type 'string' is not assignable to type 'number' in fixture assignment 01.",
+    "fixable": false
   },
   ... 39 more normalized issues
 ]`;
@@ -15,14 +17,24 @@ const rawPayload = `[
 const clusteredPayload = `{
   "schemaVersion": "1.1",
   "status": "issues_found",
+  "engines": {
+    "oxlint": { "status": "ok" },
+    "tsc": { "status": "ok" },
+    "biome": { "status": "disabled" }
+  },
   "totalIssues": 40,
   "clusters": [{
     "clusterId": "c1",
     "rootCauseSummary": "10 TS2322 issues across 10 files",
+    "ruleIds": ["TS2322"],
+    "issueCount": 10,
+    "fileCount": 10,
     "priority": 1,
+    "suggestedAction": "Review the shared cause of TS2322 across 10 files",
     "sampleIssueIds": ["ts-01", "ts-02"]
   }, ... 3 more clusters],
-  "truncated": false
+  "truncated": false,
+  "loopWarning": null
 }`;
 ---
 
@@ -41,7 +53,7 @@ const clusteredPayload = `{
 		<div class="payload-rail" aria-label="Payload measurements">
 			<div><span>raw issues</span><strong>40</strong></div>
 			<div><span>clusters</span><strong>4</strong></div>
-			<div><span>reduction</span><strong>87.67%</strong></div>
+			<div><span>reduction</span><strong>86.53%</strong></div>
 			<div><span>schema</span><strong>1.1</strong></div>
 		</div>
 		<div class="payload-code">
@@ -50,7 +62,7 @@ const clusteredPayload = `{
 		</div>
 	</div>
 	<div class="payload-demo__foot">
-		<span>Controlled Phase 3 fixture</span>
+		<span>9,151 B raw → 1,233 B clustered</span>
 		<span>Priority 1 shown first</span>
 	</div>
 </div>

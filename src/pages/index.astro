@@ -12,7 +12,7 @@ const cacheKey = `sha256(file content)
 const loopWarning = `{
   "signature": "no-unused-vars:<identifier> is unused",
   "occurrences": 3,
-  "hint": "This issue has disappeared and returned repeatedly."
+  "hint": "This issue was fixed and reappeared 3 times — consider a different approach"
 }`;
 const fanout = `"engines": {
   "oxlint": { "status": "ok" },
@@ -60,13 +60,13 @@ const fanout = `"engines": {
 		<div class="shell proof-strip__grid">
 			<div class="proof-stat" data-reveal>
 				<span class="micro-label">Payload reduction</span>
-				<strong>87.67%</strong>
-				<p>Controlled Phase 3 fixture: normalized raw JSON versus clustered response.</p>
+				<strong>86.53%</strong>
+				<p>Current 40-issue fixture: 9,151 B raw versus 1,233 B clustered.</p>
 			</div>
 			<div class="proof-stat" data-reveal>
 				<span class="micro-label">Incremental check</span>
-				<strong>&lt;300 ms</strong>
-				<p>Two unchanged files and one changed file in the controlled 50-file fixture.</p>
+				<strong>3.10 ms</strong>
+				<p>Latest local acceptance run; the enforced ceiling is 300 ms for the 50-file fixture.</p>
 			</div>
 			<div class="proof-stat" data-reveal>
 				<span class="micro-label">Fixture compression</span>

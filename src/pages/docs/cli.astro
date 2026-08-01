@@ -2,14 +2,13 @@
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
 const statsOutput = `Signalint session stats
-
-checks: 12
-average payload reduction: 87.67%
-engine-file cache hit rate: 76.19%
-average latency: 214.3ms
-max latency: 486ms
-loop warnings: 1
-malformed session lines skipped: 0`;
+Checks: 12
+Average payload reduction: 86.5% (12 measured checks)
+Engine-file cache hit rate: 76.2% (32 hits / 42 lookups)
+Average check latency: 214.3ms (12 measured checks)
+Max check latency: 486.0ms
+Loop warnings triggered: 1
+Malformed session lines skipped: 0`;
 ---
 
 <DocsLayout
@@ -42,7 +41,7 @@ malformed session lines skipped: 0`;
 	</p>
 	<pre><code>{statsOutput}</code></pre>
 	<div class="note">
-		<p>The values above illustrate the output format. The 87.67% figure is the recorded controlled fixture result; your project's statistics are computed from its own retained session history.</p>
+		<p>The values above illustrate the exact output format. The 86.5% payload value is the CLI's one-decimal rendering of the current fixture's 86.53% result; your project's statistics are computed from its retained session history.</p>
 	</div>
 
 	<h2>Metric definitions</h2>
