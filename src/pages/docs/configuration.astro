@@ -72,8 +72,12 @@ const defaultConfig = `{
 
 	<h2>Engine-native configuration</h2>
 	<p>
-		Keep lint and compiler rules in their native files: <code>.oxlintrc*</code>,
-		<code>tsconfig.json</code>, and <code>biome.json</code> or <code>biome.jsonc</code>.
-		Signalint hashes discovered configuration so changes invalidate the related cache.
+		Keep lint and compiler rules in their native files. The v1 cache hash recognizes root
+		<code>.oxlintrc</code>, <code>.oxlintrc.json</code>, <code>oxlint.json</code>,
+		<code>tsconfig.json</code>, <code>biome.json</code>, and <code>biome.jsonc</code>.
+		Changing one invalidates the related engine cache.
 	</p>
+	<div class="note">
+		<p>Other valid sources—including <code>.oxlintrc.jsonc</code>, extended configs, and nested package configs—are not part of v1 cache hashing. Clear <code>.signalint/</code> after changing one of those files.</p>
+	</div>
 </DocsLayout>
