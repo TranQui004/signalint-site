@@ -1,0 +1,67 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+	title="Open source — Signalint"
+	description="Signalint is an MIT-licensed local MCP server developed in public on GitHub."
+>
+	<section class="hero">
+		<div class="shell">
+			<p class="eyebrow">Open source</p>
+			<h1>Inspect the code that shapes your diagnostics.</h1>
+			<p class="lede">
+				Signalint is free software under the MIT License. The server, tests, architecture,
+				security model, and original build record are all available in the public repository.
+			</p>
+			<div class="hero-actions">
+				<a class="button" href="https://github.com/TranQui004/signalint">Open GitHub repository</a>
+				<a class="button secondary" href="https://www.npmjs.com/package/signalint-mcp">View npm package</a>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="shell">
+			<div class="section-header">
+				<div>
+					<p class="eyebrow">Repository record</p>
+					<h2>Designed to be checked, not taken on trust.</h2>
+				</div>
+				<p>The current implementation and its test history supersede the archived build plan when they differ.</p>
+			</div>
+			<div class="feature-grid">
+				<article class="feature-card">
+					<h3>MIT License</h3>
+					<p>Use, copy, modify, and distribute Signalint under the repository's MIT terms.</p>
+					<p><a href="https://github.com/TranQui004/signalint/blob/main/LICENSE">Read LICENSE</a></p>
+				</article>
+				<article class="feature-card">
+					<h3>Contribution workflow</h3>
+					<p>Development setup, verification gates, commit style, and required cross-platform CI checks.</p>
+					<p><a href="https://github.com/TranQui004/signalint/blob/main/CONTRIBUTING.md">Read CONTRIBUTING.md</a></p>
+				</article>
+				<article class="feature-card">
+					<h3>Threat model</h3>
+					<p>MCP arguments are untrusted; filesystem reach, process controls, and the dependency advisory are documented.</p>
+					<p><a href="https://github.com/TranQui004/signalint/blob/main/SECURITY.md">Read SECURITY.md</a></p>
+				</article>
+				<article class="feature-card">
+					<h3>Architecture</h3>
+					<p>Current module boundaries, engine strategy, cache identity, and check data flow.</p>
+					<p><a href="https://github.com/TranQui004/signalint/blob/main/ARCHITECTURE.md">Read ARCHITECTURE.md</a></p>
+				</article>
+				<article class="feature-card">
+					<h3>Tests and CI</h3>
+					<p>The suite runs on Windows, Ubuntu, and macOS, including the supported Node 20.19 line.</p>
+					<p><a href="https://github.com/TranQui004/signalint/actions">View Actions</a></p>
+				</article>
+				<article class="feature-card">
+					<h3>Project history</h3>
+					<p>The archived build plan retains acceptance criteria, amendments, risks, and pre-launch review findings.</p>
+					<p><a href="https://github.com/TranQui004/signalint/tree/main/docs/history">Browse history</a></p>
+				</article>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

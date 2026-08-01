@@ -1,0 +1,79 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const defaultConfig = `{
+  "engines": {
+    "oxlint": true,
+    "tsc": true,
+    "biome": false
+  },
+  "ignore": ["node_modules/**", "dist/**", ".signalint/**"],
+  "timeoutsMs": {
+    "oxlint": 30000,
+    "tsc": 120000,
+    "biome": 30000
+  }
+}`;
+---
+
+<DocsLayout
+	title="Configuration reference"
+	description="Every supported field in signalint.config.json, including defaults and validation behavior."
+>
+	<p>
+		Signalint loads <code>signalint.config.json</code> from the checked project root.
+		The file is optional; omitted fields receive the defaults below. Unknown keys and
+		incorrect types fail with a configuration error.
+	</p>
+	<pre><code>{defaultConfig}</code></pre>
+
+	<h2>Top-level fields</h2>
+	<table class="schema-table">
+		<thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Meaning</th></tr></thead>
+		<tbody>
+			<tr><td><code>engines</code></td><td>object</td><td>See below</td><td>Enable or disable each built-in engine.</td></tr>
+			<tr><td><code>ignore</code></td><td>string[]</td><td><code>node_modules/**</code>, <code>dist/**</code>, <code>.signalint/**</code></td><td>Project-relative paths removed from requested files and final diagnostics.</td></tr>
+			<tr><td><code>timeoutsMs</code></td><td>object</td><td>See below</td><td>Positive-integer subprocess deadlines in milliseconds.</td></tr>
+		</tbody>
+	</table>
+
+	<h2>engines</h2>
+	<table class="schema-table">
+		<thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Behavior</th></tr></thead>
+		<tbody>
+			<tr><td><code>oxlint</code></td><td>boolean</td><td><code>true</code></td><td>Runs file-local Oxlint diagnostics.</td></tr>
+			<tr><td><code>tsc</code></td><td>boolean</td><td><code>true</code></td><td>Runs whole-program TypeScript diagnostics from the root tsconfig.</td></tr>
+			<tr><td><code>biome</code></td><td>boolean</td><td><code>false</code></td><td>Runs file-local Biome diagnostics.</td></tr>
+		</tbody>
+	</table>
+	<p>Omitted engine keys keep their individual defaults; they are not coerced to false.</p>
+
+	<h2>ignore</h2>
+	<p>
+		Each entry must be a non-empty project-relative glob. Signalint supports <code>*</code>,
+		<code>**</code>, and <code>?</code>, and normalizes Windows path separators. Because tsc
+		is whole-program, it still sees its complete configured program when invoked; matching
+		diagnostics are removed from the response.
+	</p>
+	<div class="note">
+		<p>A diagnostic whose path contains a <code>node_modules</code> segment is always excluded, regardless of this setting.</p>
+	</div>
+
+	<h2>timeoutsMs</h2>
+	<table class="schema-table">
+		<thead><tr><th>Field</th><th>Type</th><th>Default</th></tr></thead>
+		<tbody>
+			<tr><td><code>oxlint</code></td><td>positive integer</td><td>30,000 ms</td></tr>
+			<tr><td><code>tsc</code></td><td>positive integer</td><td>120,000 ms</td></tr>
+			<tr><td><code>biome</code></td><td>positive integer</td><td>30,000 ms</td></tr>
+		</tbody>
+	</table>
+	<p>On timeout, Signalint terminates the engine process tree and returns a structured timeout response.</p>
+
+	<h2>Engine-native configuration</h2>
+	<p>
+		Keep lint and compiler rules in their native files: <code>.oxlintrc*</code>,
+		<code>tsconfig.json</code>, and <code>biome.json</code> or <code>biome.jsonc</code>.
+		Signalint hashes discovered configuration so changes invalidate the related cache.
+	</p>
+</DocsLayout>

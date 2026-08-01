@@ -1,0 +1,159 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const rawPayload = `[
+  { "issueId": "ts-01", "file": "src/file01.ts",
+    "line": 10, "col": 5, "engine": "tsc",
+    "rule": "TS2322", "severity": "error",
+    "message": "Type 'string' is not assignable to type 'number'...",
+    "fixable": false },
+  ... 39 more normalized issues
+]`;
+
+const clusteredPayload = `{
+  "schemaVersion": "1.1",
+  "status": "issues_found",
+  "totalIssues": 40,
+  "clusters": [{
+    "clusterId": "c1",
+    "rootCauseSummary": "10 TS2322 issues across 10 files",
+    "issueCount": 10,
+    "fileCount": 10,
+    "priority": 1,
+    "sampleIssueIds": ["ts-01", "ts-02"]
+  }, ... 3 more clusters],
+  "truncated": false,
+  "loopWarning": null
+}`;
+
+const loopPayload = `{
+  "signature": "no-unused-vars:<identifier> is unused",
+  "occurrences": 3,
+  "hint": "This issue has disappeared and returned repeatedly."
+}`;
+---
+
+<BaseLayout
+	title="Signalint — compact diagnostics for coding agents"
+	description="A local MCP server that gives coding agents compact, cached, loop-aware JavaScript and TypeScript diagnostics."
+>
+	<section class="hero">
+		<div class="shell hero-grid">
+			<div>
+				<p class="eyebrow">Local MCP server · npm package</p>
+				<h1>Useful diagnostics, without the repeated noise.</h1>
+				<p class="lede">
+					Signalint runs Oxlint, TypeScript, and optional Biome checks; caches unchanged
+					work; clusters repeated failures; and tells coding agents when an issue is
+					oscillating instead of converging.
+				</p>
+				<div class="hero-actions">
+					<a class="button" href={`${base}docs/`}>Get started</a>
+					<a class="button secondary" href="https://github.com/TranQui004/signalint">Read the source</a>
+				</div>
+			</div>
+			<div class="install-card" aria-label="Installation commands">
+				<div class="install-card-header"><span>Install</span><span>v0.2.0</span></div>
+				<pre><code>npm install --save-dev signalint-mcp
+npx signalint-mcp init</code></pre>
+				<p class="install-note">The init command detects engines and nearby MCP client configuration.</p>
+			</div>
+		</div>
+	</section>
+
+	<section class="section">
+		<div class="shell">
+			<div class="section-header">
+				<div>
+					<p class="eyebrow">Measured behavior</p>
+					<h2>One response shaped for the next action.</h2>
+				</div>
+				<p>
+					These figures come from Signalint's controlled Phase 2/3 fixture benchmarks,
+					not estimates. Real-project latency varies with project size and engine work.
+				</p>
+			</div>
+
+			<div class="bento">
+				<article class="bento-card">
+					<p class="card-kicker">Payload reduction</p>
+					<span class="metric">87.67%</span>
+					<p class="metric-detail">Normalized raw diagnostics versus clustered JSON in the recorded 40-issue benchmark.</p>
+				</article>
+				<article class="bento-card">
+					<p class="card-kicker">Incremental latency</p>
+					<span class="metric">&lt;300 ms</span>
+					<p class="metric-detail">Two unchanged files plus one changed file in the controlled 50-file fixture.</p>
+				</article>
+				<article class="bento-card">
+					<p class="card-kicker">Fixture result</p>
+					<span class="metric">40 → 4</span>
+					<p class="metric-detail">Raw issues grouped into four rule-based clusters, ordered with priority 1 first.</p>
+				</article>
+
+				<article class="bento-card wide tall">
+					<p class="card-kicker">Actual diagnostic shape · before and after</p>
+					<h3>Repeated issues become a bounded cluster response.</h3>
+					<div class="comparison-grid">
+						<div class="code-panel">
+							<div class="code-label"><span>Before</span><span>40 issues</span></div>
+							<pre><code>{rawPayload}</code></pre>
+						</div>
+						<div class="code-panel">
+							<div class="code-label"><span>After</span><span>4 clusters</span></div>
+							<pre><code>{clusteredPayload}</code></pre>
+						</div>
+					</div>
+				</article>
+
+				<article class="bento-card">
+					<p class="card-kicker">Per-engine strategy</p>
+					<h3>Local lint, whole-program types.</h3>
+					<ul class="data-list">
+						<li><span>Oxlint</span><span>file misses</span></li>
+						<li><span>Biome</span><span>file misses</span></li>
+						<li><span>tsc</span><span>project / build</span></li>
+					</ul>
+				</article>
+
+				<article class="bento-card half">
+					<p class="card-kicker">Loop memory</p>
+					<h3>Notice when a fix keeps coming back.</h3>
+					<div class="code-panel" style="margin-top: 18px;">
+						<pre><code>{loopPayload}</code></pre>
+					</div>
+				</article>
+				<article class="bento-card half">
+					<p class="card-kicker">Cache identity</p>
+					<h3>Stale results are invalidated across upgrades.</h3>
+					<ul class="data-list">
+						<li><span>File content</span><span>sha256</span></li>
+						<li><span>Engine config</span><span>hash</span></li>
+						<li><span>Signalint</span><span>version</span></li>
+						<li><span>Engine</span><span>version</span></li>
+					</ul>
+				</article>
+			</div>
+		</div>
+	</section>
+
+	<section class="section" style="border-top: 1px solid var(--line);">
+		<div class="shell">
+			<div class="section-header">
+				<div>
+					<p class="eyebrow">Pipeline</p>
+					<h2>Local tools remain the source of truth.</h2>
+				</div>
+				<p>Signalint normalizes and compresses engine output. It does not replace the compiler or linter.</p>
+			</div>
+			<div class="flow" aria-label="Signalint data flow">
+				<div class="flow-step"><strong>01</strong>MCP argument validation</div>
+				<div class="flow-step"><strong>02</strong>Project path containment</div>
+				<div class="flow-step"><strong>03</strong>Cache + engine fan-out</div>
+				<div class="flow-step"><strong>04</strong>Normalize + cluster</div>
+				<div class="flow-step"><strong>05</strong>Versioned response</div>
+			</div>
+		</div>
+	</section>
+</BaseLayout>

@@ -1,0 +1,28 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const currentPath = Astro.url.pathname;
+const links = [
+	{ label: 'Docs', path: 'docs/' },
+	{ label: 'Changelog', path: 'changelog/' },
+	{ label: 'Open source', path: 'open-source/' },
+];
+
+const hrefFor = (path: string) => `${base}${path}`;
+---
+
+<header class="site-header">
+	<div class="shell header-inner">
+		<a class="wordmark" href={base} aria-label="Signalint home">
+			<span class="wordmark-mark" aria-hidden="true">S/</span>
+			<span>Signalint</span>
+		</a>
+		<nav aria-label="Primary navigation">
+			{links.map((link) => (
+				<a href={hrefFor(link.path)} aria-current={currentPath.includes(`/${link.path}`) ? 'page' : undefined}>
+					{link.label}
+				</a>
+			))}
+			<a class="repo-link" href="https://github.com/TranQui004/signalint">GitHub</a>
+		</nav>
+	</div>
+</header>

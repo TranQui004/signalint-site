@@ -1,0 +1,29 @@
+---
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const currentPath = Astro.url.pathname;
+const links = [
+	{ label: 'Getting started', path: 'docs/' },
+	{ label: 'Configuration', path: 'docs/configuration/' },
+	{ label: 'MCP tools', path: 'docs/tools/' },
+	{ label: 'Architecture', path: 'docs/architecture/' },
+	{ label: 'FAQ', path: 'docs/faq/' },
+	{ label: 'Troubleshooting', path: 'docs/troubleshooting/' },
+];
+
+const hrefFor = (path: string) => `${base}${path}`;
+const normalizedCurrent = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
+---
+
+<aside class="docs-sidebar" aria-label="Documentation navigation">
+	<p class="docs-sidebar-title">Documentation</p>
+	<nav>
+		{links.map((link) => {
+			const href = hrefFor(link.path);
+			return (
+				<a href={href} aria-current={normalizedCurrent === href ? 'page' : undefined}>
+					{link.label}
+				</a>
+			);
+		})}
+	</nav>
+</aside>

@@ -1,0 +1,74 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const install = `npm install --save-dev signalint-mcp
+npx signalint-mcp init`;
+const claudeWindows = `claude mcp add --scope project signalint -- cmd /c npx --no-install signalint-mcp
+claude mcp get signalint`;
+const cursor = `{
+  "mcpServers": {
+    "signalint": {
+      "command": "npx",
+      "args": ["--no-install", "signalint-mcp"]
+    }
+  }
+}`;
+---
+
+<DocsLayout
+	title="Getting started"
+	description="Install Signalint in a JavaScript or TypeScript project, connect an MCP client, and run the first check."
+>
+	<h2>Requirements</h2>
+	<ul>
+		<li>Node.js 20.19 or later in the Node 20 line, or Node.js 22.12 or later.</li>
+		<li>A JavaScript or TypeScript project.</li>
+		<li>A root <code>tsconfig.json</code> when TypeScript checks are enabled.</li>
+	</ul>
+
+	<h2>Install and initialize</h2>
+	<pre><code>{install}</code></pre>
+	<p>
+		Run both commands from the project Signalint should check. The init command detects a
+		root TypeScript config, Oxlint configuration, and Biome configuration, then writes a
+		matching <code>signalint.config.json</code>. If it finds exactly one nearby MCP client,
+		it offers to write the server entry; if detection is ambiguous, it asks which client
+		to configure or prints exact snippets.
+	</p>
+
+	<h2>Connect a client</h2>
+	<h3>Claude Code</h3>
+	<p>On native Windows, use the <code>cmd /c</code> wrapper:</p>
+	<pre><code>{claudeWindows}</code></pre>
+	<p>On macOS or Linux, omit <code>cmd /c</code>.</p>
+
+	<h3>Cursor</h3>
+	<p>Create <code>.cursor/mcp.json</code> in the checked project:</p>
+	<pre><code>{cursor}</code></pre>
+	<p>
+		On native Windows, set <code>command</code> to <code>cmd</code> and set
+		<code>args</code> to <code>["/c", "npx", "--no-install", "signalint-mcp"]</code>.
+	</p>
+
+	<h3>Antigravity</h3>
+	<p>
+		The init command can update Antigravity's MCP configuration, typically
+		<code>%USERPROFILE%\.gemini\antigravity\mcp_config.json</code> on Windows.
+		Use the same Windows <code>cmd /c npx</code> form and set <code>cwd</code> to the
+		absolute project root.
+	</p>
+
+	<h2>Verify the connection</h2>
+	<ol>
+		<li>Restart or reconnect the MCP client after changing its configuration.</li>
+		<li>Call <code>ping</code> with an empty object. The result must be <code>pong</code>.</li>
+		<li>Call <code>check_project</code> with <code>{'{ "paths": ["."] }'}</code>.</li>
+	</ol>
+	<div class="note">
+		<p>Signalint writes local cache and session data under <code>.signalint/</code>. Keep that directory out of version control.</p>
+	</div>
+
+	<h2>Check without an MCP client</h2>
+	<pre><code>npx --no-install signalint check .</code></pre>
+	<p>The command exits with code 1 when issues are found, which is expected diagnostic behavior.</p>
+</DocsLayout>

@@ -1,0 +1,26 @@
+---
+import DocsNav from '../components/DocsNav.astro';
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+	title: string;
+	description: string;
+	eyebrow?: string;
+}
+
+const { title, description, eyebrow = 'Documentation' } = Astro.props;
+---
+
+<BaseLayout title={`${title} — Signalint`} description={description}>
+	<div class="shell docs-shell">
+		<DocsNav />
+		<article class="docs-content prose">
+			<header class="page-heading">
+				<p class="eyebrow">{eyebrow}</p>
+				<h1>{title}</h1>
+				<p class="lede">{description}</p>
+			</header>
+			<slot />
+		</article>
+	</div>
+</BaseLayout>

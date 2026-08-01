@@ -1,0 +1,156 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const checkProjectArgs = `{
+  "paths": ["."]
+}`;
+const checkFilesArgs = `{
+  "files": ["src/index.ts", "src/config.ts"]
+}`;
+const issueReference = `// Exactly one of these shapes
+{ "clusterId": "c1" }
+{ "issueId": "d7f6..." }`;
+const checkResponse = `{
+  "schemaVersion": "1.1",
+  "status": "issues_found",
+  "engines": {
+    "oxlint": { "status": "ok" },
+    "tsc": { "status": "ok" },
+    "biome": { "status": "disabled" }
+  },
+  "totalIssues": 10,
+  "clusters": [{
+    "clusterId": "c1",
+    "rootCauseSummary": "10 TS2322 issues across 10 files",
+    "ruleIds": ["TS2322"],
+    "issueCount": 10,
+    "fileCount": 10,
+    "priority": 1,
+    "suggestedAction": "Review the shared cause of TS2322 across 10 files",
+    "sampleIssueIds": ["ts-01", "ts-02"]
+  }],
+  "truncated": false,
+  "loopWarning": null
+}`;
+const normalizedIssue = `{
+  "issueId": "d7f6...",
+  "file": "src/index.ts",
+  "line": 12,
+  "col": 7,
+  "engine": "tsc",
+  "rule": "TS2322",
+  "severity": "error",
+  "message": "Type 'string' is not assignable to type 'number'.",
+  "fixable": false,
+  "clusterId": "c1"
+}`;
+const loopStatus = `{
+  "looping": true,
+  "signatures": [{
+    "signature": "no-unused-vars:<identifier> is unused",
+    "occurrences": 3,
+    "hint": "This issue has disappeared and returned repeatedly."
+  }]
+}`;
+const timeoutResponse = `{
+  "status": "timeout",
+  "engine": "tsc",
+  "message": "tsc exceeded its 120000ms timeout."
+}`;
+const staleResponse = `{
+  "status": "stale",
+  "message": "This cluster/issue no longer exists; run check_project again."
+}`;
+---
+
+<DocsLayout
+	title="MCP tools reference"
+	description="Strict argument shapes and versioned response contracts for every Signalint MCP tool."
+>
+	<div class="note"><p>Tool arguments reject unknown properties. Path arrays accept at most 512 project-relative strings; absolute, escaping, NUL-containing, and leading-dash paths are refused.</p></div>
+
+	<h2>ping</h2>
+	<p>Confirms that the local stdio server completed its MCP handshake.</p>
+	<table class="schema-table">
+		<thead><tr><th>Arguments</th><th>Result</th></tr></thead>
+		<tbody><tr><td><code>{'{}'}</code></td><td><code>pong</code></td></tr></tbody>
+	</table>
+
+	<h2>check_project</h2>
+	<p>
+		Checks the supplied project-relative paths through all configured engines. The optional
+		<code>paths</code> field is a string array of at most 512 items and defaults to
+		<code>["."]</code>.
+	</p>
+	<pre><code>{checkProjectArgs}</code></pre>
+	<p>Returns the <a href="#check-response">CheckResponse</a> shape, or a structured engine timeout/output-limit response.</p>
+
+	<h2>check_files</h2>
+	<p>
+		Checks a required list of project-relative files. File-local engines receive cache
+		misses; tsc is invoked against the whole configured program only when supplied
+		TypeScript-relevant snapshots changed.
+	</p>
+	<pre><code>{checkFilesArgs}</code></pre>
+	<p>The <code>files</code> array is required and accepts at most 512 strings.</p>
+
+	<h2>get_issue_detail</h2>
+	<p>Expands an issue or cluster from the latest successful check. Supply exactly one non-empty reference:</p>
+	<pre><code>{issueReference}</code></pre>
+	<p>The successful result is an array of <a href="#normalized-issue">NormalizedIssue</a> objects. An old reference returns:</p>
+	<pre><code>{staleResponse}</code></pre>
+
+	<h2>get_loop_status</h2>
+	<p>Accepts <code>{'{}'}</code> and reports issue signatures currently classified as oscillating:</p>
+	<pre><code>{loopStatus}</code></pre>
+
+	<h2 id="check-response">CheckResponse · schema 1.1</h2>
+	<pre><code>{checkResponse}</code></pre>
+	<table class="schema-table">
+		<thead><tr><th>Field</th><th>Type</th><th>Contract</th></tr></thead>
+		<tbody>
+			<tr><td><code>schemaVersion</code></td><td><code>"1.1"</code></td><td>Current response contract version.</td></tr>
+			<tr><td><code>status</code></td><td><code>"clean" | "issues_found"</code></td><td>Whether normalized issues remain after filtering.</td></tr>
+			<tr><td><code>engines</code></td><td>record</td><td>Exactly <code>oxlint</code>, <code>tsc</code>, and <code>biome</code>; each is <code>ok</code>, <code>error</code>, or <code>disabled</code>, with optional message.</td></tr>
+			<tr><td><code>totalIssues</code></td><td>integer</td><td>Raw normalized issue count before cluster truncation.</td></tr>
+			<tr><td><code>clusters</code></td><td>Cluster[]</td><td>Priority-ascending clusters; priority 1 is highest. Ten are returned by default.</td></tr>
+			<tr><td><code>truncated</code></td><td>boolean</td><td>True when more clusters existed than the response limit.</td></tr>
+			<tr><td><code>loopWarning</code></td><td>LoopWarning | null</td><td>The current oscillation warning, when applicable.</td></tr>
+		</tbody>
+	</table>
+
+	<h3>Cluster</h3>
+	<table class="schema-table">
+		<thead><tr><th>Field</th><th>Type</th></tr></thead>
+		<tbody>
+			<tr><td><code>clusterId</code></td><td>string</td></tr>
+			<tr><td><code>rootCauseSummary</code></td><td>string</td></tr>
+			<tr><td><code>ruleIds</code></td><td>string[]</td></tr>
+			<tr><td><code>issueCount</code></td><td>integer</td></tr>
+			<tr><td><code>fileCount</code></td><td>integer</td></tr>
+			<tr><td><code>priority</code></td><td>integer</td></tr>
+			<tr><td><code>suggestedAction</code></td><td>string</td></tr>
+			<tr><td><code>sampleIssueIds</code></td><td>string[]</td></tr>
+		</tbody>
+	</table>
+
+	<h2 id="normalized-issue">NormalizedIssue</h2>
+	<pre><code>{normalizedIssue}</code></pre>
+	<p>
+		<code>engine</code> is <code>oxlint | tsc | biome</code>; <code>severity</code> is
+		<code>error | warning</code>; messages are normalized to at most 120 characters.
+		<code>clusterId</code> is optional at the adapter boundary and present after clustering.
+		<code>fixable</code> is true only when the engine supplies a structured fix.
+	</p>
+
+	<h2>Exceptional responses</h2>
+	<h3>Engine timeout</h3>
+	<pre><code>{timeoutResponse}</code></pre>
+	<h3>Engine output limit</h3>
+	<pre><code>{`{
+  "status": "error",
+  "code": "engine_output_exceeded",
+  "engine": "oxlint",
+  "message": "oxlint output exceeded the configured byte limit."
+}`}</code></pre>
+</DocsLayout>
