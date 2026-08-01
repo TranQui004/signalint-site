@@ -1,0 +1,61 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+	title="Security model"
+	description="What Signalint treats as untrusted, which filesystem boundary it enforces, and what remains outside that boundary."
+>
+	<div class="note">
+		<p>MCP tool arguments are untrusted. A coding model can be prompt-injected by repository content, generated text, or another tool response.</p>
+	</div>
+
+	<h2>Argument boundary</h2>
+	<ul>
+		<li>Every tool input is parsed by strict runtime Zod schemas.</li>
+		<li>Unknown properties, wrong container types, non-string paths, malformed issue references, and arrays above 512 paths are rejected.</li>
+		<li>Absolute, leading-dash, and NUL-containing paths are refused.</li>
+		<li>Relative paths are checked against the project root before and after symlink or junction canonicalization.</li>
+		<li><code>check_files</code>, <code>check_project</code>, and tsc project selection share the same containment module.</li>
+	</ul>
+
+	<h2>Process boundary</h2>
+	<p>
+		Adapters spawn resolved engine entry points directly without a shell. Oxlint and Biome
+		receive an explicit end-of-options separator. TypeScript receives only a contained,
+		canonical configuration path. Engine output is byte-bounded and process trees are
+		terminated on timeout, cancellation, or server shutdown on Windows and POSIX systems.
+	</p>
+
+	<h2>Filesystem reach</h2>
+	<p>
+		After validation, Signalint directly reads selected project files and recognized config
+		files inside the project root. Its own persistent writes stay under <code>.signalint/</code>.
+		This is a tool-argument containment boundary, not an operating-system sandbox.
+	</p>
+	<p>
+		Trusted TypeScript or linter configuration can still ask an engine to resolve imports,
+		extends entries, plugins, or packages using that engine's normal filesystem behavior.
+		Run Signalint only on projects and engine configuration you are willing to execute with
+		the current operating-system account.
+	</p>
+
+	<h2>Transport</h2>
+	<p>
+		The published server constructs only the SDK's local <code>StdioServerTransport</code>.
+		It opens no HTTP listener and serves no static filesystem path. Adding an HTTP transport
+		or dashboard server would require a new security review before release.
+	</p>
+
+	<h2>Dependency advisory</h2>
+	<p>
+		The repository documents a moderate <code>@hono/node-server</code> static-file advisory
+		in the MCP SDK's transitive dependency graph. The affected HTTP <code>serveStatic</code>
+		path is not imported or exercised by Signalint's stdio-only entry point. This reachability
+		assessment must be rechecked when the dependency updates or if an HTTP surface is added.
+	</p>
+	<p>
+		For the complete analysis and vulnerability reporting instructions, read
+		<a href="https://github.com/TranQui004/signalint/blob/main/SECURITY.md">SECURITY.md on GitHub</a>.
+	</p>
+</DocsLayout>

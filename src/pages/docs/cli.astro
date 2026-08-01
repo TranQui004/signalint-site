@@ -1,0 +1,67 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const statsOutput = `Signalint session stats
+
+checks: 12
+average payload reduction: 87.67%
+engine-file cache hit rate: 76.19%
+average latency: 214.3ms
+max latency: 486ms
+loop warnings: 1
+malformed session lines skipped: 0`;
+---
+
+<DocsLayout
+	title="CLI & metrics"
+	description="Initialize a project, run a check without an MCP client, and inspect measured session behavior."
+>
+	<h2>init</h2>
+	<pre><code>npx signalint-mcp init</code></pre>
+	<p>
+		Detects a root <code>tsconfig.json</code>, Oxlint configuration, and Biome configuration,
+		then writes a matching <code>signalint.config.json</code>. It also looks for Claude Code,
+		Cursor, and Antigravity MCP configuration. One unambiguous client can be updated after
+		confirmation; ambiguous detection prints or offers the exact choices.
+	</p>
+
+	<h2>check</h2>
+	<pre><code>npx --no-install signalint check .</code></pre>
+	<p>
+		Runs the same project pipeline without an MCP client and prints the check response. The
+		command exits with code 1 when issues are found; that exit status represents diagnostic
+		findings rather than a CLI crash.
+	</p>
+
+	<h2>stats</h2>
+	<pre><code>npx --no-install signalint stats</code></pre>
+	<p>
+		Reads the active <code>.signalint/session.jsonl</code> log and its rotated <code>.1</code>
+		backup. Retained overlap is counted once, malformed or crash-truncated lines are skipped,
+		and the skipped count remains visible.
+	</p>
+	<pre><code>{statsOutput}</code></pre>
+	<div class="note">
+		<p>The values above illustrate the output format. The 87.67% figure is the recorded controlled fixture result; your project's statistics are computed from its own retained session history.</p>
+	</div>
+
+	<h2>Metric definitions</h2>
+	<table class="schema-table">
+		<thead><tr><th>Metric</th><th>What it counts</th></tr></thead>
+		<tbody>
+			<tr><td>Average payload reduction</td><td>Normalized raw JSON bytes versus clustered JSON bytes. Clean checks with zero raw payload are excluded.</td></tr>
+			<tr><td>Engine-file cache hit rate</td><td>Each enabled engine lookup separately—not unique files and not subprocess avoidance.</td></tr>
+			<tr><td>Average / max latency</td><td>Handler wall-clock time through validation, cache/engine work, clustering, and loop evaluation; excludes telemetry append and stdio transport.</td></tr>
+			<tr><td>Loop warnings</td><td>Distinct issue signatures that crossed the current oscillation threshold.</td></tr>
+		</tbody>
+	</table>
+
+	<h2>Local artifacts</h2>
+	<ul>
+		<li><code>.signalint/cache.sqlite</code> — bounded diagnostic cache.</li>
+		<li><code>.signalint/cache/tsc.tsbuildinfo</code> — TypeScript incremental state.</li>
+		<li><code>.signalint/session.jsonl</code> — loop appearances and check metrics.</li>
+		<li><code>.signalint/session.jsonl.1</code> — one rotated history backup.</li>
+	</ul>
+	<p>Keep the entire <code>.signalint/</code> directory out of version control.</p>
+</DocsLayout>

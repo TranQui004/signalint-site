@@ -1,0 +1,44 @@
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+	const revealTargets = gsap.utils.toArray<HTMLElement>('[data-reveal]');
+	const rules = gsap.utils.toArray<HTMLElement>('[data-rule]');
+
+	if (!reducedMotion) {
+		revealTargets.forEach((target) => {
+			gsap.from(target, {
+				autoAlpha: 0,
+				y: 18,
+				duration: 0.68,
+				ease: 'power3.out',
+				scrollTrigger: {
+					trigger: target,
+					start: 'top 90%',
+					once: true,
+				},
+			});
+		});
+
+		rules.forEach((rule) => {
+			gsap.from(rule, {
+				scaleX: 0,
+				duration: 0.8,
+				ease: 'power2.out',
+				transformOrigin: 'left center',
+				scrollTrigger: {
+					trigger: rule,
+					start: 'top 94%',
+					once: true,
+				},
+			});
+		});
+	}
+
+	window.addEventListener('pagehide', () => {
+		ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+	});
+</script>

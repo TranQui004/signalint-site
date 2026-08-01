@@ -1,0 +1,36 @@
+---
+interface Props {
+	command: string;
+	label?: string;
+}
+
+const { command, label = 'Copy' } = Astro.props;
+---
+
+<div class="command-block" data-copy-block>
+	<code>{command}</code>
+	<button type="button" data-copy-button data-command={command}>{label}</button>
+</div>
+
+<script>
+	import { gsap } from 'gsap';
+
+	document.querySelectorAll<HTMLButtonElement>('[data-copy-button]').forEach((button) => {
+		button.addEventListener('click', async () => {
+			const command = button.dataset.command;
+			if (command === undefined) return;
+
+			const original = button.textContent ?? 'Copy';
+			try {
+				await navigator.clipboard.writeText(command);
+				button.textContent = 'Copied';
+			} catch {
+				button.textContent = 'Copy failed';
+			}
+			gsap.fromTo(button, { y: -2 }, { y: 0, duration: 0.24, ease: 'power2.out' });
+			window.setTimeout(() => {
+				button.textContent = original;
+			}, 1400);
+		});
+	});
+</script>

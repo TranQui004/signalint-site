@@ -5,7 +5,9 @@ const links = [
 	{ label: 'Getting started', path: 'docs/' },
 	{ label: 'Configuration', path: 'docs/configuration/' },
 	{ label: 'MCP tools', path: 'docs/tools/' },
+	{ label: 'CLI & metrics', path: 'docs/cli/' },
 	{ label: 'Architecture', path: 'docs/architecture/' },
+	{ label: 'Security model', path: 'docs/security/' },
 	{ label: 'FAQ', path: 'docs/faq/' },
 	{ label: 'Troubleshooting', path: 'docs/troubleshooting/' },
 ];
@@ -15,13 +17,17 @@ const normalizedCurrent = currentPath.endsWith('/') ? currentPath : `${currentPa
 ---
 
 <aside class="docs-sidebar" aria-label="Documentation navigation">
-	<p class="docs-sidebar-title">Documentation</p>
+	<div class="docs-sidebar__head">
+		<p class="docs-sidebar-title">Documentation</p>
+		<span class="docs-sidebar-meta">v0.2.0 / schema 1.1</span>
+	</div>
 	<nav>
-		{links.map((link) => {
+		{links.map((link, index) => {
 			const href = hrefFor(link.path);
 			return (
 				<a href={href} aria-current={normalizedCurrent === href ? 'page' : undefined}>
-					{link.label}
+					<span>{String(index + 1).padStart(2, '0')}</span>
+					<strong>{link.label}</strong>
 				</a>
 			);
 		})}

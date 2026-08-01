@@ -15,8 +15,12 @@ const { title, description, eyebrow = 'Documentation' } = Astro.props;
 	<div class="shell docs-shell">
 		<DocsNav />
 		<article class="docs-content prose">
-			<header class="page-heading">
-				<p class="eyebrow">{eyebrow}</p>
+			<header class="page-heading" data-reveal>
+				<div class="page-heading__meta">
+					<span>{eyebrow}</span>
+					<span>Signalint 0.2.0</span>
+					<span>Updated Aug 2026</span>
+				</div>
 				<h1>{title}</h1>
 				<p class="lede">{description}</p>
 			</header>

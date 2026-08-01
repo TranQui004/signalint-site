@@ -16,13 +16,17 @@ const hrefFor = (path: string) => `${base}${path}`;
 			<span class="wordmark-mark" aria-hidden="true">S/</span>
 			<span>Signalint</span>
 		</a>
-		<nav aria-label="Primary navigation">
+		<nav class="site-nav" aria-label="Primary navigation">
 			{links.map((link) => (
 				<a href={hrefFor(link.path)} aria-current={currentPath.includes(`/${link.path}`) ? 'page' : undefined}>
 					{link.label}
 				</a>
 			))}
-			<a class="repo-link" href="https://github.com/TranQui004/signalint">GitHub</a>
+			<a href="https://github.com/TranQui004/signalint">GitHub ↗</a>
 		</nav>
+		<a class="package-state" href="https://www.npmjs.com/package/signalint-mcp" aria-label="Signalint 0.2.0 on npm">
+			<span class="status-dot" aria-hidden="true"></span>
+			<span>npm / 0.2.0</span>
+		</a>
 	</div>
 </header>

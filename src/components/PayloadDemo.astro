@@ -1,0 +1,116 @@
+---
+const rawPayload = `[
+  {
+    "issueId": "ts-01",
+    "file": "src/file01.ts",
+    "line": 10,
+    "engine": "tsc",
+    "rule": "TS2322",
+    "severity": "error",
+    "message": "Type 'string' is not assignable to type 'number'."
+  },
+  ... 39 more normalized issues
+]`;
+
+const clusteredPayload = `{
+  "schemaVersion": "1.1",
+  "status": "issues_found",
+  "totalIssues": 40,
+  "clusters": [{
+    "clusterId": "c1",
+    "rootCauseSummary": "10 TS2322 issues across 10 files",
+    "priority": 1,
+    "sampleIssueIds": ["ts-01", "ts-02"]
+  }, ... 3 more clusters],
+  "truncated": false
+}`;
+---
+
+<div class="payload-demo" data-payload-demo data-reveal>
+	<div class="payload-demo__bar">
+		<div>
+			<span class="status-dot" aria-hidden="true"></span>
+			<span>fixture/check_project</span>
+		</div>
+		<div class="payload-tabs" role="tablist" aria-label="Diagnostic payload view">
+			<button id="payload-tab-raw" type="button" role="tab" aria-selected="true" aria-controls="payload-panel-raw" tabindex="0" data-payload-tab="raw">Raw · 40</button>
+			<button id="payload-tab-clustered" type="button" role="tab" aria-selected="false" aria-controls="payload-panel-clustered" tabindex="-1" data-payload-tab="clustered">Clustered · 4</button>
+		</div>
+	</div>
+	<div class="payload-demo__body">
+		<div class="payload-rail" aria-label="Payload measurements">
+			<div><span>raw issues</span><strong>40</strong></div>
+			<div><span>clusters</span><strong>4</strong></div>
+			<div><span>reduction</span><strong>87.67%</strong></div>
+			<div><span>schema</span><strong>1.1</strong></div>
+		</div>
+		<div class="payload-code">
+			<pre id="payload-panel-raw" role="tabpanel" aria-labelledby="payload-tab-raw" data-payload-panel="raw"><code>{rawPayload}</code></pre>
+			<pre id="payload-panel-clustered" role="tabpanel" aria-labelledby="payload-tab-clustered" data-payload-panel="clustered" hidden><code>{clusteredPayload}</code></pre>
+		</div>
+	</div>
+	<div class="payload-demo__foot">
+		<span>Controlled Phase 3 fixture</span>
+		<span>Priority 1 shown first</span>
+	</div>
+</div>
+
+<script>
+	import { gsap } from 'gsap';
+
+	document.querySelectorAll<HTMLElement>('[data-payload-demo]').forEach((demo) => {
+		const tabs = Array.from(demo.querySelectorAll<HTMLButtonElement>('[data-payload-tab]'));
+		const panels = Array.from(demo.querySelectorAll<HTMLElement>('[data-payload-panel]'));
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+		const showPanel = (name: string) => {
+			const nextPanel = panels.find((panel) => panel.dataset.payloadPanel === name);
+			const currentPanel = panels.find((panel) => !panel.hidden);
+			if (nextPanel === undefined || currentPanel === nextPanel) return;
+
+			tabs.forEach((tab) => {
+				const selected = tab.dataset.payloadTab === name;
+				tab.setAttribute('aria-selected', String(selected));
+				tab.tabIndex = selected ? 0 : -1;
+			});
+
+			const swap = () => {
+				currentPanel?.setAttribute('hidden', '');
+				nextPanel.removeAttribute('hidden');
+				if (!reducedMotion) {
+					gsap.fromTo(nextPanel, { autoAlpha: 0, y: 8 }, { autoAlpha: 1, y: 0, duration: 0.34, ease: 'power2.out' });
+				}
+			};
+
+			if (reducedMotion || currentPanel === undefined) {
+				swap();
+				return;
+			}
+
+			gsap.to(currentPanel, { autoAlpha: 0, y: -6, duration: 0.18, ease: 'power1.in', onComplete: swap });
+		};
+
+		tabs.forEach((tab) => {
+			tab.addEventListener('click', () => {
+				const target = tab.dataset.payloadTab;
+				if (target !== undefined) showPanel(target);
+			});
+			tab.addEventListener('keydown', (event) => {
+				const currentIndex = tabs.indexOf(tab);
+				let nextIndex: number | undefined;
+				if (event.key === 'ArrowRight') nextIndex = (currentIndex + 1) % tabs.length;
+				if (event.key === 'ArrowLeft') nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+				if (event.key === 'Home') nextIndex = 0;
+				if (event.key === 'End') nextIndex = tabs.length - 1;
+				if (nextIndex === undefined) return;
+				event.preventDefault();
+				const nextTab = tabs[nextIndex];
+				const target = nextTab?.dataset.payloadTab;
+				if (nextTab !== undefined && target !== undefined) {
+					nextTab.focus();
+					showPanel(target);
+				}
+			});
+		});
+	});
+</script>

@@ -6,57 +6,67 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 	title="Open source — Signalint"
 	description="Signalint is an MIT-licensed local MCP server developed in public on GitHub."
 >
-	<section class="hero">
+	<section class="editorial-page section--ruled">
 		<div class="shell">
-			<p class="eyebrow">Open source</p>
-			<h1>Inspect the code that shapes your diagnostics.</h1>
-			<p class="lede">
-				Signalint is free software under the MIT License. The server, tests, architecture,
-				security model, and original build record are all available in the public repository.
-			</p>
-			<div class="hero-actions">
-				<a class="button" href="https://github.com/TranQui004/signalint">Open GitHub repository</a>
-				<a class="button secondary" href="https://www.npmjs.com/package/signalint-mcp">View npm package</a>
-			</div>
+			<header class="editorial-head" data-reveal>
+				<p class="section-index">Public record / MIT</p>
+				<div>
+					<h1>Inspect the code that shapes your diagnostics.</h1>
+					<p class="lede">
+						Signalint is free software under the MIT License. The server, tests, architecture,
+						security model, and original build record are all available in the public repository.
+					</p>
+					<div class="hero-actions">
+						<a class="button" href="https://github.com/TranQui004/signalint">Open GitHub repository ↗</a>
+						<a class="button secondary" href="https://www.npmjs.com/package/signalint-mcp">View npm package ↗</a>
+					</div>
+				</div>
+			</header>
+		</div>
+	</section>
+	<section class="proof-strip" aria-label="Open source project facts">
+		<div class="shell proof-strip__grid">
+			<div class="proof-stat" data-reveal><span class="micro-label">License</span><strong>MIT</strong><p>Use, modify, and distribute under the repository license.</p></div>
+			<div class="proof-stat" data-reveal><span class="micro-label">Published</span><strong>0.2.0</strong><p>Current <code>latest</code> dist-tag on the public npm registry.</p></div>
+			<div class="proof-stat" data-reveal><span class="micro-label">CI matrix</span><strong>4</strong><p>Windows, macOS, Ubuntu Node 22, and Ubuntu Node 20.19.</p></div>
+			<div class="proof-stat" data-reveal><span class="micro-label">Transport</span><strong>stdio</strong><p>Local MCP surface with no hosted runtime dependency.</p></div>
 		</div>
 	</section>
 
 	<section class="section">
 		<div class="shell">
-			<div class="section-header">
-				<div>
-					<p class="eyebrow">Repository record</p>
-					<h2>Designed to be checked, not taken on trust.</h2>
-				</div>
+			<div class="section-heading" data-reveal>
+				<p class="section-index">Repository / evidence</p>
+				<h2>Designed to be checked, not taken on trust.</h2>
 				<p>The current implementation and its test history supersede the archived build plan when they differ.</p>
 			</div>
 			<div class="feature-grid">
-				<article class="feature-card">
+				<article class="feature-card" data-reveal>
 					<h3>MIT License</h3>
 					<p>Use, copy, modify, and distribute Signalint under the repository's MIT terms.</p>
 					<p><a href="https://github.com/TranQui004/signalint/blob/main/LICENSE">Read LICENSE</a></p>
 				</article>
-				<article class="feature-card">
+				<article class="feature-card" data-reveal>
 					<h3>Contribution workflow</h3>
 					<p>Development setup, verification gates, commit style, and required cross-platform CI checks.</p>
 					<p><a href="https://github.com/TranQui004/signalint/blob/main/CONTRIBUTING.md">Read CONTRIBUTING.md</a></p>
 				</article>
-				<article class="feature-card">
+				<article class="feature-card" data-reveal>
 					<h3>Threat model</h3>
 					<p>MCP arguments are untrusted; filesystem reach, process controls, and the dependency advisory are documented.</p>
 					<p><a href="https://github.com/TranQui004/signalint/blob/main/SECURITY.md">Read SECURITY.md</a></p>
 				</article>
-				<article class="feature-card">
+				<article class="feature-card" data-reveal>
 					<h3>Architecture</h3>
 					<p>Current module boundaries, engine strategy, cache identity, and check data flow.</p>
 					<p><a href="https://github.com/TranQui004/signalint/blob/main/ARCHITECTURE.md">Read ARCHITECTURE.md</a></p>
 				</article>
-				<article class="feature-card">
+				<article class="feature-card" data-reveal>
 					<h3>Tests and CI</h3>
 					<p>The suite runs on Windows, Ubuntu, and macOS, including the supported Node 20.19 line.</p>
 					<p><a href="https://github.com/TranQui004/signalint/actions">View Actions</a></p>
 				</article>
-				<article class="feature-card">
+				<article class="feature-card" data-reveal>
 					<h3>Project history</h3>
 					<p>The archived build plan retains acceptance criteria, amendments, risks, and pre-launch review findings.</p>
 					<p><a href="https://github.com/TranQui004/signalint/tree/main/docs/history">Browse history</a></p>
