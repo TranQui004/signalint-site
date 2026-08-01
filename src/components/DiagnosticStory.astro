@@ -1,0 +1,136 @@
+---
+const rawIssues = [
+	{ file: 'src/file01.ts', line: '10:5', rule: 'TS2322', message: "Type 'string' is not assignable to type 'number'." },
+	{ file: 'src/file02.ts', line: '11:5', rule: 'TS2322', message: "Type 'string' is not assignable to type 'number'." },
+	{ file: 'src/file03.ts', line: '12:5', rule: 'TS2322', message: "Type 'string' is not assignable to type 'number'." },
+	{ file: 'src/file04.ts', line: '13:5', rule: 'TS2322', message: "Type 'string' is not assignable to type 'number'." },
+	{ file: 'src/file05.ts', line: '14:5', rule: 'TS2322', message: "Type 'string' is not assignable to type 'number'." },
+	{ file: 'src/file06.ts', line: '15:5', rule: 'TS2322', message: "Type 'string' is not assignable to type 'number'." },
+];
+
+const clusters = [
+	{ id: 'c1', rule: 'TS2322', count: '10 issues / 10 files', priority: 'P1' },
+	{ id: 'c2', rule: 'no-unused-vars', count: '10 issues / 10 files', priority: 'P2' },
+	{ id: 'c3', rule: 'no-console', count: '10 issues / 10 files', priority: 'P4' },
+	{ id: 'c4', rule: 'use-const', count: '10 issues / 10 files', priority: 'P5' },
+];
+---
+
+<section id="diagnostic-demo" class="diagnostic-story" data-diagnostic-story data-passive-demo aria-label="Scroll-driven diagnostic compression demo">
+	<div class="diagnostic-story__copy">
+		<div class="story-step" data-story-step="raw">
+			<span>01 / engine output</span>
+			<h3>Forty valid issues can still be a poor agent response.</h3>
+			<p>The engines stay authoritative. Signalint first normalizes their locations, rule IDs, severity, and messages.</p>
+		</div>
+		<div class="story-step" data-story-step="group">
+			<span>02 / rule-first grouping</span>
+			<h3>Repeated symptoms become one review target.</h3>
+			<p>Large rule groups spanning multiple files receive one root-cause summary and distinct sample issue IDs.</p>
+		</div>
+		<div class="story-step" data-story-step="response">
+			<span>03 / bounded response</span>
+			<h3>The agent receives four clusters, not forty rows.</h3>
+			<p>The controlled fixture falls from 9,151 bytes to 1,233 bytes while preserving engine state and issue references.</p>
+		</div>
+	</div>
+
+	<div class="diagnostic-stage" data-diagnostic-stage>
+		<div class="diagnostic-stage__topbar">
+			<div><i></i><span>check_project</span></div>
+			<div class="stage-status">
+				<span data-stage-status-raw>raw / 40 issues</span>
+				<span data-stage-status-clustered>clustered / 4 groups</span>
+			</div>
+		</div>
+		<div class="diagnostic-stage__viewport">
+			<div class="raw-issues" data-raw-issues>
+				{rawIssues.map((issue, index) => (
+					<div class="issue-row" data-issue-row>
+						<span>{String(index + 1).padStart(2, '0')}</span>
+						<div><strong>{issue.rule}</strong><code>{issue.file}:{issue.line}</code></div>
+						<p>{issue.message}</p>
+					</div>
+				))}
+				<div class="issue-row issue-row--more" data-issue-row>
+					<span>..</span><p>34 additional normalized issues</p>
+				</div>
+			</div>
+
+			<div class="cluster-result" data-cluster-result aria-hidden="true">
+				<div class="cluster-result__meta">
+					<span>schemaVersion 1.1</span>
+					<span>priority 1 first</span>
+				</div>
+				<div class="cluster-list">
+					{clusters.map((cluster) => (
+						<div class="cluster-row" data-cluster-row>
+							<strong>{cluster.id}</strong>
+							<div><span>{cluster.rule}</span><small>{cluster.count}</small></div>
+							<em>{cluster.priority}</em>
+						</div>
+					))}
+				</div>
+				<div class="cluster-result__footer" data-result-footer>
+					<div><span>40</span><small>raw issues</small></div>
+					<i></i>
+					<div><span>4</span><small>clusters</small></div>
+					<strong>-86.53%</strong>
+				</div>
+			</div>
+		</div>
+		<div class="diagnostic-stage__footer">
+			<span>passive playback</span>
+			<div class="story-progress"><i data-story-progress></i></div>
+			<span>scroll to trace</span>
+		</div>
+	</div>
+</section>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	document.querySelectorAll<HTMLElement>('[data-diagnostic-story]').forEach((story) => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		const raw = story.querySelector<HTMLElement>('[data-raw-issues]');
+		const rows = story.querySelectorAll<HTMLElement>('[data-issue-row]');
+		const result = story.querySelector<HTMLElement>('[data-cluster-result]');
+		const clusters = story.querySelectorAll<HTMLElement>('[data-cluster-row]');
+		const footer = story.querySelector<HTMLElement>('[data-result-footer]');
+		const rawStatus = story.querySelector<HTMLElement>('[data-stage-status-raw]');
+		const clusteredStatus = story.querySelector<HTMLElement>('[data-stage-status-clustered]');
+		const progress = story.querySelector<HTMLElement>('[data-story-progress]');
+
+		if (raw === null || result === null || footer === null || rawStatus === null || clusteredStatus === null || progress === null) return;
+		gsap.set(result, { autoAlpha: 0 });
+		gsap.set(clusters, { autoAlpha: 0, y: 18 });
+		gsap.set(footer, { autoAlpha: 0, y: 12 });
+		gsap.set(clusteredStatus, { autoAlpha: 0 });
+		gsap.set(progress, { scaleX: 0, transformOrigin: 'left center' });
+
+		const timeline = gsap.timeline({
+			scrollTrigger: {
+				trigger: story,
+				start: 'top 18%',
+				end: 'bottom 82%',
+				scrub: 0.9,
+			},
+		});
+
+		timeline
+			.to(progress, { scaleX: 0.34, duration: 1, ease: 'none' }, 0)
+			.to(rows, { x: 10, stagger: 0.035, duration: 0.65, ease: 'power2.inOut' }, 0.2)
+			.to(rows, { x: 0, stagger: 0.035, duration: 0.65, ease: 'power2.inOut' }, 0.9)
+			.to(progress, { scaleX: 0.68, duration: 1, ease: 'none' }, 1)
+			.to(raw, { autoAlpha: 0, y: -18, duration: 0.7, ease: 'power3.inOut' }, 1.35)
+			.to(rawStatus, { autoAlpha: 0, duration: 0.25 }, 1.4)
+			.to(clusteredStatus, { autoAlpha: 1, duration: 0.35 }, 1.5)
+			.to(result, { autoAlpha: 1, duration: 0.2 }, 1.55)
+			.to(clusters, { autoAlpha: 1, y: 0, stagger: 0.1, duration: 0.75, ease: 'power3.out' }, 1.6)
+			.to(progress, { scaleX: 1, duration: 1, ease: 'none' }, 2)
+			.to(footer, { autoAlpha: 1, y: 0, duration: 0.75, ease: 'power3.out' }, 2.25);
+	});
+</script>

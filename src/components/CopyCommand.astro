@@ -9,7 +9,10 @@ const { command, label = 'Copy' } = Astro.props;
 
 <div class="command-block" data-copy-block>
 	<code>{command}</code>
-	<button type="button" data-copy-button data-command={command}>{label}</button>
+	<button type="button" data-copy-button data-command={command} aria-label="Copy install command">
+		<svg aria-hidden="true" viewBox="0 0 16 16"><rect x="5" y="5" width="8" height="8"></rect><path d="M3 11H2V2h9v1"></path></svg>
+		<span data-copy-label>{label}</span>
+	</button>
 </div>
 
 <script>
@@ -20,16 +23,17 @@ const { command, label = 'Copy' } = Astro.props;
 			const command = button.dataset.command;
 			if (command === undefined) return;
 
-			const original = button.textContent ?? 'Copy';
+			const label = button.querySelector<HTMLElement>('[data-copy-label]');
+			const original = label?.textContent ?? 'Copy';
 			try {
 				await navigator.clipboard.writeText(command);
-				button.textContent = 'Copied';
+				if (label !== null) label.textContent = 'Copied';
 			} catch {
-				button.textContent = 'Copy failed';
+				if (label !== null) label.textContent = 'Failed';
 			}
 			gsap.fromTo(button, { y: -2 }, { y: 0, duration: 0.24, ease: 'power2.out' });
 			window.setTimeout(() => {
-				button.textContent = original;
+				if (label !== null) label.textContent = original;
 			}, 1400);
 		});
 	});
