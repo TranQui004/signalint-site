@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CopyCommand from '../components/CopyCommand.astro';
-import PayloadDemo from '../components/PayloadDemo.astro';
+import DiagnosticStory from '../components/DiagnosticStory.astro';
+import EngineFlow from '../components/EngineFlow.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const cacheKey = `sha256(file content)
@@ -28,19 +29,20 @@ const fanout = `"engines": {
 	<section class="hero-v2">
 		<div class="shell hero-v2__grid">
 			<div class="hero-v2__copy" data-reveal>
-				<p class="eyebrow">Agent-optimized code feedback / npm 0.2.0</p>
-				<h1>Less diagnostic noise.<br /><span>More useful next steps.</span></h1>
+				<p class="eyebrow">Local stdio MCP / signalint-mcp@0.2.0</p>
+				<h1>Engine diagnostics.<br /><span>Agent-sized responses.</span></h1>
 				<p class="lede">
 					Signalint is a local stdio MCP server that runs Oxlint, TypeScript, and optional
 					Biome checks—then caches unchanged work, clusters repeated issues, and flags
 					fix loops before sending a versioned response back to the coding agent.
 				</p>
 				<div class="hero-actions">
-					<a class="button" href={`${base}docs/`}>Install and connect</a>
+					<a class="button" href={`${base}docs/`}>Read the setup</a>
 					<a class="button secondary" href="https://github.com/TranQui004/signalint">Inspect the source ↗</a>
 				</div>
 			</div>
 			<div class="hero-ledger" data-reveal>
+				<div class="hero-ledger__label"><span>Runtime manifest</span><span>local process</span></div>
 				<div class="ledger-row"><span>Transport</span><span>local / stdio</span></div>
 				<div class="ledger-row"><span>Package</span><span>signalint-mcp@0.2.0</span></div>
 				<div class="ledger-row"><span>Engines</span><span>oxlint / tsc / biome</span></div>
@@ -81,25 +83,26 @@ const fanout = `"engines": {
 		</div>
 	</section>
 
-	<section class="section section--ruled">
+	<section class="section section--ruled section--story">
 		<div class="shell">
 			<header class="section-heading" data-reveal>
 				<p class="section-index">01 / response</p>
-				<h2>Turn repetition into a small decision surface.</h2>
-				<p>Toggle the recorded 40-issue fixture between normalized raw output and the bounded schema 1.1 response.</p>
+				<h2>See what the agent sees.</h2>
+				<p>Scroll through the recorded 40-issue fixture as normalized rows become a bounded schema 1.1 response.</p>
 			</header>
 			<div class="hairline" data-rule></div>
-			<PayloadDemo />
+			<DiagnosticStory />
 		</div>
 	</section>
 
-	<section class="section section--ruled">
+	<section class="section section--ruled section--pipeline">
 		<div class="shell">
 			<header class="section-heading" data-reveal>
 				<p class="section-index">02 / mechanics</p>
-				<h2>Compression without hiding engine state.</h2>
+				<h2>A local pipeline with explicit boundaries.</h2>
 				<p>Signalint preserves the diagnostic engines as the source of truth and makes cache, failure, and loop state explicit.</p>
 			</header>
+			<EngineFlow />
 			<div class="capability-grid">
 				<article class="capability-card wide" data-reveal>
 					<span class="capability-card__number">01 — cache identity</span>
@@ -133,11 +136,11 @@ const fanout = `"engines": {
 		</div>
 	</section>
 
-	<section class="section section--ruled">
+	<section class="section section--ruled section--engines">
 		<div class="shell">
 			<header class="section-heading" data-reveal>
 				<p class="section-index">03 / engines</p>
-				<h2>Different tools keep different execution models.</h2>
+				<h2>Each engine keeps its execution model.</h2>
 				<p>File-local engines receive cache misses. TypeScript always sees the complete program when it runs.</p>
 			</header>
 			<table class="engine-table" data-reveal>
@@ -151,11 +154,11 @@ const fanout = `"engines": {
 		</div>
 	</section>
 
-	<section class="section">
+	<section class="section section--clients">
 		<div class="shell">
 			<header class="section-heading" data-reveal>
 				<p class="section-index">04 / clients</p>
-				<h2>One local server, three documented setup paths.</h2>
+				<h2>Connect the server where the agent works.</h2>
 				<p>The init command detects nearby client configuration and writes an entry only after confirmation.</p>
 			</header>
 			<div class="client-grid">

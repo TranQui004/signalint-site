@@ -13,8 +13,8 @@ const hrefFor = (path: string) => `${base}${path}`;
 <header class="site-header">
 	<div class="shell header-inner">
 		<a class="wordmark" href={base} aria-label="Signalint home">
-			<span class="wordmark-mark" aria-hidden="true">S/</span>
-			<span>Signalint</span>
+			<span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+			<span>signalint</span>
 		</a>
 		<nav class="site-nav" aria-label="Primary navigation">
 			{links.map((link) => (
@@ -22,11 +22,11 @@ const hrefFor = (path: string) => `${base}${path}`;
 					{link.label}
 				</a>
 			))}
-			<a href="https://github.com/TranQui004/signalint">GitHub ↗</a>
+			<a href="https://github.com/TranQui004/signalint">GitHub <span aria-hidden="true">↗</span></a>
 		</nav>
 		<a class="package-state" href="https://www.npmjs.com/package/signalint-mcp" aria-label="Signalint 0.2.0 on npm">
-			<span class="status-dot" aria-hidden="true"></span>
-			<span>npm / 0.2.0</span>
+			<span>npm</span>
+			<strong>0.2.0</strong>
 		</a>
 	</div>
 </header>

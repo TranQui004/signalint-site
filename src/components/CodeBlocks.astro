@@ -1,0 +1,50 @@
+<script>
+	import { gsap } from 'gsap';
+
+	const inferLabel = (value: string): string => {
+		const trimmed = value.trimStart();
+		if (trimmed.startsWith('{') || trimmed.startsWith('[')) return 'JSON';
+		if (/^(?:npm|npx|node|claude|pnpm)\s/m.test(trimmed)) return 'Terminal';
+		if (trimmed.startsWith('Signalint session stats')) return 'Output';
+		return 'Code';
+	};
+
+	document.querySelectorAll<HTMLPreElement>('pre:not([data-no-copy])').forEach((pre) => {
+		if (pre.closest('[data-code-frame]') !== null || pre.closest('[data-passive-demo]') !== null) return;
+
+		const frame = document.createElement('div');
+		frame.className = 'code-frame';
+		frame.dataset.codeFrame = '';
+
+		const toolbar = document.createElement('div');
+		toolbar.className = 'code-frame__toolbar';
+
+		const label = document.createElement('span');
+		label.textContent = pre.dataset.label ?? inferLabel(pre.textContent ?? '');
+
+		const button = document.createElement('button');
+		button.type = 'button';
+		button.className = 'code-frame__copy';
+		button.setAttribute('aria-label', 'Copy code to clipboard');
+		button.innerHTML = '<svg aria-hidden="true" viewBox="0 0 16 16"><rect x="5" y="5" width="8" height="8"></rect><path d="M3 11H2V2h9v1"></path></svg><span>Copy</span>';
+
+		pre.parentNode?.insertBefore(frame, pre);
+		frame.append(toolbar, pre);
+		toolbar.append(label, button);
+
+		button.addEventListener('click', async () => {
+			const text = pre.textContent ?? '';
+			const status = button.lastElementChild;
+			try {
+				await navigator.clipboard.writeText(text);
+				if (status !== null) status.textContent = 'Copied';
+			} catch {
+				if (status !== null) status.textContent = 'Failed';
+			}
+			gsap.fromTo(button, { y: -2 }, { y: 0, duration: 0.32, ease: 'power3.out' });
+			window.setTimeout(() => {
+				if (status !== null) status.textContent = 'Copy';
+			}, 1400);
+		});
+	});
+</script>

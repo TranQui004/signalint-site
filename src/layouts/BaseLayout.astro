@@ -1,8 +1,10 @@
 ---
+import CodeBlocks from '../components/CodeBlocks.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import Motion from '../components/Motion.astro';
 import '../styles/redesign.css';
+import '../styles/orange-system.css';
 
 interface Props {
 	title: string;
@@ -20,7 +22,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta name="viewport" content="width=device-width" />
 		<meta name="description" content={description} />
 		<meta name="generator" content={Astro.generator} />
-		<meta name="theme-color" content="#f4f1e9" />
+		<meta name="theme-color" content="#0a0a0a" />
 		<meta property="og:type" content="website" />
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
@@ -37,5 +39,6 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		</main>
 		<SiteFooter />
 		<Motion />
+		<CodeBlocks />
 	</body>
 </html>
