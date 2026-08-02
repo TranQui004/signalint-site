@@ -568,7 +568,7 @@ h1, h2, h3 { text-wrap: balance; }
 	font-size: 0.64rem;
 }
 .code-frame__copy:hover { background: var(--orange); color: var(--black); }
-.code-frame pre, .prose .code-frame pre {
+.prose pre, .code-frame pre, .prose .code-frame pre {
 	margin: 0;
 	padding: 22px;
 	border: 0;
@@ -577,6 +577,7 @@ h1, h2, h3 { text-wrap: balance; }
 	color: var(--white);
 	font-size: 0.76rem;
 	line-height: 1.68;
+	scrollbar-gutter: stable;
 }
 pre, .command-block code, .engine-table, .schema-table {
 	scrollbar-color: var(--orange) var(--black);

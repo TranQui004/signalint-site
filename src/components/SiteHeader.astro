@@ -1,29 +1,39 @@
 ---
+import LanguageSwitcher from './i18n/LanguageSwitcher.astro';
+
+interface Props {
+	locale?: 'en' | 'vi';
+}
+
+const { locale = 'en' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const currentPath = Astro.url.pathname;
+const localePrefix = locale === 'vi' ? 'vi/' : '';
 const links = [
-	{ label: 'Docs', path: 'docs/' },
-	{ label: 'Changelog', path: 'changelog/' },
-	{ label: 'Open source', path: 'open-source/' },
+	{ label: locale === 'vi' ? 'Tài liệu' : 'Docs', path: 'docs/' },
+	{ label: 'Blog', path: 'blog/' },
+	{ label: locale === 'vi' ? 'Thay đổi' : 'Changelog', path: 'changelog/' },
+	{ label: locale === 'vi' ? 'Mã nguồn mở' : 'Open source', path: 'open-source/' },
 ];
 
-const hrefFor = (path: string) => `${base}${path}`;
+const hrefFor = (path: string) => `${base}${localePrefix}${path}`;
 ---
 
 <header class="site-header">
 	<div class="shell header-inner">
-		<a class="wordmark" href={base} aria-label="Signalint home">
+		<a class="wordmark" href={`${base}${localePrefix}`} aria-label={locale === 'vi' ? 'Trang chủ Signalint' : 'Signalint home'}>
 			<span class="wordmark-mark" aria-hidden="true"><i></i><i></i><i></i></span>
 			<span>signalint</span>
 		</a>
-		<nav class="site-nav" aria-label="Primary navigation">
+		<nav class="site-nav" aria-label={locale === 'vi' ? 'Điều hướng chính' : 'Primary navigation'}>
 			{links.map((link) => (
-				<a href={hrefFor(link.path)} aria-current={currentPath.includes(`/${link.path}`) ? 'page' : undefined}>
+				<a href={hrefFor(link.path)} aria-current={currentPath.includes(`/${localePrefix}${link.path}`) ? 'page' : undefined}>
 					{link.label}
 				</a>
 			))}
 			<a href="https://github.com/TranQui004/signalint">GitHub <span aria-hidden="true">↗</span></a>
 		</nav>
+		<LanguageSwitcher locale={locale} />
 		<a class="package-state" href="https://www.npmjs.com/package/signalint-mcp" aria-label="Signalint 0.2.0 on npm">
 			<span>npm</span>
 			<strong>0.2.0</strong>

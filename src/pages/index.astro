@@ -4,6 +4,7 @@ import CopyCommand from '../components/CopyCommand.astro';
 import DiagnosticStory from '../components/home/DiagnosticStory.astro';
 import EngineFlow from '../components/home/EngineFlow.astro';
 import NpmDownloads from '../components/home/NpmDownloads.astro';
+import { homeEn } from '../content/site/en/home';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const cacheKey = `sha256(file content)
@@ -96,7 +97,7 @@ const fanout = `"engines": {
 				<p>Scroll through the recorded 40-issue fixture as normalized rows become a bounded schema 1.1 response.</p>
 			</header>
 			<div class="hairline" data-rule></div>
-			<DiagnosticStory />
+			<DiagnosticStory copy={homeEn.diagnostic} />
 		</div>
 	</section>
 
@@ -107,7 +108,7 @@ const fanout = `"engines": {
 				<h2>A local pipeline with explicit boundaries.</h2>
 				<p>Signalint preserves the diagnostic engines as the source of truth and makes cache, failure, and loop state explicit.</p>
 			</header>
-			<EngineFlow />
+			<EngineFlow copy={homeEn.flow} />
 			<div class="capability-grid">
 				<article class="capability-card wide" data-reveal>
 					<span class="capability-card__number">01 — cache identity</span>
@@ -182,7 +183,7 @@ const fanout = `"engines": {
 					<pre class="client-command" data-label="Terminal"><code>claude mcp add --scope project signalint …</code></pre>
 				</article>
 				<article class="client-entry" data-client-entry>
-					<span class="client-mark" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cursor/mono.svg" alt="" loading="lazy" decoding="async" /></span>
+					<span class="client-mark" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cursor/default.svg" alt="" loading="lazy" decoding="async" /></span>
 					<div class="client-entry__copy"><span>02 / project scope</span><h3>Cursor</h3><p>Use <code>.cursor/mcp.json</code> with the published npm binary.</p></div>
 					<pre class="client-command" data-label="Terminal"><code>npx --no-install signalint-mcp</code></pre>
 				</article>

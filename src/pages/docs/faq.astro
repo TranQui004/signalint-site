@@ -1,11 +1,12 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
 import FaqAccordion from '../../components/docs/FaqAccordion.astro';
+import { faqEn } from '../../content/docs/en/faq';
 ---
 
 <DocsLayout
 	title="FAQ"
 	description="Scope, engine behavior, privacy, and the boundaries of the current release."
 >
-	<FaqAccordion />
+	<FaqAccordion questions={faqEn} />
 </DocsLayout>

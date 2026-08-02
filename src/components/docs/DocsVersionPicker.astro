@@ -3,16 +3,23 @@ import { DOCS_VERSIONS } from '../../data/docsVersions';
 
 interface Props {
 	version: string;
+	locale?: 'en' | 'vi';
 }
 
-const { version } = Astro.props;
+const { version, locale = 'en' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const versions = locale === 'vi'
+	? [
+		{ version: '0.2.0', label: '0.2.0 · hiện tại', path: 'vi/docs/' },
+		{ version: '0.1.0', label: '0.1.0 · lưu trữ', path: 'vi/docs/versions/0.1/' },
+	]
+	: DOCS_VERSIONS;
 ---
 
 <label class="docs-version-picker">
-	<span>Documentation version</span>
-	<select data-docs-version aria-label="Documentation version">
-		{DOCS_VERSIONS.map((entry) => (
+	<span>{locale === 'vi' ? 'Phiên bản tài liệu' : 'Documentation version'}</span>
+	<select data-docs-version aria-label={locale === 'vi' ? 'Phiên bản tài liệu' : 'Documentation version'}>
+		{versions.map((entry) => (
 			<option value={`${base}${entry.path}`} selected={entry.version === version}>{entry.label}</option>
 		))}
 	</select>

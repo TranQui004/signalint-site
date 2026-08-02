@@ -1,0 +1,37 @@
+---
+import type { BlogPost } from '../../content/blog/types';
+import BlogComments from './BlogComments.astro';
+
+interface Props {
+	post: BlogPost;
+	locale: 'en' | 'vi';
+}
+
+const { post, locale } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const blogHref = `${base}${locale === 'vi' ? 'vi/' : ''}blog/`;
+---
+
+<article class="blog-post">
+	<header class="blog-post__hero" data-reveal>
+		<a class="blog-back" href={blogHref}>← {locale === 'vi' ? 'Tất cả bài viết' : 'All posts'}</a>
+		<div class="blog-post__meta">
+			<time datetime={post.publishedAt}>{post.displayDate}</time>
+			<span>{post.readingTime}</span>
+		</div>
+		<h1>{post.title}</h1>
+		<p class="lede">{post.dek}</p>
+		<ul>{post.tags.map((tag) => <li>{tag}</li>)}</ul>
+	</header>
+	<div class="blog-post__body prose">
+		{post.sections.map((section, index) => (
+			<section id={`section-${index + 1}`} data-motion-group>
+				<p class="section-index">{String(index + 1).padStart(2, '0')}</p>
+				<h2>{section.heading}</h2>
+				{section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+				{section.code && <pre data-label="JSON"><code>{section.code}</code></pre>}
+			</section>
+		))}
+	</div>
+	<BlogComments locale={locale} discussionNumber={post.discussionNumber} discussionUrl={post.discussionUrl} />
+</article>

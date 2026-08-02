@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import CopyCommand from '../CopyCommand.astro';
+import DiagnosticStory from './DiagnosticStory.astro';
+import EngineFlow from './EngineFlow.astro';
+import NpmDownloads from './NpmDownloads.astro';
+import type { HomeContent } from '../../content/site/types';
+
+interface Props {
+	content: HomeContent;
+	locale: 'en' | 'vi';
+}
+
+const { content, locale } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const prefix = locale === 'vi' ? 'vi/' : '';
+const manifestValues = ['local / stdio', 'signalint-mcp@0.2.0', 'oxlint / tsc / biome', 'schemaVersion 1.1', 'MIT'];
+---
+
+<BaseLayout title={content.title} description={content.description} locale={locale} stickyFooter>
+	<section class="hero-v2">
+		<div class="shell hero-v2__grid">
+			<div class="hero-v2__copy" data-reveal>
+				<p class="eyebrow">{content.hero.eyebrow}</p>
+				<h1>{content.hero.title}<br /><span>{content.hero.emphasis}</span></h1>
+				<p class="lede">{content.hero.lede}</p>
+				<div class="hero-actions">
+					<a class="button" href={`${base}${prefix}docs/`}>{content.hero.primaryAction}</a>
+					<a class="button secondary" href="https://github.com/TranQui004/signalint">{content.hero.secondaryAction}</a>
+				</div>
+			</div>
+			<div class="hero-ledger" data-reveal>
+				<div class="hero-ledger__label"><span>{content.hero.manifestTitle}</span><span>{content.hero.manifestState}</span></div>
+				{content.manifestLabels.map((label, index) => <div class="ledger-row"><span>{label}</span><span>{manifestValues[index]}</span></div>)}
+			</div>
+		</div>
+		<div class="hero-command"><div class="shell hero-command__inner"><div class="hero-command__label"><span>{content.hero.installLabel}</span><NpmDownloads /></div><CopyCommand command="npm install --save-dev signalint-mcp && npx signalint-mcp init" /></div></div>
+	</section>
+
+	<section class="proof-strip" aria-label={content.statsAria}>
+		<div class="shell proof-strip__grid">
+			{content.stats.map((stat) => (
+				<div class="proof-stat" data-reveal>
+					<span class="micro-label">{stat.label}</span>
+					<strong>
+						<span data-count={stat.value} data-count-decimals={stat.decimals ?? 0}>{stat.value.toFixed(stat.decimals ?? 0)}</span><small>{stat.suffix}</small>
+						{stat.secondaryValue !== undefined && <span data-count={stat.secondaryValue}>{stat.secondaryValue}</span>}
+					</strong>
+					<p>{stat.detail}</p>
+				</div>
+			))}
+		</div>
+	</section>
+
+	<section class="section section--ruled section--story"><div class="shell">
+		<header class="section-heading" data-reveal><p class="section-index">{content.storyHeading.index}</p><h2>{content.storyHeading.title}</h2><p>{content.storyHeading.body}</p></header>
+		<div class="hairline" data-rule></div>
+		<DiagnosticStory copy={content.diagnostic} />
+	</div></section>
+
+	<section class="section section--ruled section--pipeline" data-pipeline-section><div class="shell">
+		<header class="section-heading"><p class="section-index">{content.pipelineHeading.index}</p><h2>{content.pipelineHeading.title}</h2><p>{content.pipelineHeading.body}</p></header>
+		<EngineFlow copy={content.flow} />
+		<div class="capability-grid">
+			{content.capabilities.map((capability) => (
+				<article class:list={['capability-card', { wide: capability.wide }]} data-reveal>
+					<span class="capability-card__number">{capability.number} — {capability.kicker}</span><h3>{capability.title}</h3><p>{capability.body}</p>
+					{capability.code && <pre><code>{capability.code}</code></pre>}
+				</article>
+			))}
+		</div>
+	</div></section>
+
+	<section class="section section--ruled section--engines"><div class="shell">
+		<header class="section-heading" data-reveal><p class="section-index">{content.enginesHeading.index}</p><h2>{content.enginesHeading.title}</h2><p>{content.enginesHeading.body}</p></header>
+		<div class="engine-comparison" data-reveal>
+			{content.engines.map((engine, index) => (
+				<article class:list={['engine-profile', { 'engine-profile--tsc': index === 1 }]}>
+					<header><span>{String(index + 1).padStart(2, '0')}</span><div><h3>{engine.name}</h3><p>{engine.analysis}</p></div></header>
+					<div class="engine-profile__method"><span>{engine.receivesLabel}</span><strong>{engine.receives}</strong><p>{engine.body}</p></div>
+					<dl><div><dt>{engine.cacheLabel}</dt><dd>{engine.cacheScope}</dd></div><div><dt>{engine.deadlineLabel}</dt><dd>{engine.deadline}</dd></div></dl>
+				</article>
+			))}
+		</div>
+	</div></section>
+
+	<section class="section section--clients" data-client-section><div class="shell">
+		<header class="section-heading" data-client-heading><p class="section-index">{content.clientsHeading.index}</p><h2>{content.clientsHeading.title}</h2><p>{content.clientsHeading.body}</p></header>
+		<div class="client-directory">
+			{content.clients.map((client) => (
+				<article class="client-entry" data-client-entry>
+					<span class="client-mark" aria-hidden="true"><img src={client.icon} alt="" loading="lazy" decoding="async" /></span>
+					<div class="client-entry__copy"><span>{client.scope}</span><h3>{client.name}</h3><p>{client.body}</p></div>
+					<pre class="client-command" data-label="Terminal"><code>{client.command}</code></pre>
+				</article>
+			))}
+		</div>
+		<div class="hero-actions" data-reveal><a class="button" href={`${base}${prefix}docs/setup/`}>{content.setupAction}</a><a class="button secondary" href={`${base}${prefix}docs/tools/`}>{content.schemaAction}</a></div>
+	</div></section>
+</BaseLayout>

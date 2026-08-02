@@ -1,27 +1,56 @@
+---
+interface Props {
+	locale?: 'en' | 'vi';
+}
+
+const { locale = 'en' } = Astro.props;
+const copy = locale === 'vi'
+	? {
+		label: 'Phát hành',
+		navLabel: 'Các bản phát hành theo ngày công bố',
+		index: 'Mục lục phát hành',
+		title: 'Duyệt theo ngày.',
+		description: 'Năm, tháng, ngày, rồi tới phiên bản package.',
+		month: 'Tháng tám',
+		current: 'Lệnh thiết lập và tài liệu hiện hành',
+		initial: 'Lần phát hành npm đầu tiên',
+	}
+	: {
+		label: 'Releases',
+		navLabel: 'Changelog releases by publication date',
+		index: 'Release index',
+		title: 'Browse by date.',
+		description: 'Year, month, day, then package version.',
+		month: 'August',
+		current: 'Setup command and current documentation',
+		initial: 'Initial npm publication',
+	};
+---
+
 <div class="changelog-edge-sensor" data-changelog-edge aria-hidden="true"></div>
 <aside class="changelog-toc is-visible" data-changelog-toc aria-labelledby="changelog-index-title">
 	<button class="changelog-toc__toggle" type="button" data-changelog-toggle aria-expanded="false" aria-controls="changelog-release-tree">
-		<span>Releases</span>
+		<span>{copy.label}</span>
 		<strong aria-hidden="true">←</strong>
 	</button>
-	<nav id="changelog-release-tree" class="changelog-toc__panel" aria-label="Changelog releases by publication date">
+	<nav id="changelog-release-tree" class="changelog-toc__panel" aria-label={copy.navLabel}>
 		<div class="changelog-toc__intro">
-			<p class="section-index">Release index</p>
-			<h2 id="changelog-index-title">Browse by date.</h2>
-			<p>Year, month, day, then package version.</p>
+			<p class="section-index">{copy.index}</p>
+			<h2 id="changelog-index-title">{copy.title}</h2>
+			<p>{copy.description}</p>
 		</div>
 		<ol class="release-tree">
 			<li>
 				<span class="release-tree__year">2026</span>
 				<ol>
 					<li>
-						<span class="release-tree__month">August</span>
+						<span class="release-tree__month">{copy.month}</span>
 						<ol>
 							<li>
 								<span class="release-tree__day">01</span>
 								<div class="release-tree__links">
-									<a href="#v0-2-0"><strong>v0.2.0</strong><span>Setup command and current documentation</span></a>
-									<a href="#v0-1-0"><strong>v0.1.0</strong><span>Initial npm publication</span></a>
+									<a href="#v0-2-0"><strong>v0.2.0</strong><span>{copy.current}</span></a>
+									<a href="#v0-1-0"><strong>v0.1.0</strong><span>{copy.initial}</span></a>
 								</div>
 							</li>
 						</ol>

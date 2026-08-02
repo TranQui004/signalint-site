@@ -1,0 +1,72 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+
+const antigravity = `{
+  "mcpServers": {
+    "signalint": {
+      "command": "cmd",
+      "args": ["/c", "npx", "--no-install", "signalint-mcp"],
+      "cwd": "C:\\duong-dan\\tuyet-doi\\den\\project"
+    }
+  }
+}`;
+---
+
+<DocsLayout
+	title="Khắc phục lỗi"
+	description="Kết nối, Windows shim, dự án TypeScript, cache và các kiểm tra tham chiếu cũ."
+	eyebrow="Khắc phục lỗi"
+	locale="vi"
+>
+	<h2>Bắt đầu với ping</h2>
+	<p>
+		Sau khi thay đổi cấu hình MCP client, hãy khởi động lại hoặc kết nối lại client và gọi{' '}
+		<code>ping</code> với <code>{'{}'}</code>. Một kết nối stdio đang hoạt động sẽ trả về{' '}
+		<code>pong</code>. Nếu quá trình khởi tạo kết thúc với EOF, hãy chạy lệnh server trong một terminal
+		thông thường và xác nhận nó đang chờ ở stdin mà không in log thông thường ra stdout.
+	</p>
+
+	<h2>Windows command shims</h2>
+	<p>
+		Các MCP client chạy native trên Windows thường cần <code>cmd /c</code> xung quanh <code>npx</code>.
+		Đối với Antigravity, sử dụng cấu trúc sau:
+	</p>
+	<pre><code>{antigravity}</code></pre>
+	<p>
+		Đối với bản build phát triển npm-link có file shim <code>.cmd</code> bị lỗi, hãy bỏ qua shim:
+	</p>
+	<pre><code>{`node C:\\duong-dan\\tuyet-doi\\den\\Signalint\\dist\\src\\index.js
+node C:\\duong-dan\\tuyet-doi\\den\\Signalint\\dist\\src\\cli.js stats`}</code></pre>
+
+	<h2>TypeScript không báo lỗi một cách bất ngờ</h2>
+	<ul>
+		<li>Xác nhận có file <code>tsconfig.json</code> ở gốc dự án.</li>
+		<li>Đối với monorepo, sử dụng cấu hình root kiểu solution với <code>references</code> trỏ tới các dự án composite.</li>
+		<li>Chạy thủ công <code>npx tsc --build</code> cho cấu hình solution để so sánh hành vi trực tiếp của compiler.</li>
+	</ul>
+
+	<h2>check_files có vẻ như bị cũ (stale)</h2>
+	<p>
+		Quyết định hủy cache của tsc chỉ nhìn thấy các file được cung cấp rõ ràng cho cuộc gọi đó. Nếu file A
+		thay đổi nhưng cuộc gọi chỉ kiểm tra file B không đổi phụ thuộc vào A, kết quả tsc trước đó
+		có thể được tái sử dụng. Hãy đưa vào mọi file phụ thuộc đã thay đổi hoặc chạy <code>check_project</code>.
+	</p>
+
+	<h2>Một tham chiếu issue bị cũ</h2>
+	<p>
+		<code>get_issue_detail</code> chỉ tham chiếu tới kết quả thành công mới nhất. Hãy chạy{' '}
+		<code>check_project</code> một lần nữa, sau đó sử dụng một <code>clusterId</code> hoặc{' '}
+		<code>issueId</code> hiện tại.
+	</p>
+
+	<h2>Đặt lại trạng thái cục bộ</h2>
+	<p>
+		Dừng MCP server trước khi xóa <code>.signalint/</code>. Thư mục này chứa cache SQLite,
+		trạng thái tăng dần của TypeScript và log phiên làm việc. Xóa thư mục trong khi tiến trình server
+		vẫn đang chạy sẽ không làm sạch trạng thái vòng lặp trong bộ nhớ của tiến trình đó.
+	</p>
+
+	<h2>Kiểm tra lần check từ terminal</h2>
+	<pre><code>npx --no-install signalint check .</code></pre>
+	<p>Để xem các số liệu được lưu trữ, hãy chạy <code>npx --no-install signalint stats</code>.</p>
+</DocsLayout>

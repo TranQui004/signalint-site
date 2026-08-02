@@ -1,0 +1,127 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const install = `npm install --save-dev signalint-mcp
+npx signalint-mcp init`;
+const manualConfig = `{
+  "engines": {
+    "oxlint": true,
+    "tsc": true,
+    "biome": false
+  },
+  "ignore": ["node_modules/**", "dist/**", ".signalint/**"],
+  "timeoutsMs": {
+    "oxlint": 30000,
+    "tsc": 120000,
+    "biome": 30000
+  }
+}`;
+const claudePosix = `claude mcp add --scope project signalint -- npx --no-install signalint-mcp
+claude mcp get signalint`;
+const claudeWindows = `claude mcp add --scope project signalint -- cmd /c npx --no-install signalint-mcp
+claude mcp get signalint`;
+const cursorConfig = `{
+  "mcpServers": {
+    "signalint": {
+      "command": "npx",
+      "args": ["--no-install", "signalint-mcp"]
+    }
+  }
+}`;
+const antigravityWindows = `{
+  "mcpServers": {
+    "signalint": {
+      "command": "cmd",
+      "args": ["/c", "npx", "--no-install", "signalint-mcp"],
+      "cwd": "<duong-dan-tuyet-doi-den-project-cua-ban>"
+    }
+  }
+}`;
+---
+
+<DocsLayout
+	title="Cài đặt & client"
+	description="Cài đặt Signalint, tạo cấu hình mặc định tự động phát hiện theo dự án, kết nối Claude Code, Cursor hoặc Antigravity và xác minh kết nối stdio."
+	eyebrow="Cài đặt"
+	locale="vi"
+>
+	<h2>Cài đặt trong dự án được kiểm tra</h2>
+	<p>
+		Chạy thiết lập ngay từ dự án JavaScript hoặc TypeScript mà Signalint sẽ kiểm tra. Cần Node.js
+		20.19+ hoặc 22.12+; kiểm tra TypeScript cũng yêu cầu một file{' '}
+		<code>tsconfig.json</code> ở gốc dự án.
+	</p>
+	<pre><code>{install}</code></pre>
+
+	<h2>init phát hiện những gì</h2>
+	<p>
+		<code>npx signalint-mcp init</code> kiểm tra dự án trước khi ghi bất cứ file nào. Lệnh
+		chỉ bật TypeScript khi có file <code>tsconfig.json</code> gốc, bật Biome khi file cấu hình
+		của nó tồn tại và sử dụng Oxlint làm mặc định khi không tìm thấy linter đã cấu hình.
+	</p>
+	<table class="schema-table">
+		<thead><tr><th>Dấu hiệu phát hiện</th><th>Hành vi được tạo</th></tr></thead>
+		<tbody>
+			<tr><td>File <code>tsconfig.json</code> gốc</td><td>Bật adapter tsc kiểm tra toàn bộ chương trình (whole-program).</td></tr>
+			<tr><td>Cấu hình Oxlint</td><td>Bật adapter Oxlint kiểm tra theo từng file (file-local).</td></tr>
+			<tr><td><code>biome.json</code> hoặc <code>biome.jsonc</code></td><td>Bật adapter Biome kiểm tra theo file tùy chọn.</td></tr>
+			<tr><td>Một MCP client ở gần duy nhất</td><td>Đề nghị bổ sung cấu hình server Signalint sau khi xác nhận.</td></tr>
+			<tr><td>Nhiều hoặc không có client rõ ràng</td><td>Hỏi bạn muốn dùng client nào hoặc in ra đoạn snippet chính xác để copy.</td></tr>
+		</tbody>
+	</table>
+
+	<h2>Cấu hình Signalint thủ công</h2>
+	<p>
+		Nếu không sử dụng init, hãy tạo <code>signalint.config.json</code> ở gốc dự án.
+		Mọi trường được hỗ trợ đều được giải thích chi tiết trong{' '}
+		<a href={`${base}vi/docs/configuration/`}>tài liệu tham khảo cấu hình</a>.
+	</p>
+	<pre><code>{manualConfig}</code></pre>
+
+	<h2>Claude Code</h2>
+	<p>Project scope tạo file <code>.mcp.json</code> có thể chia sẻ. Trên macOS hoặc Linux:</p>
+	<pre><code>{claudePosix}</code></pre>
+	<p>Trên Windows native, bọc <code>npx</code> bằng <code>cmd /c</code>:</p>
+	<pre><code>{claudeWindows}</code></pre>
+	<p>
+		Để biết về hành vi phạm vi và xử lý lỗi phía client, xem{' '}
+		<a href="https://docs.anthropic.com/en/docs/claude-code/mcp">tài liệu MCP của Claude Code</a>.
+	</p>
+
+	<h2>Cursor</h2>
+	<p>Tạo file <code>.cursor/mcp.json</code> trong dự án được kiểm tra:</p>
+	<pre><code>{cursorConfig}</code></pre>
+	<p>
+		Trên Windows native, đặt <code>"command": "cmd"</code> và{' '}
+		<code>"args": ["/c", "npx", "--no-install", "signalint-mcp"]</code>. Mở cài đặt MCP
+		của Cursor và bật <code>signalint</code>. Xem{' '}
+		<a href="https://docs.cursor.com/context/model-context-protocol">tài liệu MCP của Cursor</a>{' '}
+		để biết vị trí cấu hình và kiểm soát trạng thái.
+	</p>
+
+	<h2>Antigravity</h2>
+	<p>
+		Antigravity thường lưu cấu hình trên Windows tại{' '}
+		<code>%USERPROFILE%\.gemini\antigravity\mcp_config.json</code>. Init có thể cập nhật cấu hình này sau khi bạn xác nhận. Cấu hình thủ công tương đương trên Windows là:
+	</p>
+	<pre><code>{antigravityWindows}</code></pre>
+	<p>
+		Trên macOS hoặc Linux, sử dụng <code>"command": "npx"</code> với{' '}
+		<code>["--no-install", "signalint-mcp"]</code>. Luôn đặt <code>cwd</code> thành gốc dự án tuyệt đối, sau đó kết nối lại hoặc khởi động lại Antigravity.
+	</p>
+
+	<h2>Xác minh kết nối</h2>
+	<ol>
+		<li>Khởi động lại hoặc kết nối lại MCP client sau khi cấu hình thay đổi.</li>
+		<li>Gọi <code>ping</code> với <code>{'{}'}</code> và xác nhận kết quả trả về là <code>pong</code>.</li>
+		<li>Gọi <code>check_project</code> với <code>{'{ "paths": ["."] }'}</code>.</li>
+	</ol>
+	<div class="note">
+		<p>Signalint ghi các dữ liệu cache và phiên làm việc vào <code>.signalint/</code>. Giữ thư mục này ngoài verson control.</p>
+	</div>
+
+	<h2>Xác minh không cần MCP client</h2>
+	<pre><code>npx --no-install signalint check .</code></pre>
+	<p>Lệnh sẽ thoát với mã exit 1 khi phát hiện chẩn đoán; đó là hành vi kiểm tra bình thường thay vì lỗi CLI.</p>
+</DocsLayout>

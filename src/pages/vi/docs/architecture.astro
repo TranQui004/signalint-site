@@ -1,0 +1,68 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+	title="Kiến trúc"
+	description="Cách một cuộc gọi MCP được xác thực trở thành các chẩn đoán được cache và gom cụm trong khi các engine cục bộ vẫn giữ quyền nguồn sự thật."
+	eyebrow="Kiến trúc"
+	locale="vi"
+>
+	<p>
+		Signalint là một MCP server chạy qua stdio cục bộ. Adapters là các module duy nhất thực thi các
+		engine chẩn đoán; mọi tầng phía trên chúng đều hoạt động trên các đối tượng issue đã được chuẩn hóa.
+		Luồng triển khai là tĩnh và cục bộ: không cần bất kỳ dịch vụ đám mây nào.
+	</p>
+
+	<div class="architecture-stack" aria-label="Sơ đồ các tầng của Signalint">
+		<div class="architecture-row"><strong>MCP client</strong><span>Gọi quy chuẩn công cụ nghiêm ngặt qua stdio.</span></div>
+		<div class="architecture-row"><strong>MCP server</strong><span>Xác thực tham số, đọc cấu hình, điều phối kiểm tra và chuyển đổi phản hồi schema 1.1.</span></div>
+		<div class="architecture-row"><strong>Adapters</strong><span>Ranh giới tiến trình con của Oxlint, tsc và Biome với thời hạn timeout và giới hạn đầu ra.</span></div>
+		<div class="architecture-row"><strong>Cache</strong><span>Kết quả file trong SQLite và trạng thái toàn bộ chương trình, với key tạo từ nội dung, cấu hình, phiên bản Signalint và phiên bản engine.</span></div>
+		<div class="architecture-row"><strong>Clusters</strong><span>Gom nhóm theo rule, gán mức ưu tiên, mẫu lỗi riêng biệt và cắt giảm phản hồi khi quá giới hạn.</span></div>
+		<div class="architecture-row"><strong>Session memory</strong><span>Chữ ký vòng lặp cùng lịch sử số liệu có giới hạn và xoay vòng.</span></div>
+	</div>
+
+	<h2>Luồng dữ liệu của check_files</h2>
+	<ol>
+		<li>Server xác thực đối tượng tool thông qua các Zod schema nghiêm ngặt.</li>
+		<li>Các đường dẫn được yêu cầu được giải quyết theo gốc dự án và kiểm tra lại sau khi chuẩn hóa symlink.</li>
+		<li>Các mẫu glob ignore và việc loại trừ <code>node_modules</code> vô điều kiện sẽ loại bỏ các đường dẫn ngoài phạm vi.</li>
+		<li>Signalint đọc các snapshot và tính toán hash cấu hình engine.</li>
+		<li>Các kết quả cache theo file được tái sử dụng; Oxlint và Biome (tùy chọn) chỉ nhận các trường hợp cache miss.</li>
+		<li>tsc chỉ được bỏ qua khi các snapshot liên quan đến TypeScript được cung cấp vẫn trùng khớp với kết quả toàn bộ chương trình mới nhất.</li>
+		<li>Các engine được bật hoạt động độc lập, do đó một thất bại không làm mất chẩn đoán của engine khác.</li>
+		<li>Các lỗi được chuẩn hóa, lọc, gom cụm, sắp xếp với ưu tiên 1 đứng đầu và mặc định giới hạn ở 10 cụm.</li>
+		<li>Trạng thái vòng lặp và số liệu được ghi lại trước khi trả về phản hồi JSON.</li>
+	</ol>
+
+	<h2>Chiến lược thực thi engine</h2>
+	<h3>Oxlint và Biome</h3>
+	<p>
+		Các engine này hoạt động theo từng file. Một cuộc gọi <code>check_files</code> sẽ hash từng file,
+		dùng lại các mục trong SQLite khi key trùng khớp hoàn toàn và chỉ gửi các file cache miss tới adapter.
+	</p>
+	<h3>TypeScript</h3>
+	<p>
+		tsc kiểm tra toàn bộ chương trình (whole-program). Các hash file được cung cấp quyết định xem việc chạy tsc có cần thiết hay không, nhưng các file không bao giờ được truyền dưới dạng root của compiler. Cấu hình root thông thường sử dụng <code>--project</code> với trạng thái tăng dần (incremental state). Cấu hình root kiểu solution chứa <code>references</code> sẽ sử dụng{' '}
+		<code>--build</code>, nhờ đó các dự án composite được tham chiếu sẽ được duyệt qua.
+	</p>
+
+	<h2>Giới hạn lưu trữ</h2>
+	<p>
+		Cache SQLite cập nhật mốc thời gian khi đọc và loại bỏ các hàng ít được sử dụng nhất (LRU) khi vượt quá
+		10.000 mục. Khi khởi động phiên, chỉ phần đuôi gần nhất có giới hạn được nạp lại; các lượt ghi xoay vòng file
+		JSONL sang bản sao lưu <code>.1</code> khi chạm giới hạn kích thước. Lệnh stats tính toán trên cả hai file được giữ lại.
+	</p>
+
+	<h2>Ranh giới tin cậy</h2>
+	<p>
+		Các tham số MCP được xử lý như dữ liệu không đáng tin vì một mô hình AI có thể bị prompt-inject bởi nội dung dự án. các đường dẫn tuyệt đối, thoát ra ngoài, bắt đầu bằng dấu gạch ngang và chứa ký tự NUL bị từ chối, mảng tham số bị giới hạn và các adapter thực thi các file nhị phân đã giải quyết mà không qua shell.
+	</p>
+	<p>
+		Đọc tổng quan chi tiết về bản triển khai hiện tại trong{' '}
+		<a href="https://github.com/TranQui004/signalint/blob/main/ARCHITECTURE.md">ARCHITECTURE.md</a>{' '}
+		và mô hình đe dọa trong{' '}
+		<a href="https://github.com/TranQui004/signalint/blob/main/SECURITY.md">SECURITY.md</a>.
+	</p>
+</DocsLayout>

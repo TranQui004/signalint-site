@@ -1,0 +1,26 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogCard from '../../../components/blog/BlogCard.astro';
+import { compactDiagnosticsVi } from '../../../content/blog/vi/compactDiagnostics';
+---
+
+<BaseLayout
+	title="Blog — Signalint"
+	description="Bài viết về MCP, phản hồi cho coding agent và cách xây công cụ cục bộ có ranh giới rõ ràng."
+	locale="vi"
+>
+	<section class="blog-index editorial-page">
+		<div class="shell">
+			<header class="editorial-head" data-reveal>
+				<p class="section-index">Bài viết / MCP</p>
+				<div>
+					<h1>Ghi chép từ ranh giới chẩn đoán.</h1>
+					<p class="lede">Những bài viết thực tế về MCP, phản hồi cho coding agent, cache và các quyết định giúp công cụ cục bộ đáng tin hơn.</p>
+				</div>
+			</header>
+			<div class="blog-grid" data-motion-group>
+				<BlogCard post={compactDiagnosticsVi} locale="vi" />
+			</div>
+		</div>
+	</section>
+</BaseLayout>

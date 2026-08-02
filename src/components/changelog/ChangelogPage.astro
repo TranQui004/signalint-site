@@ -1,0 +1,45 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ChangelogToc from './ChangelogToc.astro';
+
+interface Release {
+	version: string;
+	date: string;
+	dateTime: string;
+	title: string;
+	items: readonly string[];
+}
+
+interface Props {
+	locale: 'en' | 'vi';
+	title: string;
+	description: string;
+	eyebrow: string;
+	lede: string;
+	note: string;
+	releases: readonly Release[];
+}
+
+const { locale, title, description, eyebrow, lede, note, releases } = Astro.props;
+---
+
+<BaseLayout title={title} description={description} locale={locale}>
+	<ChangelogToc locale={locale} />
+	<section class="editorial-page">
+		<div class="shell prose">
+			<header class="editorial-head" data-reveal>
+				<p class="section-index">{eyebrow}</p>
+				<div><h1>{locale === 'vi' ? 'Lịch sử thay đổi' : 'Changelog'}</h1><p class="lede">{lede}</p></div>
+			</header>
+			<div class="note"><p>{note} <a href="https://github.com/TranQui004/signalint/releases">GitHub Releases</a>.</p></div>
+			<div class="timeline">
+				{releases.map((release) => (
+					<article id={`v${release.version.replaceAll('.', '-')}`} class="release" data-reveal>
+						<div class="release-meta"><a href={`https://www.npmjs.com/package/signalint-mcp/v/${release.version}`}>v{release.version}</a><time datetime={release.dateTime}>{release.date}</time></div>
+						<div><h2>{release.title}</h2><ul>{release.items.map((item) => <li>{item}</li>)}</ul></div>
+					</article>
+				))}
+			</div>
+		</div>
+	</section>
+</BaseLayout>

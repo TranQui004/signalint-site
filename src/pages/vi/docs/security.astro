@@ -1,0 +1,62 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+---
+
+<DocsLayout
+	title="Mô hình bảo mật"
+	description="Những gì Signalint xem là không đáng tin, ranh giới filesystem mà nó thực thi và những gì nằm ngoài ranh giới đó."
+	eyebrow="Bảo mật"
+	locale="vi"
+>
+	<div class="note">
+		<p>Các tham số công cụ MCP là dữ liệu không đáng tin. Mô hình AI có thể bị prompt-inject bởi nội dung repository, văn bản được tạo hoặc phản hồi từ công cụ khác.</p>
+	</div>
+
+	<h2>Ranh giới tham số</h2>
+	<ul>
+		<li>Mọi đầu vào công cụ đều được parse bởi các Zod schema nghiêm ngặt lúc runtime.</li>
+		<li>Các thuộc tính không xác định, kiểu container sai, đường dẫn không phải chuỗi, tham chiếu issue bị lỗi và mảng vượt quá 512 đường dẫn đều bị từ chối.</li>
+		<li>Các đường dẫn tuyệt đối, bắt đầu bằng dấu gạch ngang và chứa ký tự NUL bị từ chối.</li>
+		<li>Các đường dẫn tương đối được kiểm tra theo gốc dự án trước và sau khi chuẩn hóa symlink hoặc junction.</li>
+		<li><code>check_files</code>, <code>check_project</code> và việc chọn dự án tsc dùng chung module giới hạn đường dẫn.</li>
+	</ul>
+
+	<h2>Ranh giới tiến trình</h2>
+	<p>
+		Các adapter thực thi các entrypoint engine đã giải quyết trực tiếp mà không qua shell. Oxlint và Biome
+		nhận ký tự phân cách kết thúc tùy chọn (end-of-options separator) rõ ràng. TypeScript chỉ nhận đường dẫn
+		cấu hình chuẩn hóa và được giới hạn. Đầu ra của engine được giới hạn byte và cây tiến trình bị
+		chấm dứt khi hết thời gian (timeout), bị hủy hoặc khi server tắt trên cả hệ thống Windows và POSIX.
+	</p>
+
+	<h2>Phạm vi filesystem</h2>
+	<p>
+		Sau khi xác thực, Signalint đọc trực tiếp các file dự án được chọn và các file cấu hình được nhận diện
+		bên trong gốc dự án. Các lượt ghi bền vững của chính nó nằm dưới <code>.signalint/</code>.
+		Đây là ranh giới giới hạn tham số công cụ, không phải là một sandbox cấp hệ điều hành.
+	</p>
+	<p>
+		Cấu hình TypeScript hoặc linter tin cậy vẫn có thể yêu cầu engine giải quyết các import,
+		các mục extends, plugin hoặc package bằng hành vi filesystem bình thường của engine đó.
+		Chỉ chạy Signalint trên các dự án và cấu hình engine mà bạn sẵn sàng thực thi với tài khoản hệ điều hành hiện tại.
+	</p>
+
+	<h2>Transport</h2>
+	<p>
+		Server được phát hành chỉ dựng <code>StdioServerTransport</code> cục bộ của SDK.
+		Nó không mở HTTP listener và không phục vụ đường dẫn filesystem tĩnh. Việc thêm HTTP transport
+		hoặc dashboard server sẽ yêu cầu một đợt đánh giá bảo mật mới trước khi phát hành.
+	</p>
+
+	<h2>Cảnh báo phụ thuộc (Dependency advisory)</h2>
+	<p>
+		Repository ghi nhận một cảnh báo file tĩnh mức trung bình đối với <code>@hono/node-server</code>{' '}
+		trong đồ thị phụ thuộc bắc cầu của MCP SDK. Đường dẫn HTTP <code>serveStatic</code> bị ảnh hưởng{' '}
+		không được import hoặc sử dụng bởi entrypoint chỉ-stdio của Signalint. Đánh giá khả năng bị ảnh hưởng
+		này phải được kiểm tra lại khi các phụ thuộc cập nhật hoặc nếu một giao diện HTTP được thêm vào.
+	</p>
+	<p>
+		Để xem phân tích đầy đủ và hướng dẫn báo cáo lỗ hổng bảo mật, đọc{' '}
+		<a href="https://github.com/TranQui004/signalint/blob/main/SECURITY.md">SECURITY.md trên GitHub</a>.
+	</p>
+</DocsLayout>

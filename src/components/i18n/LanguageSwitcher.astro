@@ -1,0 +1,17 @@
+---
+import { getLocaleRoutes, type Locale } from '../../lib/locales';
+
+interface Props {
+	locale: Locale;
+}
+
+const { locale } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const routes = getLocaleRoutes(Astro.url.pathname, base);
+const target = locale === 'vi' ? routes.en : routes.vi;
+---
+
+<a class="language-switch" href={target} hreflang={locale === 'vi' ? 'en' : 'vi'}>
+	<span aria-hidden="true">{locale === 'vi' ? 'EN' : 'VI'}</span>
+	<strong>{locale === 'vi' ? 'English' : 'Tiếng Việt'}</strong>
+</a>

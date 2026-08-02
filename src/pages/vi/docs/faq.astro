@@ -1,0 +1,14 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+import FaqAccordion from '../../../components/docs/FaqAccordion.astro';
+import { faqQuestionsVi } from '../../../content/docs/vi/faq';
+---
+
+<DocsLayout
+	title="Hỏi đáp (FAQ)"
+	description="Phạm vi, hành vi engine, quyền riêng tư và giới hạn của bản phát hành hiện tại."
+	eyebrow="Hỏi đáp"
+	locale="vi"
+>
+	<FaqAccordion questions={faqQuestionsVi} locale="vi" />
+</DocsLayout>

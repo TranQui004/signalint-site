@@ -1,61 +1,18 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import ChangelogToc from '../components/changelog/ChangelogToc.astro';
+import ChangelogPage from '../components/changelog/ChangelogPage.astro';
+
+const releases = [
+	{ version: '0.2.0', date: '1 Aug 2026', dateTime: '2026-08-01', title: 'Setup command and current documentation', items: ['Added npx signalint-mcp init for project and MCP-client detection.', 'Published the current architecture, contributor, security, and historical design documentation.', 'Includes all pre-launch cache, fan-out, storage-bound, and security hardening merged before publication.'] },
+	{ version: '0.1.0', date: '1 Aug 2026', dateTime: '2026-08-01', title: 'Initial npm publication', items: ['Local stdio MCP server with Oxlint, TypeScript, and optional Biome adapters.', 'SQLite caching, rule-based clustering, and session loop detection.', 'Claude Code, Cursor, Antigravity, and direct CLI setup paths.'] },
+] as const;
 ---
 
-<BaseLayout
+<ChangelogPage
+	locale="en"
 	title="Changelog — Signalint"
 	description="Published Signalint package versions and the current GitHub Releases record."
->
-	<ChangelogToc />
-	<section class="editorial-page">
-		<div class="shell prose">
-			<header class="editorial-head" data-reveal>
-				<p class="section-index">Release / npm</p>
-				<div>
-					<h1>Changelog</h1>
-					<p class="lede">Package publication history, newest first. Formal release notes will be linked from GitHub Releases as they are created.</p>
-				</div>
-			</header>
-
-			<div class="note">
-				<p>
-					The <a href="https://github.com/TranQui004/signalint/releases">GitHub Releases feed</a>
-					currently contains no release objects. The entries below use the public npm registry's
-					publication timestamps and link to the corresponding package versions.
-				</p>
-			</div>
-
-			<div class="timeline">
-				<article id="v0-2-0" class="release" data-reveal>
-					<div class="release-meta">
-						<a href="https://www.npmjs.com/package/signalint-mcp/v/0.2.0">v0.2.0</a>
-						<time datetime="2026-08-01">1 Aug 2026</time>
-					</div>
-					<div>
-						<h2>Setup command and current documentation</h2>
-						<ul>
-							<li>Added <code>npx signalint-mcp init</code> for project and MCP-client detection.</li>
-							<li>Published the current architecture, contributor, security, and historical design documentation.</li>
-							<li>Includes all pre-launch cache, fan-out, storage-bound, and security hardening merged before publication.</li>
-						</ul>
-					</div>
-				</article>
-				<article id="v0-1-0" class="release" data-reveal>
-					<div class="release-meta">
-						<a href="https://www.npmjs.com/package/signalint-mcp/v/0.1.0">v0.1.0</a>
-						<time datetime="2026-08-01">1 Aug 2026</time>
-					</div>
-					<div>
-						<h2>Initial npm publication</h2>
-						<ul>
-							<li>Local stdio MCP server with Oxlint, TypeScript, and optional Biome adapters.</li>
-							<li>SQLite caching, rule-based clustering, and session loop detection.</li>
-							<li>Claude Code, Cursor, Antigravity, and direct CLI setup paths.</li>
-						</ul>
-					</div>
-				</article>
-			</div>
-		</div>
-	</section>
-</BaseLayout>
+	eyebrow="Release / npm"
+	lede="Package publication history, newest first. Formal release notes will be linked from GitHub Releases as they are created."
+	note="The releases feed currently contains no release objects. The entries below use the public npm registry's publication timestamps and link to the corresponding package versions."
+	releases={releases}
+/>

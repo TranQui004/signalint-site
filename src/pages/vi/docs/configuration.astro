@@ -1,0 +1,89 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+
+const defaultConfig = `{
+  "engines": {
+    "oxlint": true,
+    "tsc": true,
+    "biome": false
+  },
+  "ignore": ["node_modules/**", "dist/**", ".signalint/**"],
+  "timeoutsMs": {
+    "oxlint": 30000,
+    "tsc": 120000,
+    "biome": 30000
+  }
+}`;
+---
+
+<DocsLayout
+	title="Tham khảo cấu hình"
+	description="Tất cả các trường được hỗ trợ trong signalint.config.json, bao gồm giá trị mặc định và hành vi xác thực."
+	eyebrow="Cấu hình"
+	locale="vi"
+>
+	<p>
+		Signalint đọc file <code>signalint.config.json</code> từ gốc dự án được kiểm tra.
+		File này là tùy chọn; các trường bị bỏ qua sẽ nhận giá trị mặc định bên dưới. Các key không xác định
+		và kiểu dữ liệu không chính xác sẽ báo lỗi cấu hình.
+	</p>
+	<pre><code>{defaultConfig}</code></pre>
+
+	<h2>Các trường cấp cao nhất</h2>
+	<table class="schema-table">
+		<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead>
+		<tbody>
+			<tr><td><code>engines</code></td><td>object</td><td>Xem bên dưới</td><td>Bật hoặc tắt từng engine tích hợp.</td></tr>
+			<tr><td><code>ignore</code></td><td>string[]</td><td><code>node_modules/**</code>, <code>dist/**</code>, <code>.signalint/**</code></td><td>Các đường dẫn tương đối bị loại bỏ khỏi danh sách file yêu cầu và kết quả chẩn đoán cuối cùng.</td></tr>
+			<tr><td><code>timeoutsMs</code></td><td>object</td><td>Xem bên dưới</td><td>Thời hạn giới hạn tiến trình con (tính bằng miligiây, số nguyên dương).</td></tr>
+		</tbody>
+	</table>
+
+	<h2>engines</h2>
+	<table class="schema-table">
+		<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th><th>Hành vi</th></tr></thead>
+		<tbody>
+			<tr><td><code>oxlint</code></td><td>boolean</td><td><code>true</code></td><td>Chạy chẩn đoán Oxlint theo từng file.</td></tr>
+			<tr><td><code>tsc</code></td><td>boolean</td><td><code>true</code></td><td>Chạy chẩn đoán TypeScript toàn bộ chương trình từ tsconfig gốc.</td></tr>
+			<tr><td><code>biome</code></td><td>boolean</td><td><code>false</code></td><td>Chạy chẩn đoán Biome theo từng file.</td></tr>
+		</tbody>
+	</table>
+	<p>Các key engine bị bỏ qua vẫn giữ giá trị mặc định riêng; chúng không bị ép về false.</p>
+
+	<h2>ignore</h2>
+	<p>
+		Mỗi mục phải là một mẫu glob đường dẫn tương đối không rỗng. Signalint hỗ trợ <code>*</code>,{' '}
+		<code>**</code> và <code>?</code>, đồng thời chuẩn hóa ký tự phân cách đường dẫn Windows. Vì tsc
+		là kiểm tra toàn bộ chương trình, nó vẫn thấy toàn bộ chương trình đã cấu hình khi được gọi;
+		các chẩn đoán khớp với mẫu ignore sẽ được loại bỏ khỏi phản hồi.
+	</p>
+	<div class="note">
+		<p>Các chẩn đoán có đường dẫn chứa phân đoạn <code>node_modules</code> sẽ luôn bị loại trừ, bất kể cài đặt này.</p>
+	</div>
+
+	<h2>timeoutsMs</h2>
+	<table class="schema-table">
+		<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th></tr></thead>
+		<tbody>
+			<tr><td><code>oxlint</code></td><td>số nguyên dương</td><td>30.000 ms</td></tr>
+			<tr><td><code>tsc</code></td><td>số nguyên dương</td><td>120.000 ms</td></tr>
+			<tr><td><code>biome</code></td><td>số nguyên dương</td><td>30.000 ms</td></tr>
+		</tbody>
+	</table>
+	<p>
+		Khi hết thời gian timeout, Signalint sẽ chấm dứt cây tiến trình của engine đó. Trong phản hồi
+		chẩn đoán schema 1.1, engine đó sẽ nhận <code>{'{ "status": "error", "message": "…" }'}</code>{' '}
+		dưới mục <code>engines</code>, trong khi chẩn đoán từ các engine đã hoàn thành khác vẫn được giữ nguyên.
+	</p>
+
+	<h2>Cấu hình gốc của engine</h2>
+	<p>
+		Giữ các quy tắc lint và compiler trong file cấu hình gốc của chúng. Cache hash v1 nhận diện các file gốc{' '}
+		<code>.oxlintrc</code>, <code>.oxlintrc.json</code>, <code>oxlint.json</code>,{' '}
+		<code>tsconfig.json</code>, <code>biome.json</code> và <code>biome.jsonc</code>.
+		Thay đổi một trong các file này sẽ làm mất hiệu lực cache của engine tương ứng.
+	</p>
+	<div class="note">
+		<p>Các nguồn hợp lệ khác—bao gồm <code>.oxlintrc.jsonc</code>, cấu hình mở rộng (extended config) và cấu hình package lồng nhau—không thuộc về cache hashing của v1. Hãy xóa <code>.signalint/</code> sau khi thay đổi một trong những file đó.</p>
+	</div>
+</DocsLayout>
