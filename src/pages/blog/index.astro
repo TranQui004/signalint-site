@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/blog/BlogCard.astro';
+import { compactDiagnosticsEn } from '../../content/blog/en/compactDiagnostics';
+---
+
+<BaseLayout
+	title="Blog — Signalint"
+	description="Notes on MCP diagnostics, local agent tooling, and the engineering boundaries behind Signalint."
+>
+	<section class="blog-index editorial-page">
+		<div class="shell">
+			<header class="editorial-head" data-reveal>
+				<p class="section-index">Writing / MCP</p>
+				<div>
+					<h1>Notes from the diagnostic boundary.</h1>
+					<p class="lede">Practical writing about MCP, coding-agent feedback, caching, and the choices that make local tools trustworthy.</p>
+				</div>
+			</header>
+			<div class="blog-grid" data-motion-group>
+				<BlogCard post={compactDiagnosticsEn} locale="en" />
+			</div>
+		</div>
+	</section>
+</BaseLayout>

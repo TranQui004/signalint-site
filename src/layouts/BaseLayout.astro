@@ -3,23 +3,32 @@ import CodeBlocks from '../components/CodeBlocks.astro';
 import SiteFooter from '../components/SiteFooter.astro';
 import SiteHeader from '../components/SiteHeader.astro';
 import Motion from '../components/Motion.astro';
+import { getLocaleRoutes } from '../lib/locales';
 import '../styles/redesign.css';
 import '../styles/orange-system.css';
 import '../styles/docs.css';
 import '../styles/changelog.css';
+import '../styles/blog.css';
+import '../styles/localization.css';
+import '../styles/responsive.css';
 
 interface Props {
 	title: string;
 	description: string;
 	stickyFooter?: boolean;
+	locale?: 'en' | 'vi';
 }
 
-const { title, description, stickyFooter = false } = Astro.props;
+const { title, description, stickyFooter = false, locale = 'en' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const localeRoutes = getLocaleRoutes(Astro.url.pathname, base);
+const englishUrl = new URL(localeRoutes.en, Astro.site);
+const vietnameseUrl = new URL(localeRoutes.vi, Astro.site);
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang={locale}>
 	<head>
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width" />
@@ -30,17 +39,21 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<meta property="og:title" content={title} />
 		<meta property="og:description" content={description} />
 		<meta property="og:url" content={canonical} />
+		<meta property="og:locale" content={locale === 'vi' ? 'vi_VN' : 'en_US'} />
 		<meta name="twitter:card" content="summary" />
 		<link rel="canonical" href={canonical} />
+		<link rel="alternate" hreflang="en" href={englishUrl} />
+		<link rel="alternate" hreflang="vi" href={vietnameseUrl} />
+		<link rel="alternate" hreflang="x-default" href={englishUrl} />
 		<title>{title}</title>
 	</head>
 	<body class:list={{ 'has-sticky-footer': stickyFooter }}>
-		<a class="skip-link" href="#content">Skip to content</a>
-		<SiteHeader />
+		<a class="skip-link" href="#content">{locale === 'vi' ? 'Bỏ qua tới nội dung' : 'Skip to content'}</a>
+		<SiteHeader locale={locale} />
 		<main id="content">
 			<slot />
 		</main>
-		<SiteFooter stickyReveal={stickyFooter} />
+		<SiteFooter stickyReveal={stickyFooter} locale={locale} />
 		<Motion />
 		<CodeBlocks />
 	</body>

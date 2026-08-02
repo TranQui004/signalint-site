@@ -1,12 +1,9 @@
-<script>
-	import { gsap } from 'gsap';
-
-	type TokenClass = 'comment' | 'flag' | 'keyword' | 'number' | 'punctuation' | 'string' | 'property';
+<script is:inline>
 
 	const jsonTokenPattern = /"(?:\\.|[^"\\])*"|-?\b\d+(?:\.\d+)?\b|\b(?:true|false|null)\b|[{}[\],:]/g;
 	const codeTokenPattern = /\/\/.*$|#.*$|"(?:\\.|[^"\\])*"|'(?:\\.|[^'\\])*'|--?[\w-]+|\b(?:const|let|var|import|export|from|return|async|await|true|false|null|npm|npx|node|pnpm|claude|signalint)\b|\b\d+(?:\.\d+)?\b|[{}[\]():,=>|&]+/gm;
 
-	const inferLabel = (value: string): string => {
+	const inferLabel = (value) => {
 		const trimmed = value.trimStart();
 		if (trimmed.startsWith('{') || trimmed.startsWith('[')) return 'JSON';
 		if (/^(?:npm|npx|node|claude|pnpm)\s/m.test(trimmed)) return 'Terminal';
@@ -14,7 +11,7 @@
 		return 'Code';
 	};
 
-	const classifyToken = (token: string, source: string, index: number, label: string): TokenClass => {
+	const classifyToken = (token, source, index, label) => {
 		if (token.startsWith('//') || token.startsWith('#')) return 'comment';
 		if (token.startsWith('-')) return 'flag';
 		if (token.startsWith('"') || token.startsWith("'")) {
@@ -26,7 +23,7 @@
 		return 'punctuation';
 	};
 
-	const highlightCode = (target: HTMLElement, source: string, label: string): void => {
+	const highlightCode = (target, source, label) => {
 		const pattern = label === 'JSON' ? jsonTokenPattern : codeTokenPattern;
 		const fragment = document.createDocumentFragment();
 		let cursor = 0;
@@ -47,9 +44,9 @@
 		target.classList.add('syntax-code');
 	};
 
-	document.querySelectorAll<HTMLPreElement>('pre:not([data-no-copy])').forEach((pre) => {
+	document.querySelectorAll('pre:not([data-no-copy])').forEach((pre) => {
 		if (pre.closest('[data-code-frame]') !== null || pre.closest('[data-passive-demo]') !== null) return;
-		const code = pre.querySelector<HTMLElement>('code') ?? pre;
+		const code = pre.querySelector('code') ?? pre;
 		const source = code.textContent ?? '';
 		const frameLabel = pre.dataset.label ?? inferLabel(source);
 
@@ -82,7 +79,7 @@
 			} catch {
 				if (status !== null) status.textContent = 'Failed';
 			}
-			gsap.fromTo(button, { y: -2 }, { y: 0, duration: 0.32, ease: 'power3.out' });
+			button.animate([{ transform: 'translateY(-2px)' }, { transform: 'translateY(0)' }], { duration: 320, easing: 'cubic-bezier(0.22, 1, 0.36, 1)' });
 			window.setTimeout(() => {
 				if (status !== null) status.textContent = 'Copy';
 			}, 1400);

@@ -1,0 +1,157 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+
+const checkProjectArgs = `{
+  "paths": ["."]
+}`;
+const checkFilesArgs = `{
+  "files": ["src/index.ts", "src/config.ts"]
+}`;
+const issueReference = `// Chọn đúng một trong hai dạng sau
+{ "clusterId": "c1" }
+{ "issueId": "d7f6..." }`;
+const checkResponse = `{
+  "schemaVersion": "1.1",
+  "status": "issues_found",
+  "engines": {
+    "oxlint": { "status": "ok" },
+    "tsc": { "status": "ok" },
+    "biome": { "status": "disabled" }
+  },
+  "totalIssues": 10,
+  "clusters": [{
+    "clusterId": "c1",
+    "rootCauseSummary": "10 lỗi TS2322 trên 10 file",
+    "ruleIds": ["TS2322"],
+    "issueCount": 10,
+    "fileCount": 10,
+    "priority": 1,
+    "suggestedAction": "Xem xét nguyên nhân chung của TS2322 trên 10 file",
+    "sampleIssueIds": ["ts-01", "ts-02"]
+  }],
+  "truncated": false,
+  "loopWarning": null
+}`;
+const normalizedIssue = `{
+  "issueId": "d7f6...",
+  "file": "src/index.ts",
+  "line": 12,
+  "col": 7,
+  "engine": "tsc",
+  "rule": "TS2322",
+  "severity": "error",
+  "message": "Type 'string' is not assignable to type 'number'.",
+  "fixable": false,
+  "clusterId": "c1"
+}`;
+const loopStatus = `{
+  "looping": true,
+  "signatures": [{
+    "signature": "no-unused-vars:<identifier> is unused",
+    "occurrences": 3,
+    "hint": "Lỗi này đã được sửa và xuất hiện lại 3 lần — nên xem xét phương pháp khác"
+  }]
+}`;
+const timeoutResponse = `{
+  "status": "timeout",
+  "engine": "tsc",
+  "message": "tsc không hoàn thành trong vòng 120s"
+}`;
+const staleResponse = `{
+  "status": "stale",
+  "message": "Cluster/issue này không còn tồn tại; hãy chạy lại check_project."
+}`;
+---
+
+<DocsLayout
+	title="Tham khảo công cụ MCP"
+	description="Cấu trúc tham số nghiêm ngặt và quy chuẩn phản hồi có phiên bản cho từng công cụ MCP của Signalint."
+	eyebrow="Công cụ MCP"
+	locale="vi"
+>
+	<div class="note"><p>Tham số công cụ từ chối các thuộc tính không xác định. Mảng đường dẫn chấp nhận tối đa 512 chuỗi tương đối theo dự án; các đường dẫn tuyệt đối, thoát ra ngoài (escaping), chứa ký tự NUL và bắt đầu bằng dấu gạch ngang đều bị từ chối.</p></div>
+
+	<h2>ping</h2>
+	<p>Xác nhận rằng server stdio cục bộ đã hoàn tất thủ tục bắt tay (handshake) MCP.</p>
+	<table class="schema-table">
+		<thead><tr><th>Tham số</th><th>Kết quả</th></tr></thead>
+		<tbody><tr><td><code>{'{}'}</code></td><td><code>pong</code></td></tr></tbody>
+	</table>
+
+	<h2>check_project</h2>
+	<p>
+		Kiểm tra các đường dẫn tương đối dự án được cung cấp qua tất cả các engine đã cấu hình. Trường{' '}
+		<code>paths</code> tùy chọn là một mảng chuỗi tối đa 512 mục và mặc định là{' '}
+		<code>["."]</code>.
+	</p>
+	<pre><code>{checkProjectArgs}</code></pre>
+	<p>Trả về cấu trúc <a href="#check-response">CheckResponse</a>. Các lỗi tiến trình của engine tích hợp được giữ lại dưới trạng thái <code>engines</code> tương ứng để các chẩn đoán đã hoàn thành khác vẫn tồn tại.</p>
+
+	<h2>check_files</h2>
+	<p>
+		Kiểm tra danh sách các file tương đối dự án (bắt buộc). Các engine kiểm tra theo từng file nhận các trường hợp cache miss; tsc chỉ được gọi với toàn bộ chương trình khi các snapshot liên quan tới TypeScript có sự thay đổi.
+	</p>
+	<pre><code>{checkFilesArgs}</code></pre>
+	<p>Mảng <code>files</code> là bắt buộc và chấp nhận tối đa 512 chuỗi.</p>
+
+	<h2>get_issue_detail</h2>
+	<p>Mở rộng chi tiết của một issue hoặc cluster từ lần kiểm tra thành công mới nhất. Cung cấp chính xác một tham chiếu không rỗng:</p>
+	<pre><code>{issueReference}</code></pre>
+	<p>Kết quả thành công là một mảng các đối tượng <a href="#normalized-issue">NormalizedIssue</a>. Một tham chiếu cũ (stale) sẽ trả về:</p>
+	<pre><code>{staleResponse}</code></pre>
+
+	<h2>get_loop_status</h2>
+	<p>Chấp nhận <code>{'{}'}</code> và báo cáo các chữ ký lỗi hiện đang được phân loại là lặp đi lặp lại (oscillating):</p>
+	<pre><code>{loopStatus}</code></pre>
+
+	<h2 id="check-response">CheckResponse · schema 1.1</h2>
+	<pre><code>{checkResponse}</code></pre>
+	<table class="schema-table">
+		<thead><tr><th>Trường</th><th>Kiểu</th><th>Quy chuẩn</th></tr></thead>
+		<tbody>
+			<tr><td><code>schemaVersion</code></td><td><code>"1.1"</code></td><td>Phiên bản quy chuẩn phản hồi hiện tại.</td></tr>
+			<tr><td><code>status</code></td><td><code>"clean" | "issues_found"</code></td><td>Cho biết liệu các issue đã chuẩn hóa có còn lại sau khi lọc hay không.</td></tr>
+			<tr><td><code>engines</code></td><td>record</td><td>Bao gồm chính xác <code>oxlint</code>, <code>tsc</code> và <code>biome</code>; mỗi mục là <code>ok</code>, <code>error</code> hoặc <code>disabled</code>, kèm thông điệp tùy chọn.</td></tr>
+			<tr><td><code>totalIssues</code></td><td>integer</td><td>Tổng số issue chuẩn hóa thô trước khi cắt giảm cluster.</td></tr>
+			<tr><td><code>clusters</code></td><td>Cluster[]</td><td>Các cụm lỗi sắp xếp theo thứ tự ưu tiên tăng dần; ưu tiên 1 là cao nhất. Mặc định trả về 10 cụm.</td></tr>
+			<tr><td><code>truncated</code></td><td>boolean</td><td>Bằng true khi số cụm tồn tại vượt quá giới hạn phản hồi.</td></tr>
+			<tr><td><code>loopWarning</code></td><td>LoopWarning | null</td><td>Cảnh báo vòng lặp hiện tại, nếu có.</td></tr>
+		</tbody>
+	</table>
+
+	<h3>Cluster</h3>
+	<table class="schema-table">
+		<thead><tr><th>Trường</th><th>Kiểu</th></tr></thead>
+		<tbody>
+			<tr><td><code>clusterId</code></td><td>string</td></tr>
+			<tr><td><code>rootCauseSummary</code></td><td>string</td></tr>
+			<tr><td><code>ruleIds</code></td><td>string[]</td></tr>
+			<tr><td><code>issueCount</code></td><td>integer</td></tr>
+			<tr><td><code>fileCount</code></td><td>integer</td></tr>
+			<tr><td><code>priority</code></td><td>integer</td></tr>
+			<tr><td><code>suggestedAction</code></td><td>string</td></tr>
+			<tr><td><code>sampleIssueIds</code></td><td>string[]</td></tr>
+		</tbody>
+	</table>
+
+	<h2 id="normalized-issue">NormalizedIssue</h2>
+	<pre><code>{normalizedIssue}</code></pre>
+	<p>
+		<code>engine</code> là <code>oxlint | tsc | biome</code>; <code>severity</code> là{' '}
+		<code>error | warning</code>; thông điệp được chuẩn hóa tối đa 120 ký tự.{' '}
+		<code>clusterId</code> là tùy chọn ở ranh giới adapter và xuất hiện sau khi gom cụm.{' '}
+		<code>fixable</code> bằng true chỉ khi engine cung cấp bản sửa lỗi có cấu trúc.
+	</p>
+
+	<h2>Các phản hồi ngoại lệ</h2>
+	<p>Các quy chuẩn cấu trúc cấp thấp này áp dụng khi lỗi quá thời gian (timeout) hoặc vượt giới hạn đầu ra chạm tới MCP handler trực tiếp. Luồng fan-out tích hợp bình thường sẽ ghi cùng thông điệp trong mục <code>status: "error"</code> của engine đó.</p>
+	<h3>Engine timeout</h3>
+	<pre><code>{timeoutResponse}</code></pre>
+	<h3>Engine vượt giới hạn đầu ra</h3>
+	<pre><code>{`{
+  "status": "error",
+  "code": "engine_output_exceeded",
+  "engine": "oxlint",
+  "message": "đầu ra của oxlint vượt quá giới hạn 10 MiB"
+}`}</code></pre>
+</DocsLayout>

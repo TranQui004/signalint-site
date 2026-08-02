@@ -7,14 +7,15 @@ interface Props {
 	description: string;
 	eyebrow?: string;
 	version?: string;
+	locale?: 'en' | 'vi';
 }
 
-const { title, description, eyebrow = 'Documentation', version = '0.2.0' } = Astro.props;
+const { title, description, eyebrow = 'Documentation', version = '0.2.0', locale = 'en' } = Astro.props;
 ---
 
-<BaseLayout title={`${title} — Signalint`} description={description}>
+<BaseLayout title={`${title} — Signalint`} description={description} locale={locale}>
 	<div class="shell docs-shell">
-		<DocsNav version={version} />
+		<DocsNav version={version} locale={locale} />
 		<article class="docs-content prose">
 			<header class="page-heading" data-reveal>
 				<div class="page-heading__meta">

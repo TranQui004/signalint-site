@@ -1,0 +1,43 @@
+.language-switch {
+	display: inline-grid;
+	grid-template-columns: auto 1fr;
+	align-items: center;
+	gap: 8px;
+	padding: 8px 10px;
+	border: 1px solid var(--black-16);
+	border-radius: 999px;
+	font-size: 0.68rem;
+	text-decoration: none;
+}
+.language-switch span { color: var(--orange); font-family: var(--font-mono); font-weight: 700; }
+.language-switch strong { font-weight: 650; white-space: nowrap; }
+.localized-hero .hero-v2__copy h1 { max-width: 1040px; }
+.localized-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 46px; }
+.localized-card {
+	min-width: 0;
+	padding: clamp(26px, 3.6vw, 46px);
+	border: 1px solid var(--black-16);
+	border-radius: var(--card-radius);
+}
+.localized-card > span { color: var(--orange); font-family: var(--font-mono); font-size: 0.68rem; }
+.localized-card h3 { margin: 36px 0 0; font-size: clamp(1.55rem, 3vw, 2.6rem); }
+.localized-card p { max-width: 58ch; margin: 18px 0 0; color: var(--black-68); line-height: 1.72; }
+.localized-card a { display: inline-block; margin-top: 24px; font-weight: 700; }
+.localized-engine-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 18px; margin-top: 46px; }
+.localized-engine { min-width: 0; padding: 34px; border-radius: var(--card-radius); background: var(--black); color: var(--white); }
+.localized-engine > span, .localized-engine small { color: var(--orange); font-family: var(--font-mono); font-size: 0.66rem; }
+.localized-engine h3 { margin: 42px 0 8px; color: var(--white); font-size: 2.1rem; }
+.localized-engine strong { color: var(--white-72); }
+.localized-engine p { margin: 24px 0 38px; color: var(--white-72); line-height: 1.7; }
+.localized-cta .shell { padding: clamp(38px, 6vw, 80px); border-radius: var(--card-radius); background: var(--orange); }
+.localized-cta h2 { max-width: 14ch; margin-top: 22px; }
+.localized-cta p { max-width: 64ch; margin-top: 22px; line-height: 1.7; }
+
+@media (max-width: 860px) {
+	.localized-engine-grid { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 620px) {
+	.localized-card-grid { grid-template-columns: 1fr; }
+	.localized-cta .shell { width: min(calc(100% - 20px), var(--shell)); padding: 34px 22px; }
+}

@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogPostView from '../../components/blog/BlogPostView.astro';
+import { compactDiagnosticsEn } from '../../content/blog/en/compactDiagnostics';
+---
+
+<BaseLayout title={`${compactDiagnosticsEn.title} — Signalint`} description={compactDiagnosticsEn.dek}>
+	<div class="shell blog-post-shell">
+		<BlogPostView post={compactDiagnosticsEn} locale="en" />
+	</div>
+</BaseLayout>

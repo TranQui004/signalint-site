@@ -1,0 +1,25 @@
+---
+import type { BlogPost } from '../../content/blog/types';
+
+interface Props {
+	post: BlogPost;
+	locale: 'en' | 'vi';
+}
+
+const { post, locale } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const href = `${base}${locale === 'vi' ? 'vi/' : ''}blog/${post.slug}/`;
+---
+
+<article class="blog-card motion-card" data-motion-card data-reveal>
+	<div class="blog-card__meta">
+		<time datetime={post.publishedAt}>{post.displayDate}</time>
+		<span>{post.readingTime}</span>
+	</div>
+	<h2><a href={href}>{post.title}</a></h2>
+	<p>{post.dek}</p>
+	<ul aria-label={locale === 'vi' ? 'Chủ đề' : 'Topics'}>
+		{post.tags.map((tag) => <li>{tag}</li>)}
+	</ul>
+	<a class="text-link" href={href}>{locale === 'vi' ? 'Đọc bài viết' : 'Read article'} <span aria-hidden="true">→</span></a>
+</article>

@@ -9,6 +9,8 @@
 	const rules = gsap.utils.toArray<HTMLElement>('[data-rule]');
 	const counters = gsap.utils.toArray<HTMLElement>('[data-count]');
 	const clientSections = gsap.utils.toArray<HTMLElement>('[data-client-section]');
+	const motionGroups = gsap.utils.toArray<HTMLElement>('[data-motion-group]');
+	const motionCards = gsap.utils.toArray<HTMLElement>('[data-motion-card], .capability-card, .engine-profile, .client-entry, .feature-card');
 	const footer = document.querySelector<HTMLElement>('[data-footer-reveal]');
 
 	if (!reducedMotion) {
@@ -72,6 +74,31 @@
 				.to(heading, { autoAlpha: 1, y: 0, stagger: 0.1, duration: 0.8, ease: 'power3.out' })
 				.to(entries, { autoAlpha: 1, y: 0, stagger: 0.14, duration: 0.75, ease: 'power3.out' }, '-=0.25');
 		});
+
+		motionGroups.forEach((group) => {
+			const children = Array.from(group.children).filter((child): child is HTMLElement => child instanceof HTMLElement);
+			if (children.length === 0) return;
+			gsap.fromTo(children, {
+				autoAlpha: 0,
+				y: 32,
+			}, {
+				autoAlpha: 1,
+				y: 0,
+				stagger: 0.09,
+				duration: 0.82,
+				ease: 'power3.out',
+				scrollTrigger: { trigger: group, start: 'top 84%', once: true },
+			});
+		});
+
+		if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {
+			motionCards.forEach((card) => {
+				const enter = () => gsap.to(card, { y: -6, duration: 0.42, ease: 'power2.out', overwrite: 'auto' });
+				const leave = () => gsap.to(card, { y: 0, duration: 0.55, ease: 'power3.out', overwrite: 'auto' });
+				card.addEventListener('pointerenter', enter);
+				card.addEventListener('pointerleave', leave);
+			});
+		}
 
 		if (footer !== null) {
 			const footerItems = footer.querySelectorAll<HTMLElement>('[data-footer-item]');

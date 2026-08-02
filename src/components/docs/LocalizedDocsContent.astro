@@ -1,0 +1,36 @@
+---
+import type { DocsSection } from '../../content/docs/types';
+
+interface Props {
+	sections: readonly DocsSection[];
+}
+
+const { sections } = Astro.props;
+---
+
+{sections.map((section) => (
+	<>
+		{section.headingLevel === 3 ? <h3>{section.title}</h3> : <h2>{section.title}</h2>}
+		{section.paragraphs?.map((paragraph) => <p>{paragraph}</p>)}
+		{section.bullets && (
+			section.ordered
+				? <ol>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ol>
+				: <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>
+		)}
+		{section.rows && (
+			<div class="architecture-rows">
+				{section.rows.map((row) => <div class="architecture-row"><strong>{row.label}</strong><span>{row.value}</span></div>)}
+			</div>
+		)}
+		{section.table && (
+			<div class="table-scroll" role="region" aria-label={section.title} tabindex="0">
+				<table class="schema-table">
+					<thead><tr>{section.table.headers.map((header) => <th>{header}</th>)}</tr></thead>
+					<tbody>{section.table.rows.map((row) => <tr>{row.map((cell) => <td>{cell}</td>)}</tr>)}</tbody>
+				</table>
+			</div>
+		)}
+		{section.code && <pre data-label={section.codeLabel ?? 'Code'}><code>{section.code}</code></pre>}
+		{section.note && <div class="note"><p>{section.note}</p></div>}
+	</>
+))}

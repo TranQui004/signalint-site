@@ -1,0 +1,77 @@
+---
+import DocsLayout from '../../../../layouts/DocsLayout.astro';
+
+const config = `{
+  "engines": {
+    "oxlint": true,
+    "tsc": true,
+    "biome": false
+  },
+  "ignore": ["node_modules/**", "dist/**", ".signalint/**"],
+  "timeoutsMs": {
+    "oxlint": 30000,
+    "tsc": 120000,
+    "biome": 30000
+  }
+}`;
+const claude = `claude mcp add --scope project signalint -- npx --no-install signalint-mcp
+claude mcp get signalint`;
+const cursor = `{
+  "mcpServers": {
+    "signalint": {
+      "command": "npx",
+      "args": ["--no-install", "signalint-mcp"]
+    }
+  }
+}`;
+---
+
+<DocsLayout
+	title="Signalint 0.1.0"
+	description="Tài liệu thiết lập và sử dụng đã lưu trữ cho gói Signalint xuất bản đầu tiên."
+	eyebrow="Lưu trữ tài liệu"
+	version="0.1.0"
+	locale="vi"
+>
+	<div class="note">
+		<p>Trang này lưu trữ quy chuẩn thiết lập của phiên bản 0.1.0. Trang này không được cập nhật các lệnh mới hơn hoặc các tính năng sau này. Sử dụng bộ chọn phiên bản để quay lại tài liệu hiện tại.</p>
+	</div>
+
+	<h2>Yêu cầu</h2>
+	<ul>
+		<li>Node.js 20.19+ thuộc nhánh Node 20, hoặc Node.js 22.12+.</li>
+		<li>Một dự án JavaScript hoặc TypeScript.</li>
+		<li>File <code>tsconfig.json</code> ở gốc dự án cho các kiểm tra TypeScript.</li>
+	</ul>
+
+	<h2>Cài đặt và cấu hình</h2>
+	<pre><code>npm install --save-dev signalint-mcp@0.1.0</code></pre>
+	<p>Phiên bản 0.1.0 chưa bao gồm lệnh hướng dẫn <code>init</code>. Tạo file <code>signalint.config.json</code> thủ công hoặc bỏ qua để sử dụng các giá trị mặc định sau:</p>
+	<pre><code>{config}</code></pre>
+
+	<h2>Claude Code</h2>
+	<pre><code>{claude}</code></pre>
+	<p>Trên Windows native, chèn <code>cmd /c</code> trước <code>npx</code>. Khởi động lại Claude Code, gọi <code>ping</code>, sau đó gọi <code>check_project</code>.</p>
+
+	<h2>Cursor</h2>
+	<p>Tạo file <code>.cursor/mcp.json</code>:</p>
+	<pre><code>{cursor}</code></pre>
+	<p>Trên Windows native, sử dụng <code>"command": "cmd"</code> và thêm tiền tố <code>"/c"</code> vào mảng arguments.</p>
+
+	<h2>Các công cụ MCP hiện có</h2>
+	<ul>
+		<li><code>ping</code> xác minh kết nối stdio.</li>
+		<li><code>check_project</code> trả về chẩn đoán dự án đã gom cụm.</li>
+		<li><code>check_files</code> kiểm tra các đường dẫn cụ thể với cache tăng dần.</li>
+		<li><code>get_issue_detail</code> mở rộng chi tiết một cụm hoặc tham chiếu issue hiện tại.</li>
+		<li><code>get_loop_status</code> báo cáo các chữ ký issue được phân loại là lặp đi lặp lại.</li>
+	</ul>
+
+	<h2>CLI</h2>
+	<pre><code>{`npx --no-install signalint check .
+npx --no-install signalint stats`}</code></pre>
+	<p>Lệnh check thoát với mã code 1 khi tìm thấy chẩn đoán. Các file cache và phiên làm việc được lưu dưới <code>.signalint/</code>.</p>
+
+	<h2>Mã nguồn lịch sử</h2>
+	<p>Xem lại mã nguồn của phiên bản ngay trước lệnh init 0.2.0 trong <a href="https://github.com/TranQui004/signalint/tree/cd87c3d276005f56322e2d07c4ac395b477c07e1">lịch sử GitHub</a>.</p>
+</DocsLayout>

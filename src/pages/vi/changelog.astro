@@ -1,0 +1,14 @@
+---
+import ChangelogPage from '../../components/changelog/ChangelogPage.astro';
+import { changelogVi } from '../../content/site/vi/changelog';
+---
+
+<ChangelogPage
+	locale="vi"
+	title="Lịch sử thay đổi — Signalint"
+	description="Các phiên bản Signalint đã phát hành trên npm."
+	eyebrow="Phát hành / npm"
+	lede="Lịch sử xuất bản package, mới nhất ở trên. Khi GitHub Releases có release chính thức, trang này sẽ liên kết tới ghi chú tương ứng."
+	note="GitHub Releases hiện chưa có release object. Các mục bên dưới dùng thời điểm công bố từ npm registry và liên kết tới đúng phiên bản package trên npm."
+	releases={changelogVi}
+/>

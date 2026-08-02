@@ -1,4 +1,12 @@
 ---
+import type { DiagnosticCopy } from '../../content/site/types';
+
+interface Props {
+	copy: DiagnosticCopy;
+}
+
+const { copy } = Astro.props;
+
 const rawIssues = [
 	{ file: 'src/file01.ts', line: '10:5', rule: 'TS2322', message: "Type 'string' is not assignable to type 'number'." },
 	{ file: 'src/file02.ts', line: '11:5', rule: 'TS2322', message: "Type 'string' is not assignable to type 'number'." },
@@ -9,38 +17,30 @@ const rawIssues = [
 ];
 
 const clusters = [
-	{ id: 'c1', rule: 'TS2322', count: '10 issues / 10 files', priority: 'P1' },
-	{ id: 'c2', rule: 'no-unused-vars', count: '10 issues / 10 files', priority: 'P2' },
-	{ id: 'c3', rule: 'no-console', count: '10 issues / 10 files', priority: 'P4' },
-	{ id: 'c4', rule: 'use-const', count: '10 issues / 10 files', priority: 'P5' },
+	{ id: 'c1', rule: 'TS2322', count: copy.clusterCount, priority: 'P1' },
+	{ id: 'c2', rule: 'no-unused-vars', count: copy.clusterCount, priority: 'P2' },
+	{ id: 'c3', rule: 'no-console', count: copy.clusterCount, priority: 'P4' },
+	{ id: 'c4', rule: 'use-const', count: copy.clusterCount, priority: 'P5' },
 ];
 ---
 
-<section id="diagnostic-demo" class="diagnostic-story" data-diagnostic-story data-passive-demo aria-label="Scroll-driven diagnostic compression demo">
+<section id="diagnostic-demo" class="diagnostic-story" data-diagnostic-story data-passive-demo aria-label={copy.ariaLabel}>
 	<div class="diagnostic-story__copy">
-		<div class="story-step" data-story-step="raw">
-			<span>01 / engine output</span>
-			<h3>Forty valid issues can still be a poor agent response.</h3>
-			<p>The engines stay authoritative. Signalint first normalizes their locations, rule IDs, severity, and messages.</p>
-		</div>
-		<div class="story-step" data-story-step="group">
-			<span>02 / rule-first grouping</span>
-			<h3>Repeated symptoms become one review target.</h3>
-			<p>Large rule groups spanning multiple files receive one root-cause summary and distinct sample issue IDs.</p>
-		</div>
-		<div class="story-step" data-story-step="response">
-			<span>03 / bounded response</span>
-			<h3>The agent receives four clusters, not forty rows.</h3>
-			<p>The controlled fixture falls from 9,151 bytes to 1,233 bytes while preserving engine state and issue references.</p>
-		</div>
+		{copy.steps.map((step, index) => (
+			<div class="story-step" data-story-step={['raw', 'group', 'response'][index]}>
+				<span>{step.kicker}</span>
+				<h3>{step.title}</h3>
+				<p>{step.body}</p>
+			</div>
+		))}
 	</div>
 
 	<div class="diagnostic-stage" data-diagnostic-stage>
 		<div class="diagnostic-stage__topbar">
 			<div><i></i><span>check_project</span></div>
 			<div class="stage-status">
-				<span data-stage-status-raw>raw / 40 issues</span>
-				<span data-stage-status-clustered>clustered / 4 groups</span>
+				<span data-stage-status-raw>{copy.rawStatus}</span>
+				<span data-stage-status-clustered>{copy.clusteredStatus}</span>
 			</div>
 		</div>
 		<div class="diagnostic-stage__viewport">
@@ -53,14 +53,14 @@ const clusters = [
 					</div>
 				))}
 				<div class="issue-row issue-row--more" data-issue-row>
-					<span>..</span><p>34 additional normalized issues</p>
+					<span>..</span><p>{copy.additionalIssues}</p>
 				</div>
 			</div>
 
 			<div class="cluster-result" data-cluster-result aria-hidden="true">
 				<div class="cluster-result__meta">
 					<span>schemaVersion 1.1</span>
-					<span>priority 1 first</span>
+					<span>{copy.priorityLabel}</span>
 				</div>
 				<div class="cluster-list">
 					{clusters.map((cluster) => (
@@ -72,17 +72,17 @@ const clusters = [
 					))}
 				</div>
 				<div class="cluster-result__footer" data-result-footer>
-					<div><span>40</span><small>raw issues</small></div>
+					<div><span>40</span><small>{copy.rawIssuesLabel}</small></div>
 					<i></i>
-					<div><span>4</span><small>clusters</small></div>
+					<div><span>4</span><small>{copy.clustersLabel}</small></div>
 					<strong>-86.53%</strong>
 				</div>
 			</div>
 		</div>
 		<div class="diagnostic-stage__footer">
-			<span>passive playback</span>
+			<span>{copy.playbackLabel}</span>
 			<div class="story-progress"><i data-story-progress></i></div>
-			<span>scroll to trace</span>
+			<span>{copy.scrollLabel}</span>
 		</div>
 	</div>
 </section>
