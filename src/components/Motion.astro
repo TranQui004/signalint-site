@@ -43,16 +43,18 @@
 
 		counters.forEach((counter) => {
 			const target = Number(counter.dataset.count);
+			const decimals = Number(counter.dataset.countDecimals ?? '0');
 			if (!Number.isFinite(target)) return;
+			if (!Number.isInteger(decimals) || decimals < 0 || decimals > 3) return;
 			const state = { value: 0 };
 			gsap.to(state, {
 				value: target,
-				duration: 1.15,
-				ease: 'power2.out',
+				duration: 1.35,
+				ease: 'power3.out',
 				onUpdate: () => {
-					counter.textContent = target % 1 === 0
+					counter.textContent = decimals === 0
 						? String(Math.round(state.value))
-						: state.value.toFixed(2);
+						: state.value.toFixed(decimals);
 				},
 				scrollTrigger: { trigger: counter, start: 'top 88%', once: true },
 			});

@@ -62,22 +62,22 @@ const fanout = `"engines": {
 		<div class="shell proof-strip__grid">
 			<div class="proof-stat" data-reveal>
 				<span class="micro-label">Payload reduction</span>
-				<strong>86.53%</strong>
+				<strong><span data-count="86.53" data-count-decimals="2">86.53</span><small>%</small></strong>
 				<p>Current 40-issue fixture: 9,151 B raw versus 1,233 B clustered.</p>
 			</div>
 			<div class="proof-stat" data-reveal>
 				<span class="micro-label">Incremental check</span>
-				<strong>3.10 ms</strong>
+				<strong><span data-count="3.10" data-count-decimals="2">3.10</span><small> ms</small></strong>
 				<p>Latest local acceptance run; the enforced ceiling is 300 ms for the 50-file fixture.</p>
 			</div>
 			<div class="proof-stat" data-reveal>
 				<span class="micro-label">Fixture compression</span>
-				<strong>40 → 4</strong>
+				<strong><span data-count="40">40</span><small> → </small><span data-count="4">4</span></strong>
 				<p>Forty raw issues grouped into four rule-first clusters.</p>
 			</div>
 			<div class="proof-stat" data-reveal>
 				<span class="micro-label">Input boundary</span>
-				<strong>512</strong>
+				<strong><span data-count="512">512</span></strong>
 				<p>Maximum project-relative paths accepted in one MCP call.</p>
 			</div>
 		</div>
