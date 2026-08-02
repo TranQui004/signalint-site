@@ -78,8 +78,8 @@ const staleResponse = `{
 
 	<h2>check_project</h2>
 	<p>
-		Checks the supplied project-relative paths through all configured engines. The optional
-		<code>paths</code> field is a string array of at most 512 items and defaults to
+		Checks the supplied project-relative paths through all configured engines. The optional{' '}
+		<code>paths</code> field is a string array of at most 512 items and defaults to{' '}
 		<code>["."]</code>.
 	</p>
 	<pre><code>{checkProjectArgs}</code></pre>
@@ -137,9 +137,9 @@ const staleResponse = `{
 	<h2 id="normalized-issue">NormalizedIssue</h2>
 	<pre><code>{normalizedIssue}</code></pre>
 	<p>
-		<code>engine</code> is <code>oxlint | tsc | biome</code>; <code>severity</code> is
-		<code>error | warning</code>; messages are normalized to at most 120 characters.
-		<code>clusterId</code> is optional at the adapter boundary and present after clustering.
+		<code>engine</code> is <code>oxlint | tsc | biome</code>; <code>severity</code> is{' '}
+		<code>error | warning</code>; messages are normalized to at most 120 characters.{' '}
+		<code>clusterId</code> is optional at the adapter boundary and present after clustering.{' '}
 		<code>fixable</code> is true only when the engine supplies a structured fix.
 	</p>
 

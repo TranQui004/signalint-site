@@ -8,6 +8,8 @@
 	const revealTargets = gsap.utils.toArray<HTMLElement>('[data-reveal]');
 	const rules = gsap.utils.toArray<HTMLElement>('[data-rule]');
 	const counters = gsap.utils.toArray<HTMLElement>('[data-count]');
+	const clientSections = gsap.utils.toArray<HTMLElement>('[data-client-section]');
+	const footer = document.querySelector<HTMLElement>('[data-footer-reveal]');
 
 	if (!reducedMotion) {
 		revealTargets.forEach((target) => {
@@ -59,6 +61,32 @@
 				scrollTrigger: { trigger: counter, start: 'top 88%', once: true },
 			});
 		});
+
+		clientSections.forEach((section) => {
+			const heading = section.querySelectorAll<HTMLElement>('[data-client-heading] > *');
+			const entries = section.querySelectorAll<HTMLElement>('[data-client-entry]');
+			gsap.set([...heading, ...entries], { autoAlpha: 0, y: 30 });
+			gsap.timeline({
+				scrollTrigger: { trigger: section, start: 'top 74%', once: true },
+			})
+				.to(heading, { autoAlpha: 1, y: 0, stagger: 0.1, duration: 0.8, ease: 'power3.out' })
+				.to(entries, { autoAlpha: 1, y: 0, stagger: 0.14, duration: 0.75, ease: 'power3.out' }, '-=0.25');
+		});
+
+		if (footer !== null) {
+			const footerItems = footer.querySelectorAll<HTMLElement>('[data-footer-item]');
+			gsap.fromTo(footerItems, {
+				autoAlpha: 0,
+				y: 36,
+			}, {
+				autoAlpha: 1,
+				y: 0,
+				stagger: 0.12,
+				duration: 0.85,
+				ease: 'power3.out',
+				scrollTrigger: { trigger: footer, start: 'top 92%', once: true },
+			});
+		}
 	}
 
 	window.addEventListener('pagehide', () => {

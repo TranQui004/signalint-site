@@ -1,8 +1,9 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import CopyCommand from '../components/CopyCommand.astro';
-import DiagnosticStory from '../components/DiagnosticStory.astro';
-import EngineFlow from '../components/EngineFlow.astro';
+import DiagnosticStory from '../components/home/DiagnosticStory.astro';
+import EngineFlow from '../components/home/EngineFlow.astro';
+import NpmDownloads from '../components/home/NpmDownloads.astro';
 
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const cacheKey = `sha256(file content)
@@ -25,6 +26,7 @@ const fanout = `"engines": {
 <BaseLayout
 	title="Signalint — compact diagnostics for coding agents"
 	description="Published local MCP server for compact, cached, loop-aware JavaScript and TypeScript diagnostics."
+	stickyFooter
 >
 	<section class="hero-v2">
 		<div class="shell hero-v2__grid">
@@ -52,7 +54,10 @@ const fanout = `"engines": {
 		</div>
 		<div class="hero-command">
 			<div class="shell hero-command__inner">
-				<div class="hero-command__label">Install from npm</div>
+				<div class="hero-command__label">
+					<span>Install from npm</span>
+					<NpmDownloads />
+				</div>
 				<CopyCommand command="npm install --save-dev signalint-mcp && npx signalint-mcp init" />
 			</div>
 		</div>
@@ -95,9 +100,9 @@ const fanout = `"engines": {
 		</div>
 	</section>
 
-	<section class="section section--ruled section--pipeline">
+	<section class="section section--ruled section--pipeline" data-pipeline-section>
 		<div class="shell">
-			<header class="section-heading" data-reveal>
+			<header class="section-heading">
 				<p class="section-index">02 / mechanics</p>
 				<h2>A local pipeline with explicit boundaries.</h2>
 				<p>Signalint preserves the diagnostic engines as the source of truth and makes cache, failure, and loop state explicit.</p>
@@ -141,41 +146,50 @@ const fanout = `"engines": {
 			<header class="section-heading" data-reveal>
 				<p class="section-index">03 / engines</p>
 				<h2>Each engine keeps its execution model.</h2>
-				<p>File-local engines receive cache misses. TypeScript always sees the complete program when it runs.</p>
+				<p>Signalint coordinates three tools without pretending they work alike. Cache decisions follow each engine's real scope.</p>
 			</header>
-			<table class="engine-table" data-reveal>
-				<thead><tr><th>Engine</th><th>Invocation</th><th>Signalint cache role</th><th>Default timeout</th></tr></thead>
-				<tbody>
-					<tr><td>Oxlint</td><td>Batch of changed file-local paths</td><td>Per engine + file</td><td>30,000 ms</td></tr>
-					<tr><td>Biome</td><td>Batch of changed file-local paths</td><td>Per engine + file</td><td>30,000 ms</td></tr>
-					<tr><td>TypeScript</td><td><code>--project</code>, or <code>--build</code> for referenced roots</td><td>Decides whether whole-program tsc runs</td><td>120,000 ms</td></tr>
-				</tbody>
-			</table>
+			<div class="engine-comparison" data-reveal>
+				<article class="engine-profile">
+					<header><span>01</span><div><h3>Oxlint</h3><p>File-local analysis</p></div></header>
+					<div class="engine-profile__method"><span>Receives</span><strong>Only changed cache-miss paths</strong><p>Signalint batches misses and stores normalized results per engine and file.</p></div>
+					<dl><div><dt>Cache scope</dt><dd>engine + file</dd></div><div><dt>Deadline</dt><dd>30 s</dd></div></dl>
+				</article>
+				<article class="engine-profile engine-profile--tsc">
+					<header><span>02</span><div><h3>TypeScript</h3><p>Whole-program analysis</p></div></header>
+					<div class="engine-profile__method"><span>Receives</span><strong>The complete configured project</strong><p>Normal roots use <code>--project</code>; solution-style roots with references use <code>--build</code>.</p></div>
+					<dl><div><dt>Cache scope</dt><dd>run decision</dd></div><div><dt>Deadline</dt><dd>120 s</dd></div></dl>
+				</article>
+				<article class="engine-profile">
+					<header><span>03</span><div><h3>Biome</h3><p>Optional file-local analysis</p></div></header>
+					<div class="engine-profile__method"><span>Receives</span><strong>Changed cache-miss paths when enabled</strong><p>Disabled by default, with an explicit engine status in every check response.</p></div>
+					<dl><div><dt>Cache scope</dt><dd>engine + file</dd></div><div><dt>Deadline</dt><dd>30 s</dd></div></dl>
+				</article>
+			</div>
 		</div>
 	</section>
 
-	<section class="section section--clients">
+	<section class="section section--clients" data-client-section>
 		<div class="shell">
-			<header class="section-heading" data-reveal>
+			<header class="section-heading" data-client-heading>
 				<p class="section-index">04 / clients</p>
 				<h2>Connect the server where the agent works.</h2>
-				<p>The init command detects nearby client configuration and writes an entry only after confirmation.</p>
+				<p>One local server, three client-specific configuration paths. The init command detects nearby clients and writes only after confirmation.</p>
 			</header>
-			<div class="client-grid">
-				<article class="client-card" data-reveal>
-					<h3>Claude Code <span>.mcp.json</span></h3>
-					<p>Project-scoped configuration with a shareable server entry.</p>
-					<code>claude mcp add --scope project signalint …</code>
+			<div class="client-directory">
+				<article class="client-entry" data-client-entry>
+					<span class="client-mark" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/claude/default.svg" alt="" loading="lazy" decoding="async" /></span>
+					<div class="client-entry__copy"><span>01 / project scope</span><h3>Claude Code</h3><p>Share a project-local MCP entry through <code>.mcp.json</code>.</p></div>
+					<pre class="client-command" data-label="Terminal"><code>claude mcp add --scope project signalint …</code></pre>
 				</article>
-				<article class="client-card" data-reveal>
-					<h3>Cursor <span>.cursor/mcp.json</span></h3>
-					<p>Local project configuration using the published npm binary.</p>
-					<code>npx --no-install signalint-mcp</code>
+				<article class="client-entry" data-client-entry>
+					<span class="client-mark" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cursor/mono.svg" alt="" loading="lazy" decoding="async" /></span>
+					<div class="client-entry__copy"><span>02 / project scope</span><h3>Cursor</h3><p>Use <code>.cursor/mcp.json</code> with the published npm binary.</p></div>
+					<pre class="client-command" data-label="Terminal"><code>npx --no-install signalint-mcp</code></pre>
 				</article>
-				<article class="client-card" data-reveal>
-					<h3>Antigravity <span>mcp_config.json</span></h3>
-					<p>Detected user configuration with explicit project working directory.</p>
-					<code>cmd /c npx --no-install signalint-mcp</code>
+				<article class="client-entry" data-client-entry>
+					<span class="client-mark" aria-hidden="true"><img src="https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/google-antigravity/default.svg" alt="" loading="lazy" decoding="async" /></span>
+					<div class="client-entry__copy"><span>03 / user config</span><h3>Antigravity</h3><p>Set an explicit project working directory in <code>mcp_config.json</code>.</p></div>
+					<pre class="client-command" data-label="Terminal"><code>cmd /c npx --no-install signalint-mcp</code></pre>
 				</article>
 			</div>
 			<div class="hero-actions" data-reveal>

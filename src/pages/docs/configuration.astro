@@ -50,7 +50,7 @@ const defaultConfig = `{
 
 	<h2>ignore</h2>
 	<p>
-		Each entry must be a non-empty project-relative glob. Signalint supports <code>*</code>,
+		Each entry must be a non-empty project-relative glob. Signalint supports <code>*</code>,{' '}
 		<code>**</code>, and <code>?</code>, and normalizes Windows path separators. Because tsc
 		is whole-program, it still sees its complete configured program when invoked; matching
 		diagnostics are removed from the response.
@@ -68,12 +68,16 @@ const defaultConfig = `{
 			<tr><td><code>biome</code></td><td>positive integer</td><td>30,000 ms</td></tr>
 		</tbody>
 	</table>
-	<p>On timeout, Signalint terminates the engine process tree and returns a structured timeout response.</p>
+	<p>
+		On timeout, Signalint terminates that engine's process tree. In a schema 1.1 check
+		response the engine receives <code>{'{ "status": "error", "message": "…" }'}</code>{' '}
+		under <code>engines</code>, while completed engines' diagnostics are preserved.
+	</p>
 
 	<h2>Engine-native configuration</h2>
 	<p>
-		Keep lint and compiler rules in their native files. The v1 cache hash recognizes root
-		<code>.oxlintrc</code>, <code>.oxlintrc.json</code>, <code>oxlint.json</code>,
+		Keep lint and compiler rules in their native files. The v1 cache hash recognizes root{' '}
+		<code>.oxlintrc</code>, <code>.oxlintrc.json</code>, <code>oxlint.json</code>,{' '}
 		<code>tsconfig.json</code>, <code>biome.json</code>, and <code>biome.jsonc</code>.
 		Changing one invalidates the related engine cache.
 	</p>

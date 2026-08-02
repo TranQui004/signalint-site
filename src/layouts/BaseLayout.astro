@@ -5,13 +5,16 @@ import SiteHeader from '../components/SiteHeader.astro';
 import Motion from '../components/Motion.astro';
 import '../styles/redesign.css';
 import '../styles/orange-system.css';
+import '../styles/docs.css';
+import '../styles/changelog.css';
 
 interface Props {
 	title: string;
 	description: string;
+	stickyFooter?: boolean;
 }
 
-const { title, description } = Astro.props;
+const { title, description, stickyFooter = false } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
 ---
 
@@ -31,13 +34,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<link rel="canonical" href={canonical} />
 		<title>{title}</title>
 	</head>
-	<body>
+	<body class:list={{ 'has-sticky-footer': stickyFooter }}>
 		<a class="skip-link" href="#content">Skip to content</a>
 		<SiteHeader />
 		<main id="content">
 			<slot />
 		</main>
-		<SiteFooter />
+		<SiteFooter stickyReveal={stickyFooter} />
 		<Motion />
 		<CodeBlocks />
 	</body>

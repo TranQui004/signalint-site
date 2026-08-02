@@ -1,11 +1,13 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import ChangelogToc from '../components/changelog/ChangelogToc.astro';
 ---
 
 <BaseLayout
 	title="Changelog — Signalint"
 	description="Published Signalint package versions and the current GitHub Releases record."
 >
+	<ChangelogToc />
 	<section class="editorial-page">
 		<div class="shell prose">
 			<header class="editorial-head" data-reveal>
@@ -25,7 +27,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			</div>
 
 			<div class="timeline">
-				<article class="release" data-reveal>
+				<article id="v0-2-0" class="release" data-reveal>
 					<div class="release-meta">
 						<a href="https://www.npmjs.com/package/signalint-mcp/v/0.2.0">v0.2.0</a>
 						<time datetime="2026-08-01">1 Aug 2026</time>
@@ -39,7 +41,7 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 						</ul>
 					</div>
 				</article>
-				<article class="release" data-reveal>
+				<article id="v0-1-0" class="release" data-reveal>
 					<div class="release-meta">
 						<a href="https://www.npmjs.com/package/signalint-mcp/v/0.1.0">v0.1.0</a>
 						<time datetime="2026-08-01">1 Aug 2026</time>

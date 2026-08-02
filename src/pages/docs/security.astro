@@ -50,12 +50,12 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
 	<h2>Dependency advisory</h2>
 	<p>
 		The repository documents a moderate <code>@hono/node-server</code> static-file advisory
-		in the MCP SDK's transitive dependency graph. The affected HTTP <code>serveStatic</code>
+		in the MCP SDK's transitive dependency graph. The affected HTTP <code>serveStatic</code>{' '}
 		path is not imported or exercised by Signalint's stdio-only entry point. This reachability
 		assessment must be rechecked when the dependency updates or if an HTTP surface is added.
 	</p>
 	<p>
-		For the complete analysis and vulnerability reporting instructions, read
+		For the complete analysis and vulnerability reporting instructions, read{' '}
 		<a href="https://github.com/TranQui004/signalint/blob/main/SECURITY.md">SECURITY.md on GitHub</a>.
 	</p>
 </DocsLayout>

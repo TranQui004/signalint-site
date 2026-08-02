@@ -1,24 +1,25 @@
 ---
-import DocsNav from '../components/DocsNav.astro';
+import DocsNav from '../components/docs/DocsNav.astro';
 import BaseLayout from './BaseLayout.astro';
 
 interface Props {
 	title: string;
 	description: string;
 	eyebrow?: string;
+	version?: string;
 }
 
-const { title, description, eyebrow = 'Documentation' } = Astro.props;
+const { title, description, eyebrow = 'Documentation', version = '0.2.0' } = Astro.props;
 ---
 
 <BaseLayout title={`${title} — Signalint`} description={description}>
 	<div class="shell docs-shell">
-		<DocsNav />
+		<DocsNav version={version} />
 		<article class="docs-content prose">
 			<header class="page-heading" data-reveal>
 				<div class="page-heading__meta">
 					<span>{eyebrow}</span>
-					<span>v0.2.0 / schema 1.1</span>
+					<span>v{version} / {version === '0.1.0' ? 'archived docs' : 'schema 1.1'}</span>
 				</div>
 				<h1>{title}</h1>
 				<p class="lede">{description}</p>

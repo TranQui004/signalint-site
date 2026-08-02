@@ -1,8 +1,16 @@
 ---
+import DocsVersionPicker from './DocsVersionPicker.astro';
+
+interface Props {
+	version?: string;
+}
+
+const { version = '0.2.0' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const currentPath = Astro.url.pathname;
 const links = [
 	{ label: 'Getting started', path: 'docs/' },
+	{ label: 'Setup & clients', path: 'docs/setup/' },
 	{ label: 'Configuration', path: 'docs/configuration/' },
 	{ label: 'MCP tools', path: 'docs/tools/' },
 	{ label: 'CLI & metrics', path: 'docs/cli/' },
@@ -19,7 +27,8 @@ const normalizedCurrent = currentPath.endsWith('/') ? currentPath : `${currentPa
 <aside class="docs-sidebar" aria-label="Documentation navigation">
 	<div class="docs-sidebar__head">
 		<p class="docs-sidebar-title">Documentation</p>
-		<span class="docs-sidebar-meta">v0.2.0 / schema 1.1</span>
+		<span class="docs-sidebar-meta">v{version} / {version === '0.1.0' ? 'archive' : 'schema 1.1'}</span>
+		<DocsVersionPicker version={version} />
 	</div>
 	<nav>
 		{links.map((link, index) => {

@@ -1,0 +1,82 @@
+.docs-shell {
+	grid-template-columns: minmax(0, 880px) 250px;
+	gap: clamp(48px, 6vw, 84px);
+	justify-content: center;
+	padding-block: 68px 120px;
+}
+
+.docs-sidebar {
+	grid-column: 2;
+	grid-row: 1;
+	top: 20px;
+	border: 1px solid var(--black);
+	background: var(--black);
+	color: var(--white);
+}
+
+.docs-content { grid-column: 1; grid-row: 1; min-width: 0; }
+.docs-sidebar__head { padding: 17px; border-bottom-color: var(--white-12); }
+.docs-sidebar-title { font-family: var(--font-display); font-size: 1rem; }
+.docs-sidebar-meta { color: var(--white-48); }
+.docs-version-picker { display: grid; gap: 7px; margin-top: 18px; }
+.docs-version-picker > span { color: var(--white-48); font-family: var(--font-mono); font-size: 0.56rem; text-transform: uppercase; }
+.docs-version-picker select { width: 100%; padding: 8px 28px 8px 9px; border: 1px solid var(--white-12); border-radius: 0; background: var(--black); color: var(--white); font-family: var(--font-mono); font-size: 0.64rem; }
+.docs-sidebar nav { padding: 7px; }
+.docs-sidebar a { grid-template-columns: 25px 1fr; padding: 10px; border-bottom: 0; color: var(--white-72); }
+.docs-sidebar a:hover { background: var(--white-12); color: var(--white); }
+.docs-sidebar a[aria-current="page"] { background: var(--orange); color: var(--black); }
+.docs-sidebar a[aria-current="page"] span { color: var(--black); }
+
+.page-heading { padding-bottom: 56px; border-bottom-color: var(--black); }
+.page-heading__meta { color: var(--black-48); font-family: var(--font-mono); }
+.page-heading__meta span:first-child { color: var(--orange); }
+.page-heading h1 { max-width: 850px; font-size: clamp(3rem, 5.6vw, 5.8rem); }
+.page-heading .lede { max-width: 720px; color: var(--black-68); line-height: 1.72; }
+
+.prose > h2 { margin-top: 62px; padding-top: 22px; border-top-color: var(--black); font-size: 2.15rem; }
+.prose > h3 { margin-top: 34px; font-size: 1.25rem; }
+.prose p, .prose li { color: var(--black-68); line-height: 1.72; }
+.docs-content p, .docs-content li { hyphens: auto; }
+.prose p { max-width: 78ch; margin: 16px 0; }
+.prose ul, .prose ol { max-width: 78ch; margin: 18px 0 26px; padding-left: 24px; }
+.prose li + li { margin-top: 10px; }
+.prose a { color: var(--black); text-decoration-color: var(--orange); text-decoration-thickness: 2px; }
+.prose a:hover { color: var(--orange); }
+.prose :not(pre) > code { border-color: var(--black-16); border-radius: 0; background: var(--black-04); color: var(--black); }
+.prose > pre { margin: 26px 0 34px; border-radius: 0; }
+.note { margin: 28px 0 34px; padding: 22px 24px; border-left: 4px solid var(--orange); background: var(--orange-12); }
+.schema-table { margin: 26px 0 38px; font-size: 0.8rem; }
+.docs-content > p + pre,
+.docs-content > p + .code-frame,
+.docs-content > p + .schema-table,
+.docs-content > p + .note,
+.docs-content > ul + pre,
+.docs-content > ol + pre { margin-top: 26px; }
+.docs-content > pre + p,
+.docs-content > .code-frame + p,
+.docs-content > .schema-table + p,
+.docs-content > .note + p { margin-top: 24px; }
+.schema-table th, .schema-table td { border-color: var(--black); }
+.schema-table th { background: var(--black); color: var(--white); font-family: var(--font-mono); }
+
+.architecture-stack { gap: 14px; margin: 36px 0 50px; }
+.architecture-row { padding: 20px; border: 0; border-left: 4px solid var(--orange); border-radius: 0; background: var(--black-04); }
+.architecture-row strong { color: var(--orange); }
+
+@media (max-width: 900px) {
+	.docs-shell { grid-template-columns: 1fr; }
+	.docs-sidebar { position: static; grid-column: 1; grid-row: 1; }
+	.docs-content { grid-column: 1; grid-row: 2; }
+	.docs-sidebar nav { grid-template-columns: repeat(2, 1fr); }
+	.docs-sidebar a:nth-child(odd), .docs-sidebar a:nth-child(even) { padding: 10px; border: 0; }
+}
+
+@media (max-width: 620px) {
+	.docs-sidebar nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+	.docs-sidebar a { min-width: 0; }
+	.docs-shell { padding-block: 38px 90px; }
+	.page-heading h1 { font-size: clamp(2.8rem, 14vw, 4.5rem); }
+	.prose > h2 { margin-top: 58px; padding-top: 22px; }
+	.prose > h3 { margin-top: 42px; }
+	.engine-table, .schema-table { white-space: normal; }
+}
