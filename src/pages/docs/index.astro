@@ -1,6 +1,8 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
 const install = `npm install --save-dev signalint-mcp
 npx signalint-mcp init`;
 const claudeWindows = `claude mcp add --scope project signalint -- cmd /c npx --no-install signalint-mcp
@@ -35,6 +37,9 @@ const cursor = `{
 		it offers to write the server entry; if detection is ambiguous, it asks which client
 		to configure or prints exact snippets.
 	</p>
+	<div class="note">
+		<p>Continue with <a href={`${base}docs/setup/`}>Setup & clients</a> for the complete generated configuration, operating-system-specific commands, client JSON, and official Claude Code/Cursor MCP references.</p>
+	</div>
 
 	<h2>Connect a client</h2>
 	<h3>Claude Code</h3>
@@ -46,13 +51,13 @@ const cursor = `{
 	<p>Create <code>.cursor/mcp.json</code> in the checked project:</p>
 	<pre><code>{cursor}</code></pre>
 	<p>
-		On native Windows, set <code>command</code> to <code>cmd</code> and set
+		On native Windows, set <code>command</code> to <code>cmd</code> and set{' '}
 		<code>args</code> to <code>["/c", "npx", "--no-install", "signalint-mcp"]</code>.
 	</p>
 
 	<h3>Antigravity</h3>
 	<p>
-		The init command can update Antigravity's MCP configuration, typically
+		The init command can update Antigravity's MCP configuration, typically{' '}
 		<code>%USERPROFILE%\.gemini\antigravity\mcp_config.json</code> on Windows.
 		Use the same Windows <code>cmd /c npx</code> form and set <code>cwd</code> to the
 		absolute project root.

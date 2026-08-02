@@ -1,0 +1,49 @@
+<span class="npm-downloads" data-npm-downloads>
+	<strong data-npm-download-count aria-live="polite">—</strong>
+	<span>downloads / last 7 days</span>
+</span>
+
+<script>
+	interface DownloadResponse {
+		downloads?: unknown;
+	}
+
+	const endpoint = 'https://api.npmjs.org/downloads/point/last-week/signalint-mcp';
+	const numberFormatter = new Intl.NumberFormat('en-US');
+
+	const animateCount = (element: HTMLElement, target: number): void => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+			element.textContent = numberFormatter.format(target);
+			return;
+		}
+
+		const startedAt = performance.now();
+		const durationMs = 900;
+		const render = (now: number): void => {
+			const progress = Math.min((now - startedAt) / durationMs, 1);
+			const eased = 1 - Math.pow(1 - progress, 3);
+			element.textContent = numberFormatter.format(Math.round(target * eased));
+			if (progress < 1) requestAnimationFrame(render);
+		};
+
+		requestAnimationFrame(render);
+	};
+
+	document.querySelectorAll<HTMLElement>('[data-npm-downloads]').forEach((container) => {
+		const count = container.querySelector<HTMLElement>('[data-npm-download-count]');
+		if (count === null) return;
+
+		fetch(endpoint)
+			.then(async (response) => {
+				if (!response.ok) throw new Error(`npm downloads request failed: ${response.status}`);
+				return response.json() as Promise<DownloadResponse>;
+			})
+			.then((result) => {
+				if (typeof result.downloads !== 'number' || !Number.isFinite(result.downloads)) return;
+				animateCount(count, result.downloads);
+			})
+			.catch(() => {
+				count.textContent = 'unavailable';
+			});
+	});
+</script>

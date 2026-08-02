@@ -1,0 +1,101 @@
+<section id="engine-flow" class="flow-demo" data-engine-flow data-passive-demo aria-label="Animated Signalint request flow">
+	<header class="flow-intake" data-flow-intro>
+		<div>
+			<span class="micro-label">Incoming MCP tool call</span>
+			<strong><code>check_files</code></strong>
+		</div>
+		<dl>
+			<div><dt>Input</dt><dd>3 project-relative paths</dd></div>
+			<div><dt>Working directory</dt><dd>project root</dd></div>
+			<div><dt>Execution</dt><dd>local process</dd></div>
+		</dl>
+	</header>
+
+	<ol class="flow-steps">
+		<li class="flow-step" data-flow-step>
+			<span class="flow-step__number">01</span>
+			<div class="flow-step__copy">
+				<span>Trust boundary</span>
+				<h3>Validate before reading.</h3>
+				<p>Zod schemas reject malformed arguments. Canonical path checks keep every accepted file inside the project root.</p>
+			</div>
+			<code class="flow-step__result">3 paths accepted</code>
+		</li>
+		<li class="flow-step" data-flow-step>
+			<span class="flow-step__number">02</span>
+			<div class="flow-step__copy">
+				<span>Engine fan-out</span>
+				<h3>Preserve each engine's model.</h3>
+				<p>File-local engines receive misses. TypeScript runs against the complete configured program when relevant files change.</p>
+			</div>
+			<div class="flow-engine-list" data-flow-engines>
+				<div><span>oxlint</span><strong>1 cache miss</strong></div>
+				<div><span>tsc</span><strong>whole project</strong></div>
+				<div><span>biome</span><strong>disabled</strong></div>
+			</div>
+		</li>
+		<li class="flow-step" data-flow-step>
+			<span class="flow-step__number">03</span>
+			<div class="flow-step__copy">
+				<span>Common contract</span>
+				<h3>Normalize, then cluster.</h3>
+				<p>Engine-native diagnostics become normalized issues before rule-first grouping assigns priority and distinct issue references.</p>
+			</div>
+			<code class="flow-step__result">40 issues → 4 clusters</code>
+		</li>
+		<li class="flow-step" data-flow-step>
+			<span class="flow-step__number">04</span>
+			<div class="flow-step__copy">
+				<span>Bounded response</span>
+				<h3>Return what completed.</h3>
+				<p>Schema 1.1 keeps each engine's outcome explicit, so one failure cannot erase another engine's diagnostics.</p>
+			</div>
+			<code class="flow-step__result">schemaVersion 1.1</code>
+		</li>
+	</ol>
+
+	<footer class="flow-outcomes" data-flow-outcomes>
+		<div><span>oxlint</span><strong>ok</strong></div>
+		<div><span>tsc</span><strong>ok</strong></div>
+		<div class="is-muted"><span>biome</span><strong>disabled</strong></div>
+		<p>Completed diagnostics remain available even when another engine errors.</p>
+	</footer>
+</section>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	document.querySelectorAll<HTMLElement>('[data-engine-flow]').forEach((demo) => {
+		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+		const section = demo.closest<HTMLElement>('[data-pipeline-section]');
+		const headingParts = section?.querySelectorAll<HTMLElement>('.section-heading > *') ?? [];
+		const intro = demo.querySelector<HTMLElement>('[data-flow-intro]');
+		const steps = demo.querySelectorAll<HTMLElement>('[data-flow-step]');
+		const outcomes = demo.querySelector<HTMLElement>('[data-flow-outcomes]');
+		const targets = [
+			...headingParts,
+			...(intro === null ? [] : [intro]),
+			...steps,
+			...(outcomes === null ? [] : [outcomes]),
+		];
+
+		gsap.set(targets, { autoAlpha: 0, y: 26 });
+
+		const timeline = gsap.timeline({
+			scrollTrigger: {
+				trigger: section ?? demo,
+				start: 'top 72%',
+				once: true,
+			},
+		});
+
+		timeline
+			.to(headingParts, { autoAlpha: 1, y: 0, stagger: 0.11, duration: 0.85, ease: 'power3.out' })
+			.to(intro, { autoAlpha: 1, y: 0, duration: 0.75, ease: 'power3.out' }, '-=0.3')
+			.to(steps, { autoAlpha: 1, y: 0, stagger: 0.16, duration: 0.8, ease: 'power3.out' }, '-=0.25')
+			.to(outcomes, { autoAlpha: 1, y: 0, duration: 0.7, ease: 'power3.out' }, '-=0.3');
+	});
+</script>

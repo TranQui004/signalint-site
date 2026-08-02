@@ -1,0 +1,27 @@
+---
+import { DOCS_VERSIONS } from '../../data/docsVersions';
+
+interface Props {
+	version: string;
+}
+
+const { version } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+---
+
+<label class="docs-version-picker">
+	<span>Documentation version</span>
+	<select data-docs-version aria-label="Documentation version">
+		{DOCS_VERSIONS.map((entry) => (
+			<option value={`${base}${entry.path}`} selected={entry.version === version}>{entry.label}</option>
+		))}
+	</select>
+</label>
+
+<script>
+	document.querySelectorAll<HTMLSelectElement>('[data-docs-version]').forEach((select) => {
+		select.addEventListener('change', () => {
+			window.location.assign(select.value);
+		});
+	});
+</script>

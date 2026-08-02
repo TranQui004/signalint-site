@@ -74,4 +74,86 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 			</div>
 		</div>
 	</section>
+
+	<section class="section section--ruled open-source-detail">
+		<div class="shell">
+			<div class="section-heading" data-reveal>
+				<p class="section-index">Repository / map</p>
+				<h2>Know where each guarantee lives.</h2>
+				<p>The public repository separates process execution, validation, caching, clustering, and session state so each boundary can be reviewed independently.</p>
+			</div>
+			<table class="engine-table repository-map" data-reveal>
+				<thead><tr><th>Path</th><th>What it owns</th><th>What to verify there</th></tr></thead>
+				<tbody>
+					<tr><td><code>src/adapters/</code></td><td>Oxlint, TypeScript, and Biome invocation</td><td>Arguments, output parsing, engine-specific behavior</td></tr>
+					<tr><td><code>src/projectPaths.ts</code><br /><code>src/toolArguments.ts</code></td><td>Untrusted MCP input boundary</td><td>Schema enforcement, canonical containment, hostile-path rejection</td></tr>
+					<tr><td><code>src/cache/</code><br /><code>src/cluster/</code></td><td>Reuse and response reduction</td><td>Version-aware keys, LRU bounds, rule-first grouping, priority</td></tr>
+					<tr><td><code>src/memory/</code><br /><code>src/sessionLog.ts</code></td><td>Loop history and metrics</td><td>Bounded replay, rotation, malformed-line tolerance</td></tr>
+					<tr><td><code>test/</code><br /><code>.github/workflows/ci.yml</code></td><td>Regression and platform evidence</td><td>Windows, macOS, Ubuntu, Node 20.19, and Node 22 checks</td></tr>
+				</tbody>
+			</table>
+		</div>
+	</section>
+
+	<section class="section section--ruled">
+		<div class="shell">
+			<div class="section-heading" data-reveal>
+				<p class="section-index">Contribution / workflow</p>
+				<h2>Contribute against the same evidence gate.</h2>
+				<p>Changes land through protected pull requests. The repository documents the commands, commit format, trust boundaries, and cross-platform checks expected before merge.</p>
+			</div>
+			<div class="contribution-layout">
+				<ol class="contribution-steps" data-reveal>
+					<li><span>01</span><div><h3>Install the locked toolchain</h3><p>Use Node 20.19+ or 22.12+, pnpm 11.9.0, and <code>pnpm install --frozen-lockfile</code>.</p></div></li>
+					<li><span>02</span><div><h3>Run the full local gate</h3><p>Run lint, typecheck, test, and build. A change is complete only when its behavior is covered and the commands pass.</p></div></li>
+					<li><span>03</span><div><h3>Open a focused pull request</h3><p>Use <code>type(scope): message</code>. Main blocks direct and force pushes, including for administrators.</p></div></li>
+					<li><span>04</span><div><h3>Pass every supported platform</h3><p>Required checks cover Windows, macOS, Ubuntu on Node 22, and Ubuntu on Node 20.19.</p></div></li>
+				</ol>
+				<aside class="contribution-links" data-reveal aria-label="Contribution links">
+					<p class="micro-label">Start here</p>
+					<a href="https://github.com/TranQui004/signalint/blob/main/CONTRIBUTING.md">Contributor guide <span aria-hidden="true">↗</span></a>
+					<a href="https://github.com/TranQui004/signalint/issues">Open issues <span aria-hidden="true">↗</span></a>
+					<a href="https://github.com/TranQui004/signalint/actions">CI history <span aria-hidden="true">↗</span></a>
+					<a href="https://github.com/TranQui004/signalint/blob/main/AGENTS.md">Repository standards <span aria-hidden="true">↗</span></a>
+				</aside>
+			</div>
+		</div>
+	</section>
+
+	<section class="section open-source-scope">
+		<div class="shell">
+			<div class="section-heading" data-reveal>
+				<p class="section-index">Scope / v1</p>
+				<h2>Understand the boundary before adopting it.</h2>
+				<p>Signalint is deliberately narrow: local JavaScript and TypeScript diagnostics for coding agents, with explicit limits rather than implied coverage.</p>
+			</div>
+			<div class="scope-columns">
+				<section data-reveal>
+					<p class="micro-label">Included</p>
+					<h3>The current contract</h3>
+					<ul>
+						<li>Local stdio MCP and direct CLI checks.</li>
+						<li>Oxlint, TypeScript, and optional Biome adapters.</li>
+						<li>Bounded cache, clustered schema 1.1 responses, and loop warnings.</li>
+						<li>Strict tool schemas and project-root path containment.</li>
+					</ul>
+				</section>
+				<section data-reveal>
+					<p class="micro-label">Not included</p>
+					<h3>Deliberate v1 limits</h3>
+					<ul>
+						<li>No arbitrary custom engines, autofix application, SAST, or IDE extension.</li>
+						<li>Monorepos need a root TypeScript Project References config.</li>
+						<li><code>check_files</code> cannot infer an omitted changed TypeScript dependency.</li>
+						<li>The containment boundary is not an operating-system sandbox.</li>
+					</ul>
+				</section>
+			</div>
+			<div class="security-disclosure" data-reveal>
+				<div><p class="micro-label">Security</p><h3>Report privately before publishing exploit details.</h3></div>
+				<p>The current reporting policy asks researchers to contact the repository owner through GitHub and request a private channel.</p>
+				<a class="button" href="https://github.com/TranQui004/signalint/blob/main/SECURITY.md">Read the security policy</a>
+			</div>
+		</div>
+	</section>
 </BaseLayout>

@@ -1,0 +1,76 @@
+---
+import DocsLayout from '../../../layouts/DocsLayout.astro';
+
+const config = `{
+  "engines": {
+    "oxlint": true,
+    "tsc": true,
+    "biome": false
+  },
+  "ignore": ["node_modules/**", "dist/**", ".signalint/**"],
+  "timeoutsMs": {
+    "oxlint": 30000,
+    "tsc": 120000,
+    "biome": 30000
+  }
+}`;
+const claude = `claude mcp add --scope project signalint -- npx --no-install signalint-mcp
+claude mcp get signalint`;
+const cursor = `{
+  "mcpServers": {
+    "signalint": {
+      "command": "npx",
+      "args": ["--no-install", "signalint-mcp"]
+    }
+  }
+}`;
+---
+
+<DocsLayout
+	title="Signalint 0.1.0"
+	description="Archived setup and usage documentation for the first published Signalint package."
+	eyebrow="Documentation archive"
+	version="0.1.0"
+>
+	<div class="note">
+		<p>This page preserves the 0.1.0 setup contract. It is not updated with current commands or later features. Use the version selector to return to the current documentation.</p>
+	</div>
+
+	<h2>Requirements</h2>
+	<ul>
+		<li>Node.js 20.19+ in the Node 20 line, or Node.js 22.12+.</li>
+		<li>A JavaScript or TypeScript project.</li>
+		<li>A root <code>tsconfig.json</code> for TypeScript checks.</li>
+	</ul>
+
+	<h2>Install and configure</h2>
+	<pre><code>npm install --save-dev signalint-mcp@0.1.0</code></pre>
+	<p>Version 0.1.0 did not include the guided <code>init</code> command. Create <code>signalint.config.json</code> manually or omit it to use these defaults:</p>
+	<pre><code>{config}</code></pre>
+
+	<h2>Claude Code</h2>
+	<pre><code>{claude}</code></pre>
+	<p>On native Windows, insert <code>cmd /c</code> before <code>npx</code>. Restart Claude Code, call <code>ping</code>, then call <code>check_project</code>.</p>
+
+	<h2>Cursor</h2>
+	<p>Create <code>.cursor/mcp.json</code>:</p>
+	<pre><code>{cursor}</code></pre>
+	<p>On native Windows, use <code>"command": "cmd"</code> and prefix the arguments with <code>"/c"</code>.</p>
+
+	<h2>Available MCP tools</h2>
+	<ul>
+		<li><code>ping</code> verifies the stdio connection.</li>
+		<li><code>check_project</code> returns clustered project diagnostics.</li>
+		<li><code>check_files</code> checks explicit paths with incremental caching.</li>
+		<li><code>get_issue_detail</code> expands a current cluster or issue reference.</li>
+		<li><code>get_loop_status</code> reports issue signatures classified as oscillating.</li>
+	</ul>
+
+	<h2>CLI</h2>
+	<pre><code>{`npx --no-install signalint check .
+npx --no-install signalint stats`}</code></pre>
+	<p>The check command exits with code 1 when diagnostics are found. Cache and session files remain under <code>.signalint/</code>.</p>
+
+	<h2>Historical source</h2>
+	<p>Review the package-era source immediately before the 0.2.0 init command in <a href="https://github.com/TranQui004/signalint/tree/cd87c3d276005f56322e2d07c4ac395b477c07e1">GitHub history</a>.</p>
+</DocsLayout>

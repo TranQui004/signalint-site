@@ -1,30 +1,37 @@
 ---
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+
+interface Props {
+	stickyReveal?: boolean;
+}
+
+const { stickyReveal = false } = Astro.props;
 ---
 
-<footer class="site-footer">
+<footer class:list={['site-footer', { 'site-footer--sticky': stickyReveal }]} data-footer-reveal={stickyReveal ? '' : undefined}>
 	<div class="shell footer-grid">
-		<div>
+		<div data-footer-item={stickyReveal ? '' : undefined}>
 			<p class="footer-kicker">Local MCP / stdio</p>
 			<p class="footer-title">Keep diagnostics useful.</p>
 			<p class="footer-summary-note">Signalint is free and open source under the MIT License.</p>
 		</div>
-		<div class="footer-col" aria-label="Documentation links">
+		<div class="footer-col" aria-label="Documentation links" data-footer-item={stickyReveal ? '' : undefined}>
 			<strong>Reference</strong>
 			<a href={`${base}docs/`}>Documentation</a>
 			<a href={`${base}docs/tools/`}>MCP tools</a>
 			<a href={`${base}docs/architecture/`}>Architecture</a>
 			<a href={`${base}docs/security/`}>Security model</a>
 		</div>
-		<div class="footer-col" aria-label="Project links">
+		<div class="footer-col" aria-label="Project links" data-footer-item={stickyReveal ? '' : undefined}>
 			<strong>Project</strong>
 			<a href="https://www.npmjs.com/package/signalint-mcp">npm package</a>
 			<a href="https://github.com/TranQui004/signalint">GitHub</a>
+			<a href="https://github.com/TranQui004">TranQui004 profile</a>
 			<a href="https://github.com/TranQui004/signalint/issues">Issues</a>
 			<a href={`${base}changelog/`}>Changelog</a>
 		</div>
 	</div>
-	<div class="shell footer-bottom">
+	<div class="shell footer-bottom" data-footer-item={stickyReveal ? '' : undefined}>
 		<span>signalint-mcp@0.2.0 / schema 1.1</span>
 		<span>JavaScript + TypeScript / built in public</span>
 	</div>

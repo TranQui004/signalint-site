@@ -1,0 +1,129 @@
+---
+import DocsLayout from '../../layouts/DocsLayout.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
+const install = `npm install --save-dev signalint-mcp
+npx signalint-mcp init`;
+const manualConfig = `{
+  "engines": {
+    "oxlint": true,
+    "tsc": true,
+    "biome": false
+  },
+  "ignore": ["node_modules/**", "dist/**", ".signalint/**"],
+  "timeoutsMs": {
+    "oxlint": 30000,
+    "tsc": 120000,
+    "biome": 30000
+  }
+}`;
+const claudePosix = `claude mcp add --scope project signalint -- npx --no-install signalint-mcp
+claude mcp get signalint`;
+const claudeWindows = `claude mcp add --scope project signalint -- cmd /c npx --no-install signalint-mcp
+claude mcp get signalint`;
+const cursorConfig = `{
+  "mcpServers": {
+    "signalint": {
+      "command": "npx",
+      "args": ["--no-install", "signalint-mcp"]
+    }
+  }
+}`;
+const antigravityWindows = `{
+  "mcpServers": {
+    "signalint": {
+      "command": "cmd",
+      "args": ["/c", "npx", "--no-install", "signalint-mcp"],
+      "cwd": "<absolute-path-to-your-project>"
+    }
+  }
+}`;
+---
+
+<DocsLayout
+	title="Setup & clients"
+	description="Install Signalint, generate project-aware defaults, connect Claude Code, Cursor, or Antigravity, and verify the stdio handshake."
+	eyebrow="Setup"
+>
+	<h2>Install in the checked project</h2>
+	<p>
+		Run setup from the JavaScript or TypeScript project Signalint should inspect. Node.js
+		20.19+ or 22.12+ is required; TypeScript checks also require a root{' '}
+		<code>tsconfig.json</code>.
+	</p>
+	<pre><code>{install}</code></pre>
+
+	<h2>What init detects</h2>
+	<p>
+		<code>npx signalint-mcp init</code> inspects the project before writing anything. It
+		enables TypeScript only when a root <code>tsconfig.json</code> exists, enables Biome when
+		its configuration exists, and uses Oxlint as the fallback when no configured linter is
+		detected.
+	</p>
+	<table class="schema-table">
+		<thead><tr><th>Detection</th><th>Generated behavior</th></tr></thead>
+		<tbody>
+			<tr><td>Root <code>tsconfig.json</code></td><td>Enables the whole-program tsc adapter.</td></tr>
+			<tr><td>Oxlint configuration</td><td>Enables the file-local Oxlint adapter.</td></tr>
+			<tr><td><code>biome.json</code> or <code>biome.jsonc</code></td><td>Enables the optional file-local Biome adapter.</td></tr>
+			<tr><td>One nearby MCP client</td><td>Offers to merge the Signalint server entry after confirmation.</td></tr>
+			<tr><td>Several or no unambiguous clients</td><td>Asks which client to use or prints exact snippets to copy.</td></tr>
+		</tbody>
+	</table>
+
+	<h2>Manual Signalint configuration</h2>
+	<p>
+		If you do not use init, create <code>signalint.config.json</code> at the project root.
+		Every supported field is documented in the{' '}
+		<a href={`${base}docs/configuration/`}>configuration reference</a>.
+	</p>
+	<pre><code>{manualConfig}</code></pre>
+
+	<h2>Claude Code</h2>
+	<p>Project scope creates a shareable <code>.mcp.json</code>. On macOS or Linux:</p>
+	<pre><code>{claudePosix}</code></pre>
+	<p>On native Windows, wrap <code>npx</code> with <code>cmd /c</code>:</p>
+	<pre><code>{claudeWindows}</code></pre>
+	<p>
+		For scope behavior and client-side troubleshooting, see the{' '}
+		<a href="https://docs.anthropic.com/en/docs/claude-code/mcp">Claude Code MCP documentation</a>.
+	</p>
+
+	<h2>Cursor</h2>
+	<p>Create <code>.cursor/mcp.json</code> in the checked project:</p>
+	<pre><code>{cursorConfig}</code></pre>
+	<p>
+		On native Windows, use <code>"command": "cmd"</code> and{' '}
+		<code>"args": ["/c", "npx", "--no-install", "signalint-mcp"]</code>. Open Cursor's
+		MCP settings and enable <code>signalint</code>. See the{' '}
+		<a href="https://docs.cursor.com/context/model-context-protocol">Cursor MCP documentation</a>{' '}
+		for configuration locations and status controls.
+	</p>
+
+	<h2>Antigravity</h2>
+	<p>
+		Antigravity commonly stores its Windows configuration at{' '}
+		<code>%USERPROFILE%\.gemini\antigravity\mcp_config.json</code>. Init can update it after
+		confirmation. The equivalent manual Windows entry is:
+	</p>
+	<pre><code>{antigravityWindows}</code></pre>
+	<p>
+		On macOS or Linux, use <code>"command": "npx"</code> with{' '}
+		<code>["--no-install", "signalint-mcp"]</code>. Always set <code>cwd</code> to the absolute
+		project root, then reconnect or restart Antigravity.
+	</p>
+
+	<h2>Verify the connection</h2>
+	<ol>
+		<li>Restart or reconnect the MCP client after its configuration changes.</li>
+		<li>Call <code>ping</code> with <code>{'{}'}</code> and confirm the result is <code>pong</code>.</li>
+		<li>Call <code>check_project</code> with <code>{'{ "paths": ["."] }'}</code>.</li>
+	</ol>
+	<div class="note">
+		<p>Signalint writes cache and session artifacts under <code>.signalint/</code>. Keep the directory out of version control.</p>
+	</div>
+
+	<h2>Verify without an MCP client</h2>
+	<pre><code>npx --no-install signalint check .</code></pre>
+	<p>The command exits with code 1 when diagnostics are found; that is expected check behavior rather than a CLI crash.</p>
+</DocsLayout>

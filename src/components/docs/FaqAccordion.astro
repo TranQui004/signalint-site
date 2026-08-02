@@ -1,0 +1,114 @@
+---
+const questions = [
+	{
+		question: 'Does Signalint replace my linter or TypeScript?',
+		answer: 'No. Oxlint, TypeScript, and optional Biome remain the diagnostic sources. Signalint invokes them, normalizes their output, caches safe reuse, and clusters the response for an MCP client.',
+	},
+	{
+		question: 'Does project code leave my machine?',
+		answer: 'Signalint is a local stdio server and does not add a network transport. The MCP client using the response has its own separate data-handling policy.',
+	},
+	{
+		question: 'Which languages are supported?',
+		answer: 'JavaScript and TypeScript projects only. The built-in engines are Oxlint, tsc, and Biome; arbitrary custom engines are not supported in v1.',
+	},
+	{
+		question: 'Does Signalint apply fixes?',
+		answer: 'No. It reports fixable: true only when an engine supplies a structured fix, but v1 does not modify source files.',
+	},
+	{
+		question: 'Is Signalint a security scanner?',
+		answer: 'No. It is not a SAST tool and does not claim to find vulnerabilities. Signalint’s own MCP argument boundary is documented in the repository threat model.',
+	},
+	{
+		question: 'How do monorepos work?',
+		answer: 'The tsc adapter requires one tsconfig.json at the project root. Monorepos should provide a solution-style root config using TypeScript Project References.',
+	},
+	{
+		question: 'What does loop detection track?',
+		answer: 'Only normalized lint, type, and test issue signatures that disappear and return repeatedly. It does not classify the agent’s general conversation.',
+	},
+	{
+		question: 'Is there an IDE extension?',
+		answer: 'Not yet. Current integrations use MCP clients or the command-line check and stats commands.',
+	},
+	{
+		question: 'What does it cost?',
+		answer: 'Signalint is free and open source under the MIT License. It runs locally and has no hosted pricing tier.',
+	},
+];
+---
+
+<section class="faq-motion" data-faq-motion aria-label="Frequently asked questions">
+	<div class="faq-motion__meta">
+		<span>Common questions</span>
+		<strong>{String(questions.length).padStart(2, '0')} entries</strong>
+	</div>
+	<div class="faq-list">
+		{questions.map((item, index) => (
+			<details open={index === 0} data-faq-item>
+				<summary>
+					<span>{String(index + 1).padStart(2, '0')}</span>
+					<strong>{item.question}</strong>
+					<i aria-hidden="true"></i>
+				</summary>
+				<div class="faq-answer" data-faq-answer><p>{item.answer}</p></div>
+			</details>
+		))}
+	</div>
+</section>
+
+<script>
+	import { gsap } from 'gsap';
+	import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+	gsap.registerPlugin(ScrollTrigger);
+
+	document.querySelectorAll<HTMLElement>('[data-faq-motion]').forEach((faq) => {
+		const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+		const items = faq.querySelectorAll<HTMLDetailsElement>('[data-faq-item]');
+		if (!reducedMotion) {
+			gsap.fromTo(items, { autoAlpha: 0, y: 24 }, {
+				autoAlpha: 1,
+				y: 0,
+				stagger: 0.08,
+				duration: 0.68,
+				ease: 'power3.out',
+				scrollTrigger: { trigger: faq, start: 'top 82%', once: true },
+			});
+		}
+
+		items.forEach((item) => {
+			item.addEventListener('toggle', () => {
+				if (!item.open || reducedMotion) return;
+				const answer = item.querySelector<HTMLElement>('[data-faq-answer]');
+				if (answer === null) return;
+				gsap.fromTo(answer, { autoAlpha: 0, y: -8 }, { autoAlpha: 1, y: 0, duration: 0.42, ease: 'power3.out' });
+			});
+		});
+	});
+</script>
+
+<style>
+	.faq-motion { margin-top: 40px; }
+	.faq-motion__meta { display: flex; justify-content: space-between; gap: 24px; padding-bottom: 18px; font-family: var(--font-mono); font-size: 0.64rem; text-transform: uppercase; }
+	.faq-motion__meta span { color: var(--orange); }
+	.faq-motion__meta strong { color: var(--black-48); font-weight: 550; }
+	.faq-list { border-top: 1px solid var(--black); }
+	.faq-list details { padding: 0; border-bottom: 1px solid var(--black); transition: background-color 180ms ease, color 180ms ease; }
+	.faq-list details[open] { background: var(--black); color: var(--white); }
+	.faq-list summary { display: grid; grid-template-columns: 48px minmax(0, 1fr) 22px; gap: 22px; align-items: center; padding: 24px 20px 24px 0; cursor: pointer; list-style: none; }
+	.faq-list summary::-webkit-details-marker { display: none; }
+	.faq-list summary > span { color: var(--orange); font-family: var(--font-mono); font-size: 0.65rem; }
+	.faq-list summary strong { font-size: clamp(1rem, 1.6vw, 1.24rem); font-weight: 680; letter-spacing: -0.025em; }
+	.faq-list summary i { position: relative; width: 16px; height: 16px; }
+	.faq-list summary i::before, .faq-list summary i::after { position: absolute; top: 7px; left: 1px; width: 14px; height: 1px; background: currentColor; content: ''; transition: transform 180ms ease; }
+	.faq-list summary i::after { transform: rotate(90deg); }
+	.faq-list details[open] summary i::after { transform: rotate(0); }
+	.faq-answer { padding: 0 60px 30px 70px; }
+	.faq-answer p { max-width: 66ch; margin: 0; color: var(--white-72); line-height: 1.72; }
+	@media (max-width: 620px) {
+		.faq-list summary { grid-template-columns: 34px minmax(0, 1fr) 18px; gap: 12px; padding-right: 8px; }
+		.faq-answer { padding: 0 20px 24px 46px; }
+	}
+</style>

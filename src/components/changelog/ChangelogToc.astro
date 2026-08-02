@@ -1,0 +1,116 @@
+<div class="changelog-edge-sensor" data-changelog-edge aria-hidden="true"></div>
+<aside class="changelog-toc is-visible" data-changelog-toc aria-labelledby="changelog-index-title">
+	<button class="changelog-toc__toggle" type="button" data-changelog-toggle aria-expanded="false" aria-controls="changelog-release-tree">
+		<span>Releases</span>
+		<strong aria-hidden="true">←</strong>
+	</button>
+	<nav id="changelog-release-tree" class="changelog-toc__panel" aria-label="Changelog releases by publication date">
+		<div class="changelog-toc__intro">
+			<p class="section-index">Release index</p>
+			<h2 id="changelog-index-title">Browse by date.</h2>
+			<p>Year, month, day, then package version.</p>
+		</div>
+		<ol class="release-tree">
+			<li>
+				<span class="release-tree__year">2026</span>
+				<ol>
+					<li>
+						<span class="release-tree__month">August</span>
+						<ol>
+							<li>
+								<span class="release-tree__day">01</span>
+								<div class="release-tree__links">
+									<a href="#v0-2-0"><strong>v0.2.0</strong><span>Setup command and current documentation</span></a>
+									<a href="#v0-1-0"><strong>v0.1.0</strong><span>Initial npm publication</span></a>
+								</div>
+							</li>
+						</ol>
+					</li>
+				</ol>
+			</li>
+		</ol>
+	</nav>
+</aside>
+
+<script>
+	const toc = document.querySelector<HTMLElement>('[data-changelog-toc]');
+	const edge = document.querySelector<HTMLElement>('[data-changelog-edge]');
+	const toggle = toc?.querySelector<HTMLButtonElement>('[data-changelog-toggle]');
+	const mobileQuery = window.matchMedia('(max-width: 760px)');
+	let hideTimer: number | undefined;
+
+	const clearHideTimer = (): void => {
+		if (hideTimer === undefined) return;
+		window.clearTimeout(hideTimer);
+		hideTimer = undefined;
+	};
+
+	const hideDesktopToc = (): void => {
+		if (toc === null || mobileQuery.matches || toc.matches(':hover, :focus-within') || edge?.matches(':hover')) return;
+		toc.classList.remove('is-visible');
+		toggle?.setAttribute('aria-expanded', 'false');
+	};
+
+	const scheduleDesktopHide = (): void => {
+		clearHideTimer();
+		if (mobileQuery.matches) return;
+		hideTimer = window.setTimeout(hideDesktopToc, 3200);
+	};
+
+	const revealDesktopToc = (): void => {
+		if (toc === null || mobileQuery.matches) return;
+		toc.classList.add('is-visible');
+		toggle?.setAttribute('aria-expanded', 'true');
+		scheduleDesktopHide();
+	};
+
+	const closeMobileToc = (): void => {
+		if (toc === null || toggle === null || toggle === undefined) return;
+		toc.classList.remove('is-mobile-open');
+		toggle.setAttribute('aria-expanded', 'false');
+	};
+
+	const syncResponsiveState = (): void => {
+		clearHideTimer();
+		if (toc === null) return;
+		if (mobileQuery.matches) {
+			toc.classList.remove('is-visible');
+			closeMobileToc();
+			return;
+		}
+		toc.classList.remove('is-mobile-open');
+		toggle?.setAttribute('aria-expanded', 'false');
+		toc.classList.add('is-visible');
+		toggle?.setAttribute('aria-expanded', 'true');
+		scheduleDesktopHide();
+	};
+
+	toc?.addEventListener('pointerenter', revealDesktopToc);
+	toc?.addEventListener('pointerleave', scheduleDesktopHide);
+	toc?.addEventListener('focusin', revealDesktopToc);
+	toc?.addEventListener('focusout', scheduleDesktopHide);
+	edge?.addEventListener('pointerenter', revealDesktopToc);
+
+	toggle?.addEventListener('click', () => {
+		if (toc === null) return;
+		if (!mobileQuery.matches) {
+			const isOpen = toc.classList.toggle('is-visible');
+			toggle.setAttribute('aria-expanded', String(isOpen));
+			if (isOpen) scheduleDesktopHide();
+			return;
+		}
+		const isOpen = toc.classList.toggle('is-mobile-open');
+		toggle.setAttribute('aria-expanded', String(isOpen));
+	});
+
+	toc?.querySelectorAll<HTMLAnchorElement>('a[href^="#"]').forEach((link) => {
+		link.addEventListener('click', closeMobileToc);
+	});
+
+	document.addEventListener('keydown', (event) => {
+		if (event.key === 'Escape') closeMobileToc();
+	});
+
+	mobileQuery.addEventListener('change', syncResponsiveState);
+	syncResponsiveState();
+</script>

@@ -1,47 +1,11 @@
 ---
 import DocsLayout from '../../layouts/DocsLayout.astro';
+import FaqAccordion from '../../components/docs/FaqAccordion.astro';
 ---
 
 <DocsLayout
 	title="FAQ"
 	description="Scope, engine behavior, privacy, and the boundaries of the current release."
 >
-	<div class="faq-list">
-		<details open>
-			<summary>Does Signalint replace my linter or TypeScript?</summary>
-			<p>No. Oxlint, TypeScript, and optional Biome remain the diagnostic sources. Signalint invokes them, normalizes their output, caches safe reuse, and clusters the response for an MCP client.</p>
-		</details>
-		<details>
-			<summary>Does project code leave my machine?</summary>
-			<p>Signalint is a local stdio server and does not add a network transport. The MCP client using the response has its own data-handling policy, which is separate from Signalint.</p>
-		</details>
-		<details>
-			<summary>Which languages are supported?</summary>
-			<p>JavaScript and TypeScript projects only. The built-in engines are Oxlint, tsc, and Biome; arbitrary custom engines are not supported in v1.</p>
-		</details>
-		<details>
-			<summary>Does Signalint apply fixes?</summary>
-			<p>No. It reports <code>fixable: true</code> only when an engine supplies a structured fix, but v1 does not modify source files.</p>
-		</details>
-		<details>
-			<summary>Is Signalint a security scanner?</summary>
-			<p>No. It is not a SAST tool and does not claim to find security vulnerabilities. Its own MCP argument boundary is documented in the repository threat model.</p>
-		</details>
-		<details>
-			<summary>How do monorepos work?</summary>
-			<p>The tsc adapter requires one <code>tsconfig.json</code> at the project root. Monorepos should provide a solution-style root config using TypeScript Project References; Signalint does not auto-discover independent package configs.</p>
-		</details>
-		<details>
-			<summary>What does loop detection track?</summary>
-			<p>Only normalized lint, type, and test issue signatures that disappear and return repeatedly. It does not inspect or classify the agent's general conversation.</p>
-		</details>
-		<details>
-			<summary>Is there an IDE extension?</summary>
-			<p>Not yet. Current integrations use MCP clients or the command-line check and stats commands.</p>
-		</details>
-		<details>
-			<summary>What does it cost?</summary>
-			<p>Signalint is free and open source under the MIT License. It runs locally and has no hosted pricing tier.</p>
-		</details>
-	</div>
+	<FaqAccordion />
 </DocsLayout>
