@@ -47,15 +47,17 @@ Dòng phiên bị lỗi bị bỏ qua: 0`;
 	</div>
 
 	<h2>Định nghĩa các số liệu</h2>
-	<table class="schema-table">
-		<thead><tr><th>Số liệu</th><th>Điều nó đo lường</th></tr></thead>
-		<tbody>
-			<tr><td>Tỷ lệ giảm payload trung bình</td><td>Số byte JSON thô đã chuẩn hóa so với số byte JSON sau khi gom cụm. Các lần kiểm tra sạch (clean) với 0 byte thô sẽ bị loại trừ.</td></tr>
-			<tr><td>Tỷ lệ hit cache engine-file</td><td>Mỗi lần tra cứu engine được bật tính riêng—không phải số file duy nhất và không phải việc tránh tiến trình con.</td></tr>
-			<tr><td>Độ trễ trung bình / tối đa</td><td>Thời gian thực thi của handler qua các bước xác thực, xử lý cache/engine, gom cụm và đánh giá vòng lặp; không bao gồm ghi telemetry và truyền stdio.</td></tr>
-			<tr><td>Cảnh báo vòng lặp</td><td>Các chữ ký lỗi riêng biệt đã vượt qua ngưỡng dao động hiện tại.</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Số liệu</th><th>Điều nó đo lường</th></tr></thead>
+			<tbody>
+				<tr><td>Tỷ lệ giảm payload trung bình</td><td>Số byte JSON thô đã chuẩn hóa so với số byte JSON sau khi gom cụm. Các lần kiểm tra sạch (clean) với 0 byte thô sẽ bị loại trừ.</td></tr>
+				<tr><td>Tỷ lệ hit cache engine-file</td><td>Mỗi lần tra cứu engine được bật tính riêng—không phải số file duy nhất và không phải việc tránh tiến trình con.</td></tr>
+				<tr><td>Độ trễ trung bình / tối đa</td><td>Thời gian thực thi của handler qua các bước xác thực, xử lý cache/engine, gom cụm và đánh giá vòng lặp; không bao gồm ghi telemetry và truyền stdio.</td></tr>
+				<tr><td>Cảnh báo vòng lặp</td><td>Các chữ ký lỗi riêng biệt đã vượt qua ngưỡng dao động hiện tại.</td></tr>
+			</tbody>
+		</table>
+	</div>
 
 	<h2>Artifacts cục bộ</h2>
 	<ul>

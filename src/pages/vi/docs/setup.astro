@@ -60,16 +60,18 @@ const antigravityWindows = `{
 		chỉ bật TypeScript khi có file <code>tsconfig.json</code> gốc, bật Biome khi file cấu hình
 		của nó tồn tại và sử dụng Oxlint làm mặc định khi không tìm thấy linter đã cấu hình.
 	</p>
-	<table class="schema-table">
-		<thead><tr><th>Dấu hiệu phát hiện</th><th>Hành vi được tạo</th></tr></thead>
-		<tbody>
-			<tr><td>File <code>tsconfig.json</code> gốc</td><td>Bật adapter tsc kiểm tra toàn bộ chương trình (whole-program).</td></tr>
-			<tr><td>Cấu hình Oxlint</td><td>Bật adapter Oxlint kiểm tra theo từng file (file-local).</td></tr>
-			<tr><td><code>biome.json</code> hoặc <code>biome.jsonc</code></td><td>Bật adapter Biome kiểm tra theo file tùy chọn.</td></tr>
-			<tr><td>Một MCP client ở gần duy nhất</td><td>Đề nghị bổ sung cấu hình server Signalint sau khi xác nhận.</td></tr>
-			<tr><td>Nhiều hoặc không có client rõ ràng</td><td>Hỏi bạn muốn dùng client nào hoặc in ra đoạn snippet chính xác để copy.</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Dấu hiệu phát hiện</th><th>Hành vi được tạo</th></tr></thead>
+			<tbody>
+				<tr><td>File <code>tsconfig.json</code> gốc</td><td>Bật adapter tsc kiểm tra toàn bộ chương trình (whole-program).</td></tr>
+				<tr><td>Cấu hình Oxlint</td><td>Bật adapter Oxlint kiểm tra theo từng file (file-local).</td></tr>
+				<tr><td><code>biome.json</code> hoặc <code>biome.jsonc</code></td><td>Bật adapter Biome kiểm tra theo file tùy chọn.</td></tr>
+				<tr><td>Một MCP client ở gần duy nhất</td><td>Đề nghị bổ sung cấu hình server Signalint sau khi xác nhận.</td></tr>
+				<tr><td>Nhiều hoặc không có client rõ ràng</td><td>Hỏi bạn muốn dùng client nào hoặc in ra đoạn snippet chính xác để copy.</td></tr>
+			</tbody>
+		</table>
+	</div>
 
 	<h2>Cấu hình Signalint thủ công</h2>
 	<p>

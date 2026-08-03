@@ -83,16 +83,18 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 				<h2>Biết rõ từng cam kết nằm ở đâu.</h2>
 				<p>Repository công khai tách riêng việc thực thi tiến trình, xác minh đầu vào, cache, gom cụm và trạng thái phiên để từng ranh giới đều có thể được review độc lập.</p>
 			</div>
-			<table class="engine-table repository-map" data-reveal>
-				<thead><tr><th>Đường dẫn</th><th>Phần việc sở hữu</th><th>Điều cần kiểm tra</th></tr></thead>
-				<tbody>
-					<tr><td><code>src/adapters/</code></td><td>Gọi Oxlint, TypeScript và Biome</td><td>Argument, parse output và hành vi riêng của engine</td></tr>
-					<tr><td><code>src/projectPaths.ts</code><br /><code>src/toolArguments.ts</code></td><td>Ranh giới đầu vào MCP không đáng tin</td><td>Thực thi schema, containment chuẩn hóa, từ chối path độc hại</td></tr>
-					<tr><td><code>src/cache/</code><br /><code>src/cluster/</code></td><td>Tái sử dụng kết quả và giảm response</td><td>Key có phiên bản, giới hạn LRU, gom theo rule, ưu tiên</td></tr>
-					<tr><td><code>src/memory/</code><br /><code>src/sessionLog.ts</code></td><td>Lịch sử vòng lặp và số liệu</td><td>Replay có giới hạn, rotation, chịu lỗi dòng log hỏng</td></tr>
-					<tr><td><code>test/</code><br /><code>.github/workflows/ci.yml</code></td><td>Bằng chứng regression và đa nền tảng</td><td>Các check Windows, macOS, Ubuntu, Node 20.19 và Node 22</td></tr>
-				</tbody>
-			</table>
+			<div class="table-scroll" data-reveal>
+				<table class="engine-table repository-map">
+					<thead><tr><th>Đường dẫn</th><th>Phần việc sở hữu</th><th>Điều cần kiểm tra</th></tr></thead>
+					<tbody>
+						<tr><td><code>src/adapters/</code></td><td>Gọi Oxlint, TypeScript và Biome</td><td>Argument, parse output và hành vi riêng của engine</td></tr>
+						<tr><td><code>src/projectPaths.ts</code><br /><code>src/toolArguments.ts</code></td><td>Ranh giới đầu vào MCP không đáng tin</td><td>Thực thi schema, containment chuẩn hóa, từ chối path độc hại</td></tr>
+						<tr><td><code>src/cache/</code><br /><code>src/cluster/</code></td><td>Tái sử dụng kết quả và giảm response</td><td>Key có phiên bản, giới hạn LRU, gom theo rule, ưu tiên</td></tr>
+						<tr><td><code>src/memory/</code><br /><code>src/sessionLog.ts</code></td><td>Lịch sử vòng lặp và số liệu</td><td>Replay có giới hạn, rotation, chịu lỗi dòng log hỏng</td></tr>
+						<tr><td><code>test/</code><br /><code>.github/workflows/ci.yml</code></td><td>Bằng chứng regression và đa nền tảng</td><td>Các check Windows, macOS, Ubuntu, Node 20.19 và Node 22</td></tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</section>
 

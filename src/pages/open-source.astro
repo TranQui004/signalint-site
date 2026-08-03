@@ -82,16 +82,18 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 				<h2>Know where each guarantee lives.</h2>
 				<p>The public repository separates process execution, validation, caching, clustering, and session state so each boundary can be reviewed independently.</p>
 			</div>
-			<table class="engine-table repository-map" data-reveal>
-				<thead><tr><th>Path</th><th>What it owns</th><th>What to verify there</th></tr></thead>
-				<tbody>
-					<tr><td><code>src/adapters/</code></td><td>Oxlint, TypeScript, and Biome invocation</td><td>Arguments, output parsing, engine-specific behavior</td></tr>
-					<tr><td><code>src/projectPaths.ts</code><br /><code>src/toolArguments.ts</code></td><td>Untrusted MCP input boundary</td><td>Schema enforcement, canonical containment, hostile-path rejection</td></tr>
-					<tr><td><code>src/cache/</code><br /><code>src/cluster/</code></td><td>Reuse and response reduction</td><td>Version-aware keys, LRU bounds, rule-first grouping, priority</td></tr>
-					<tr><td><code>src/memory/</code><br /><code>src/sessionLog.ts</code></td><td>Loop history and metrics</td><td>Bounded replay, rotation, malformed-line tolerance</td></tr>
-					<tr><td><code>test/</code><br /><code>.github/workflows/ci.yml</code></td><td>Regression and platform evidence</td><td>Windows, macOS, Ubuntu, Node 20.19, and Node 22 checks</td></tr>
-				</tbody>
-			</table>
+			<div class="table-scroll" data-reveal>
+				<table class="engine-table repository-map">
+					<thead><tr><th>Path</th><th>What it owns</th><th>What to verify there</th></tr></thead>
+					<tbody>
+						<tr><td><code>src/adapters/</code></td><td>Oxlint, TypeScript, and Biome invocation</td><td>Arguments, output parsing, engine-specific behavior</td></tr>
+						<tr><td><code>src/projectPaths.ts</code><br /><code>src/toolArguments.ts</code></td><td>Untrusted MCP input boundary</td><td>Schema enforcement, canonical containment, hostile-path rejection</td></tr>
+						<tr><td><code>src/cache/</code><br /><code>src/cluster/</code></td><td>Reuse and response reduction</td><td>Version-aware keys, LRU bounds, rule-first grouping, priority</td></tr>
+						<tr><td><code>src/memory/</code><br /><code>src/sessionLog.ts</code></td><td>Loop history and metrics</td><td>Bounded replay, rotation, malformed-line tolerance</td></tr>
+						<tr><td><code>test/</code><br /><code>.github/workflows/ci.yml</code></td><td>Regression and platform evidence</td><td>Windows, macOS, Ubuntu, Node 20.19, and Node 22 checks</td></tr>
+					</tbody>
+				</table>
+			</div>
 		</div>
 	</section>
 

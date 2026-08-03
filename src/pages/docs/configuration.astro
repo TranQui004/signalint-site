@@ -28,24 +28,28 @@ const defaultConfig = `{
 	<pre><code>{defaultConfig}</code></pre>
 
 	<h2>Top-level fields</h2>
-	<table class="schema-table">
-		<thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Meaning</th></tr></thead>
-		<tbody>
-			<tr><td><code>engines</code></td><td>object</td><td>See below</td><td>Enable or disable each built-in engine.</td></tr>
-			<tr><td><code>ignore</code></td><td>string[]</td><td><code>node_modules/**</code>, <code>dist/**</code>, <code>.signalint/**</code></td><td>Project-relative paths removed from requested files and final diagnostics.</td></tr>
-			<tr><td><code>timeoutsMs</code></td><td>object</td><td>See below</td><td>Positive-integer subprocess deadlines in milliseconds.</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Meaning</th></tr></thead>
+			<tbody>
+				<tr><td><code>engines</code></td><td>object</td><td>See below</td><td>Enable or disable each built-in engine.</td></tr>
+				<tr><td><code>ignore</code></td><td>string[]</td><td><code>node_modules/**</code>, <code>dist/**</code>, <code>.signalint/**</code></td><td>Project-relative paths removed from requested files and final diagnostics.</td></tr>
+				<tr><td><code>timeoutsMs</code></td><td>object</td><td>See below</td><td>Positive-integer subprocess deadlines in milliseconds.</td></tr>
+			</tbody>
+		</table>
+	</div>
 
 	<h2>engines</h2>
-	<table class="schema-table">
-		<thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Behavior</th></tr></thead>
-		<tbody>
-			<tr><td><code>oxlint</code></td><td>boolean</td><td><code>true</code></td><td>Runs file-local Oxlint diagnostics.</td></tr>
-			<tr><td><code>tsc</code></td><td>boolean</td><td><code>true</code></td><td>Runs whole-program TypeScript diagnostics from the root tsconfig.</td></tr>
-			<tr><td><code>biome</code></td><td>boolean</td><td><code>false</code></td><td>Runs file-local Biome diagnostics.</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Field</th><th>Type</th><th>Default</th><th>Behavior</th></tr></thead>
+			<tbody>
+				<tr><td><code>oxlint</code></td><td>boolean</td><td><code>true</code></td><td>Runs file-local Oxlint diagnostics.</td></tr>
+				<tr><td><code>tsc</code></td><td>boolean</td><td><code>true</code></td><td>Runs whole-program TypeScript diagnostics from the root tsconfig.</td></tr>
+				<tr><td><code>biome</code></td><td>boolean</td><td><code>false</code></td><td>Runs file-local Biome diagnostics.</td></tr>
+			</tbody>
+		</table>
+	</div>
 	<p>Omitted engine keys keep their individual defaults; they are not coerced to false.</p>
 
 	<h2>ignore</h2>
@@ -60,14 +64,16 @@ const defaultConfig = `{
 	</div>
 
 	<h2>timeoutsMs</h2>
-	<table class="schema-table">
-		<thead><tr><th>Field</th><th>Type</th><th>Default</th></tr></thead>
-		<tbody>
-			<tr><td><code>oxlint</code></td><td>positive integer</td><td>30,000 ms</td></tr>
-			<tr><td><code>tsc</code></td><td>positive integer</td><td>120,000 ms</td></tr>
-			<tr><td><code>biome</code></td><td>positive integer</td><td>30,000 ms</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Field</th><th>Type</th><th>Default</th></tr></thead>
+			<tbody>
+				<tr><td><code>oxlint</code></td><td>positive integer</td><td>30,000 ms</td></tr>
+				<tr><td><code>tsc</code></td><td>positive integer</td><td>120,000 ms</td></tr>
+				<tr><td><code>biome</code></td><td>positive integer</td><td>30,000 ms</td></tr>
+			</tbody>
+		</table>
+	</div>
 	<p>
 		On timeout, Signalint terminates that engine's process tree. In a schema 1.1 check
 		response the engine receives <code>{'{ "status": "error", "message": "…" }'}</code>{' '}
