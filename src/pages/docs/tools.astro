@@ -71,10 +71,12 @@ const staleResponse = `{
 
 	<h2>ping</h2>
 	<p>Confirms that the local stdio server completed its MCP handshake.</p>
-	<table class="schema-table">
-		<thead><tr><th>Arguments</th><th>Result</th></tr></thead>
-		<tbody><tr><td><code>{'{}'}</code></td><td><code>pong</code></td></tr></tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Arguments</th><th>Result</th></tr></thead>
+			<tbody><tr><td><code>{'{}'}</code></td><td><code>pong</code></td></tr></tbody>
+		</table>
+	</div>
 
 	<h2>check_project</h2>
 	<p>
@@ -106,33 +108,37 @@ const staleResponse = `{
 
 	<h2 id="check-response">CheckResponse · schema 1.1</h2>
 	<pre><code>{checkResponse}</code></pre>
-	<table class="schema-table">
-		<thead><tr><th>Field</th><th>Type</th><th>Contract</th></tr></thead>
-		<tbody>
-			<tr><td><code>schemaVersion</code></td><td><code>"1.1"</code></td><td>Current response contract version.</td></tr>
-			<tr><td><code>status</code></td><td><code>"clean" | "issues_found"</code></td><td>Whether normalized issues remain after filtering.</td></tr>
-			<tr><td><code>engines</code></td><td>record</td><td>Exactly <code>oxlint</code>, <code>tsc</code>, and <code>biome</code>; each is <code>ok</code>, <code>error</code>, or <code>disabled</code>, with optional message.</td></tr>
-			<tr><td><code>totalIssues</code></td><td>integer</td><td>Raw normalized issue count before cluster truncation.</td></tr>
-			<tr><td><code>clusters</code></td><td>Cluster[]</td><td>Priority-ascending clusters; priority 1 is highest. Ten are returned by default.</td></tr>
-			<tr><td><code>truncated</code></td><td>boolean</td><td>True when more clusters existed than the response limit.</td></tr>
-			<tr><td><code>loopWarning</code></td><td>LoopWarning | null</td><td>The current oscillation warning, when applicable.</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Field</th><th>Type</th><th>Contract</th></tr></thead>
+			<tbody>
+				<tr><td><code>schemaVersion</code></td><td><code>"1.1"</code></td><td>Current response contract version.</td></tr>
+				<tr><td><code>status</code></td><td><code>"clean" | "issues_found"</code></td><td>Whether normalized issues remain after filtering.</td></tr>
+				<tr><td><code>engines</code></td><td>record</td><td>Exactly <code>oxlint</code>, <code>tsc</code>, and <code>biome</code>; each is <code>ok</code>, <code>error</code>, or <code>disabled</code>, with optional message.</td></tr>
+				<tr><td><code>totalIssues</code></td><td>integer</td><td>Raw normalized issue count before cluster truncation.</td></tr>
+				<tr><td><code>clusters</code></td><td>Cluster[]</td><td>Priority-ascending clusters; priority 1 is highest. Ten are returned by default.</td></tr>
+				<tr><td><code>truncated</code></td><td>boolean</td><td>True when more clusters existed than the response limit.</td></tr>
+				<tr><td><code>loopWarning</code></td><td>LoopWarning | null</td><td>The current oscillation warning, when applicable.</td></tr>
+			</tbody>
+		</table>
+	</div>
 
 	<h3>Cluster</h3>
-	<table class="schema-table">
-		<thead><tr><th>Field</th><th>Type</th></tr></thead>
-		<tbody>
-			<tr><td><code>clusterId</code></td><td>string</td></tr>
-			<tr><td><code>rootCauseSummary</code></td><td>string</td></tr>
-			<tr><td><code>ruleIds</code></td><td>string[]</td></tr>
-			<tr><td><code>issueCount</code></td><td>integer</td></tr>
-			<tr><td><code>fileCount</code></td><td>integer</td></tr>
-			<tr><td><code>priority</code></td><td>integer</td></tr>
-			<tr><td><code>suggestedAction</code></td><td>string</td></tr>
-			<tr><td><code>sampleIssueIds</code></td><td>string[]</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Field</th><th>Type</th></tr></thead>
+			<tbody>
+				<tr><td><code>clusterId</code></td><td>string</td></tr>
+				<tr><td><code>rootCauseSummary</code></td><td>string</td></tr>
+				<tr><td><code>ruleIds</code></td><td>string[]</td></tr>
+				<tr><td><code>issueCount</code></td><td>integer</td></tr>
+				<tr><td><code>fileCount</code></td><td>integer</td></tr>
+				<tr><td><code>priority</code></td><td>integer</td></tr>
+				<tr><td><code>suggestedAction</code></td><td>string</td></tr>
+				<tr><td><code>sampleIssueIds</code></td><td>string[]</td></tr>
+			</tbody>
+		</table>
+	</div>
 
 	<h2 id="normalized-issue">NormalizedIssue</h2>
 	<pre><code>{normalizedIssue}</code></pre>

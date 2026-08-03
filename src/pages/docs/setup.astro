@@ -60,16 +60,18 @@ const antigravityWindows = `{
 		its configuration exists, and uses Oxlint as the fallback when no configured linter is
 		detected.
 	</p>
-	<table class="schema-table">
-		<thead><tr><th>Detection</th><th>Generated behavior</th></tr></thead>
-		<tbody>
-			<tr><td>Root <code>tsconfig.json</code></td><td>Enables the whole-program tsc adapter.</td></tr>
-			<tr><td>Oxlint configuration</td><td>Enables the file-local Oxlint adapter.</td></tr>
-			<tr><td><code>biome.json</code> or <code>biome.jsonc</code></td><td>Enables the optional file-local Biome adapter.</td></tr>
-			<tr><td>One nearby MCP client</td><td>Offers to merge the Signalint server entry after confirmation.</td></tr>
-			<tr><td>Several or no unambiguous clients</td><td>Asks which client to use or prints exact snippets to copy.</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Detection</th><th>Generated behavior</th></tr></thead>
+			<tbody>
+				<tr><td>Root <code>tsconfig.json</code></td><td>Enables the whole-program tsc adapter.</td></tr>
+				<tr><td>Oxlint configuration</td><td>Enables the file-local Oxlint adapter.</td></tr>
+				<tr><td><code>biome.json</code> or <code>biome.jsonc</code></td><td>Enables the optional file-local Biome adapter.</td></tr>
+				<tr><td>One nearby MCP client</td><td>Offers to merge the Signalint server entry after confirmation.</td></tr>
+				<tr><td>Several or no unambiguous clients</td><td>Asks which client to use or prints exact snippets to copy.</td></tr>
+			</tbody>
+		</table>
+	</div>
 
 	<h2>Manual Signalint configuration</h2>
 	<p>

@@ -30,24 +30,28 @@ const defaultConfig = `{
 	<pre><code>{defaultConfig}</code></pre>
 
 	<h2>Các trường cấp cao nhất</h2>
-	<table class="schema-table">
-		<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead>
-		<tbody>
-			<tr><td><code>engines</code></td><td>object</td><td>Xem bên dưới</td><td>Bật hoặc tắt từng engine tích hợp.</td></tr>
-			<tr><td><code>ignore</code></td><td>string[]</td><td><code>node_modules/**</code>, <code>dist/**</code>, <code>.signalint/**</code></td><td>Các đường dẫn tương đối bị loại bỏ khỏi danh sách file yêu cầu và kết quả chẩn đoán cuối cùng.</td></tr>
-			<tr><td><code>timeoutsMs</code></td><td>object</td><td>Xem bên dưới</td><td>Thời hạn giới hạn tiến trình con (tính bằng miligiây, số nguyên dương).</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead>
+			<tbody>
+				<tr><td><code>engines</code></td><td>object</td><td>Xem bên dưới</td><td>Bật hoặc tắt từng engine tích hợp.</td></tr>
+				<tr><td><code>ignore</code></td><td>string[]</td><td><code>node_modules/**</code>, <code>dist/**</code>, <code>.signalint/**</code></td><td>Các đường dẫn tương đối bị loại bỏ khỏi danh sách file yêu cầu và kết quả chẩn đoán cuối cùng.</td></tr>
+				<tr><td><code>timeoutsMs</code></td><td>object</td><td>Xem bên dưới</td><td>Thời hạn giới hạn tiến trình con (tính bằng miligiây, số nguyên dương).</td></tr>
+			</tbody>
+		</table>
+	</div>
 
 	<h2>engines</h2>
-	<table class="schema-table">
-		<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th><th>Hành vi</th></tr></thead>
-		<tbody>
-			<tr><td><code>oxlint</code></td><td>boolean</td><td><code>true</code></td><td>Chạy chẩn đoán Oxlint theo từng file.</td></tr>
-			<tr><td><code>tsc</code></td><td>boolean</td><td><code>true</code></td><td>Chạy chẩn đoán TypeScript toàn bộ chương trình từ tsconfig gốc.</td></tr>
-			<tr><td><code>biome</code></td><td>boolean</td><td><code>false</code></td><td>Chạy chẩn đoán Biome theo từng file.</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th><th>Hành vi</th></tr></thead>
+			<tbody>
+				<tr><td><code>oxlint</code></td><td>boolean</td><td><code>true</code></td><td>Chạy chẩn đoán Oxlint theo từng file.</td></tr>
+				<tr><td><code>tsc</code></td><td>boolean</td><td><code>true</code></td><td>Chạy chẩn đoán TypeScript toàn bộ chương trình từ tsconfig gốc.</td></tr>
+				<tr><td><code>biome</code></td><td>boolean</td><td><code>false</code></td><td>Chạy chẩn đoán Biome theo từng file.</td></tr>
+			</tbody>
+		</table>
+	</div>
 	<p>Các key engine bị bỏ qua vẫn giữ giá trị mặc định riêng; chúng không bị ép về false.</p>
 
 	<h2>ignore</h2>
@@ -62,14 +66,16 @@ const defaultConfig = `{
 	</div>
 
 	<h2>timeoutsMs</h2>
-	<table class="schema-table">
-		<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th></tr></thead>
-		<tbody>
-			<tr><td><code>oxlint</code></td><td>số nguyên dương</td><td>30.000 ms</td></tr>
-			<tr><td><code>tsc</code></td><td>số nguyên dương</td><td>120.000 ms</td></tr>
-			<tr><td><code>biome</code></td><td>số nguyên dương</td><td>30.000 ms</td></tr>
-		</tbody>
-	</table>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th></tr></thead>
+			<tbody>
+				<tr><td><code>oxlint</code></td><td>số nguyên dương</td><td>30.000 ms</td></tr>
+				<tr><td><code>tsc</code></td><td>số nguyên dương</td><td>120.000 ms</td></tr>
+				<tr><td><code>biome</code></td><td>số nguyên dương</td><td>30.000 ms</td></tr>
+			</tbody>
+		</table>
+	</div>
 	<p>
 		Khi hết thời gian timeout, Signalint sẽ chấm dứt cây tiến trình của engine đó. Trong phản hồi
 		chẩn đoán schema 1.1, engine đó sẽ nhận <code>{'{ "status": "error", "message": "…" }'}</code>{' '}
