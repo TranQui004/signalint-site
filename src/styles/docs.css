@@ -45,7 +45,7 @@
 .prose :not(pre) > code { border-color: var(--black-16); border-radius: 0; background: var(--black-04); color: var(--black); }
 .prose > pre { margin: 26px 0 34px; border-radius: 0; }
 .note { margin: 28px 0 34px; padding: 22px 24px; border-left: 4px solid var(--orange); background: var(--orange-12); }
-.schema-table { margin: 26px 0 38px; font-size: 0.8rem; }
+.schema-table { display: block; max-width: 100%; margin: 26px 0 38px; font-size: 0.8rem; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
 .docs-content > p + pre,
 .docs-content > p + .code-frame,
 .docs-content > p + .schema-table,
