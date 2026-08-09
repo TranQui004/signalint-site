@@ -59,6 +59,7 @@ export const homeVi: HomeContent = {
 		{ scope: '01 / trong project', name: 'Claude Code', body: 'Chia sẻ MCP entry cục bộ qua .mcp.json.', command: 'claude mcp add --scope project signalint …', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/claude/default.svg' },
 		{ scope: '02 / trong project', name: 'Cursor', body: 'Dùng .cursor/mcp.json cùng binary đã phát hành trên npm.', command: 'npx --no-install signalint-mcp', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cursor/default.svg' },
 		{ scope: '03 / cấu hình người dùng', name: 'Antigravity', body: 'Đặt working directory tuyệt đối trong mcp_config.json.', command: 'cmd /c npx --no-install signalint-mcp', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/google-antigravity/default.svg' },
+		{ scope: '04 / toàn cục hoặc project', name: 'Codex CLI', body: 'Dùng chung giữa ChatGPT desktop app, Codex CLI và IDE extension qua config.toml.', command: 'codex mcp add signalint -- npx --no-install signalint-mcp', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/codex/light.svg' },
 	],
 	setupAction: 'Đọc hướng dẫn cài đặt',
 	schemaAction: 'Xem các schema',
