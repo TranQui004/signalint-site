@@ -1,9 +1,18 @@
 ---
-interface Props {
-	locale?: 'en' | 'vi';
+interface Release {
+	version: string;
+	date: string;
+	dateTime: string;
+	title: string;
+	items: readonly string[];
 }
 
-const { locale = 'en' } = Astro.props;
+interface Props {
+	locale?: 'en' | 'vi';
+	releases?: readonly Release[];
+}
+
+const { locale = 'en', releases = [] } = Astro.props;
 const copy = locale === 'vi'
 	? {
 		label: 'Phát hành',
@@ -11,9 +20,6 @@ const copy = locale === 'vi'
 		index: 'Mục lục phát hành',
 		title: 'Duyệt theo ngày.',
 		description: 'Năm, tháng, ngày, rồi tới phiên bản package.',
-		month: 'Tháng tám',
-		current: 'Lệnh thiết lập và tài liệu hiện hành',
-		initial: 'Lần phát hành npm đầu tiên',
 	}
 	: {
 		label: 'Releases',
@@ -21,10 +27,47 @@ const copy = locale === 'vi'
 		index: 'Release index',
 		title: 'Browse by date.',
 		description: 'Year, month, day, then package version.',
-		month: 'August',
-		current: 'Setup command and current documentation',
-		initial: 'Initial npm publication',
 	};
+
+type GroupedRelease = { version: string; title: string; day: string };
+type GroupedMonth = { month: string; monthIndex: number; days: { day: string; releases: GroupedRelease[] }[] };
+type GroupedYear = { year: string; months: GroupedMonth[] };
+
+const years: GroupedYear[] = [];
+
+for (const release of releases) {
+	const dateObj = new Date(release.dateTime);
+	const yearStr = dateObj.getFullYear().toString();
+	
+	const monthStrRaw = dateObj.toLocaleString(locale === 'vi' ? 'vi-VN' : 'en-US', { month: 'long' });
+	const monthStr = locale === 'vi' ? monthStrRaw.charAt(0).toUpperCase() + monthStrRaw.slice(1) : monthStrRaw;
+	const monthIndex = dateObj.getMonth();
+	const dayStr = dateObj.getDate().toString().padStart(2, '0');
+
+	let yearGroup = years.find(y => y.year === yearStr);
+	if (!yearGroup) {
+		yearGroup = { year: yearStr, months: [] };
+		years.push(yearGroup);
+	}
+
+	let monthGroup = yearGroup.months.find(m => m.monthIndex === monthIndex);
+	if (!monthGroup) {
+		monthGroup = { month: monthStr, monthIndex, days: [] };
+		yearGroup.months.push(monthGroup);
+	}
+
+	let dayGroup = monthGroup.days.find(d => d.day === dayStr);
+	if (!dayGroup) {
+		dayGroup = { day: dayStr, releases: [] };
+		monthGroup.days.push(dayGroup);
+	}
+
+	dayGroup.releases.push({
+		version: release.version,
+		title: release.title,
+		day: dayStr
+	});
+}
 ---
 
 <div class="changelog-edge-sensor" data-changelog-edge aria-hidden="true"></div>
@@ -40,23 +83,33 @@ const copy = locale === 'vi'
 			<p>{copy.description}</p>
 		</div>
 		<ol class="release-tree">
-			<li>
-				<span class="release-tree__year">2026</span>
-				<ol>
-					<li>
-						<span class="release-tree__month">{copy.month}</span>
-						<ol>
+			{years.map((yearGroup) => (
+				<li>
+					<span class="release-tree__year">{yearGroup.year}</span>
+					<ol>
+						{yearGroup.months.map((monthGroup) => (
 							<li>
-								<span class="release-tree__day">01</span>
-								<div class="release-tree__links">
-									<a href="#v0-2-0"><strong>v0.2.0</strong><span>{copy.current}</span></a>
-									<a href="#v0-1-0"><strong>v0.1.0</strong><span>{copy.initial}</span></a>
-								</div>
+								<span class="release-tree__month">{monthGroup.month}</span>
+								<ol>
+									{monthGroup.days.map((dayGroup) => (
+										<li>
+											<span class="release-tree__day">{dayGroup.day}</span>
+											<div class="release-tree__links">
+												{dayGroup.releases.map((rel) => (
+													<a href={`#v${rel.version.replaceAll('.', '-')}`}>
+														<strong>v{rel.version}</strong>
+														<span>{rel.title}</span>
+													</a>
+												))}
+											</div>
+										</li>
+									))}
+								</ol>
 							</li>
-						</ol>
-					</li>
-				</ol>
-			</li>
+						))}
+					</ol>
+				</li>
+			))}
 		</ol>
 	</nav>
 </aside>
