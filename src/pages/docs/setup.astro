@@ -29,6 +29,13 @@ const cursorConfig = `{
     }
   }
 }`;
+const codexQuickAdd = `codex mcp add signalint -- npx --no-install signalint-mcp`;
+const codexToml = `[mcp_servers.signalint]
+command = "npx"
+args = ["--no-install", "signalint-mcp"]`;
+const codexTomlWindows = `[mcp_servers.signalint]
+command = "cmd"
+args = ["/c", "npx", "--no-install", "signalint-mcp"]`;
 const antigravityWindows = `{
   "mcpServers": {
     "signalint": {
@@ -42,7 +49,7 @@ const antigravityWindows = `{
 
 <DocsLayout
 	title="Setup & clients"
-	description="Install Signalint, generate project-aware defaults, connect Claude Code, Cursor, or Antigravity, and verify the stdio handshake."
+	description="Install Signalint, generate project-aware defaults, connect Claude Code, Cursor, Codex CLI, or Antigravity, and verify the stdio handshake."
 	eyebrow="Setup"
 >
 	<h2>Install in the checked project</h2>
@@ -102,9 +109,30 @@ const antigravityWindows = `{
 		for configuration locations and status controls.
 	</p>
 
+	<h2>Codex CLI</h2>
+	<p>
+		The ChatGPT desktop app, Codex CLI, and IDE extension share a single configuration
+		file. The quick-add command writes to <code>~/.codex/config.toml</code> (global)
+		automatically:
+	</p>
+	<pre><code>{codexQuickAdd}</code></pre>
+	<p>
+		For project-scoped configuration (trusted projects only), add to{' '}
+		<code>.codex/config.toml</code> in the project root:
+	</p>
+	<pre><code>{codexToml}</code></pre>
+	<p>On native Windows, use <code>cmd</code> and pass <code>npx</code> as an argument:</p>
+	<pre><code>{codexTomlWindows}</code></pre>
+	<p>
+		See the{' '}
+		<a href="https://developers.openai.com/codex/mcp">Codex MCP documentation</a>{' '}
+		for all configuration options including <code>cwd</code>, <code>env</code>, and
+		per-tool approval settings.
+	</p>
+
 	<h2>Antigravity</h2>
 	<p>
-		Antigravity commonly stores its Windows configuration at{' '}
+		The path verified through dogfooding on Windows is{' '}
 		<code>%USERPROFILE%\.gemini\antigravity\mcp_config.json</code>. Init can update it after
 		confirmation. The equivalent manual Windows entry is:
 	</p>
@@ -113,6 +141,15 @@ const antigravityWindows = `{
 		On macOS or Linux, use <code>"command": "npx"</code> with{' '}
 		<code>["--no-install", "signalint-mcp"]</code>. Always set <code>cwd</code> to the absolute
 		project root, then reconnect or restart Antigravity.
+	</p>
+	<p>
+		<strong>Note on Antigravity product variants:</strong> Antigravity has split into separate
+		products (IDE, CLI, SDK). Each variant may use a different config path — the IDE path above
+		is the one confirmed working; other variants may use{' '}
+		<code>~/.gemini/config/mcp_config.json</code> or a project-scoped{' '}
+		<code>.agents/mcp_config.json</code>. See{' '}
+		<a href="https://antigravity.google/docs/mcp">antigravity.google/docs/mcp</a> for the
+		authoritative list per product.
 	</p>
 
 	<h2>Verify the connection</h2>

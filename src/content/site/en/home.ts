@@ -59,6 +59,7 @@ export const homeEn: HomeContent = {
 		{ scope: '01 / project scope', name: 'Claude Code', body: 'Share a project-local MCP entry through .mcp.json.', command: 'claude mcp add --scope project signalint …', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/claude/default.svg' },
 		{ scope: '02 / project scope', name: 'Cursor', body: 'Use .cursor/mcp.json with the published npm binary.', command: 'npx --no-install signalint-mcp', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cursor/default.svg' },
 		{ scope: '03 / user config', name: 'Antigravity', body: 'Set an explicit project working directory in mcp_config.json.', command: 'cmd /c npx --no-install signalint-mcp', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/google-antigravity/default.svg' },
+		{ scope: '04 / global or project', name: 'Codex CLI', body: 'Shared by the ChatGPT desktop app, Codex CLI, and IDE extension via config.toml.', command: 'codex mcp add signalint -- npx --no-install signalint-mcp', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/codex/light.svg' },
 	],
 	setupAction: 'Read the setup guide',
 	schemaAction: 'Inspect the schemas',
