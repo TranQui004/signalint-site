@@ -24,7 +24,7 @@ const { locale, title, description, eyebrow, lede, note, releases } = Astro.prop
 ---
 
 <BaseLayout title={title} description={description} locale={locale}>
-	<ChangelogToc locale={locale} />
+	<ChangelogToc locale={locale} releases={releases} />
 	<section class="editorial-page">
 		<div class="shell prose">
 			<header class="editorial-head" data-reveal>

@@ -45,6 +45,8 @@ export const fetchLiveReleases = async (): Promise<readonly ReleaseData[]> => {
 				title: release.name || release.tag_name,
 				items: items.length > 0 ? items : ['See GitHub release notes for details.']
 			};
+		}).sort((a: ReleaseData, b: ReleaseData) => {
+			return b.version.localeCompare(a.version, undefined, { numeric: true, sensitivity: 'base' });
 		});
 	} catch (err) {
 		return [];
