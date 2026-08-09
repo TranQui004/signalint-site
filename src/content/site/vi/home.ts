@@ -54,7 +54,7 @@ export const homeVi: HomeContent = {
 		{ name: 'TypeScript', analysis: 'Phân tích toàn chương trình', receivesLabel: 'Nhận', receives: 'Toàn bộ project đã cấu hình', body: 'Root thường dùng --project; root dạng solution có references dùng --build.', cacheLabel: 'Phạm vi cache', cacheScope: 'quyết định chạy', deadlineLabel: 'Timeout', deadline: '120 giây' },
 		{ name: 'Biome', analysis: 'Theo file, bật tùy chọn', receivesLabel: 'Nhận', receives: 'File cache-miss khi engine được bật', body: 'Mặc định tắt và luôn có trạng thái riêng trong mỗi check response.', cacheLabel: 'Phạm vi cache', cacheScope: 'engine + file', deadlineLabel: 'Timeout', deadline: '30 giây' },
 	],
-	clientsHeading: { index: '04 / client', title: 'Kết nối server ngay nơi agent làm việc.', body: 'Một server cục bộ, ba vị trí cấu hình theo từng client. Lệnh init dò client ở gần và chỉ ghi file sau khi bạn xác nhận.' },
+	clientsHeading: { index: '04 / client', title: 'Kết nối server ngay nơi agent làm việc.', body: 'Một server cục bộ, {COUNT} vị trí cấu hình theo từng client. Lệnh init dò client ở gần và chỉ ghi file sau khi bạn xác nhận.' },
 	clients: [
 		{ scope: '01 / trong project', name: 'Claude Code', body: 'Chia sẻ MCP entry cục bộ qua .mcp.json.', command: 'claude mcp add --scope project signalint …', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/claude/default.svg' },
 		{ scope: '02 / trong project', name: 'Cursor', body: 'Dùng .cursor/mcp.json cùng binary đã phát hành trên npm.', command: 'npx --no-install signalint-mcp', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cursor/default.svg' },

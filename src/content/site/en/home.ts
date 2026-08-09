@@ -54,7 +54,7 @@ export const homeEn: HomeContent = {
 		{ name: 'TypeScript', analysis: 'Whole-program analysis', receivesLabel: 'Receives', receives: 'The complete configured project', body: 'Normal roots use --project; solution-style roots with references use --build.', cacheLabel: 'Cache scope', cacheScope: 'run decision', deadlineLabel: 'Deadline', deadline: '120 s' },
 		{ name: 'Biome', analysis: 'Optional file-local analysis', receivesLabel: 'Receives', receives: 'Changed cache-miss paths when enabled', body: 'Disabled by default, with an explicit engine status in every check response.', cacheLabel: 'Cache scope', cacheScope: 'engine + file', deadlineLabel: 'Deadline', deadline: '30 s' },
 	],
-	clientsHeading: { index: '04 / clients', title: 'Connect the server where the agent works.', body: 'One local server, three client-specific configuration paths. The init command detects nearby clients and writes only after confirmation.' },
+	clientsHeading: { index: '04 / clients', title: 'Connect the server where the agent works.', body: 'One local server, {COUNT} client-specific configuration paths. The init command detects nearby clients and writes only after confirmation.' },
 	clients: [
 		{ scope: '01 / project scope', name: 'Claude Code', body: 'Share a project-local MCP entry through .mcp.json.', command: 'claude mcp add --scope project signalint …', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/claude/default.svg' },
 		{ scope: '02 / project scope', name: 'Cursor', body: 'Use .cursor/mcp.json with the published npm binary.', command: 'npx --no-install signalint-mcp', icon: 'https://cdn.jsdelivr.net/gh/glincker/thesvg@main/public/icons/cursor/default.svg' },

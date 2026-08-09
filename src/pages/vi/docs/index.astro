@@ -15,6 +15,9 @@ const cursor = `{
     }
   }
 }`;
+const codexConfig = `[mcp_servers.signalint]
+command = "npx"
+args = ["--no-install", "signalint-mcp"]`;
 ---
 
 <DocsLayout
@@ -55,6 +58,11 @@ const cursor = `{
 		Trên Windows native, đặt <code>command</code> thành <code>cmd</code> và đặt{' '}
 		<code>args</code> thành <code>["/c", "npx", "--no-install", "signalint-mcp"]</code>.
 	</p>
+
+	<h3>Codex CLI</h3>
+	<p>Thêm vào <code>~/.codex/config.toml</code> (toàn cục) hoặc <code>.codex/config.toml</code> (dự án):</p>
+	<pre><code>{codexConfig}</code></pre>
+	<p>Hoặc sử dụng lệnh thêm nhanh: <code>codex mcp add signalint -- npx --no-install signalint-mcp</code></p>
 
 	<h3>Antigravity</h3>
 	<p>

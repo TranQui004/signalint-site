@@ -6,10 +6,13 @@ const antigravity = `{
     "signalint": {
       "command": "cmd",
       "args": ["/c", "npx", "--no-install", "signalint-mcp"],
-      "cwd": "C:\\duong-dan\\tuyet-doi\\den\\project"
+      "cwd": "C:/path/to/project"
     }
   }
 }`;
+const codexConfig = `[mcp_servers.signalint]
+command = "npx"
+args = ["--no-install", "signalint-mcp"]`;
 ---
 
 <DocsLayout
@@ -32,6 +35,10 @@ const antigravity = `{
 		Đối với Antigravity, sử dụng cấu trúc sau:
 	</p>
 	<pre><code>{antigravity}</code></pre>
+
+	<p>Đối với Codex CLI, kiểm tra <code>~/.codex/config.toml</code> hoặc <code>.codex/config.toml</code>:</p>
+	<pre><code>{codexConfig}</code></pre>
+
 	<p>
 		Đối với bản build phát triển npm-link có file shim <code>.cmd</code> bị lỗi, hãy bỏ qua shim:
 	</p>

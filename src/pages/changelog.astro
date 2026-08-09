@@ -1,10 +1,15 @@
 ---
 import ChangelogPage from '../components/changelog/ChangelogPage.astro';
+import { fetchLiveReleases } from '../data/liveData';
 
-const releases = [
-	{ version: '0.2.0', date: '1 Aug 2026', dateTime: '2026-08-01', title: 'Setup command and current documentation', items: ['Added npx signalint-mcp init for project and MCP-client detection.', 'Published the current architecture, contributor, security, and historical design documentation.', 'Includes all pre-launch cache, fan-out, storage-bound, and security hardening merged before publication.'] },
-	{ version: '0.1.0', date: '1 Aug 2026', dateTime: '2026-08-01', title: 'Initial npm publication', items: ['Local stdio MCP server with Oxlint, TypeScript, and optional Biome adapters.', 'SQLite caching, rule-based clustering, and session loop detection.', 'Claude Code, Cursor, Antigravity, and direct CLI setup paths.'] },
-] as const;
+let releases = await fetchLiveReleases();
+if (releases.length === 0) {
+	releases = [
+		{ version: '0.3.3', date: '9 Aug 2026', dateTime: '2026-08-09', title: 'Automated release workflow', items: ['Published via OIDC to MCP registry.'] },
+		{ version: '0.2.0', date: '1 Aug 2026', dateTime: '2026-08-01', title: 'Setup command and current documentation', items: ['Added npx signalint-mcp init for project and MCP-client detection.', 'Published the current architecture, contributor, security, and historical design documentation.', 'Includes all pre-launch cache, fan-out, storage-bound, and security hardening merged before publication.'] },
+		{ version: '0.1.0', date: '1 Aug 2026', dateTime: '2026-08-01', title: 'Initial npm publication', items: ['Local stdio MCP server with Oxlint, TypeScript, and optional Biome adapters.', 'SQLite caching, rule-based clustering, and session loop detection.', 'Claude Code, Cursor, Antigravity, and direct CLI setup paths.'] },
+	];
+}
 ---
 
 <ChangelogPage
@@ -12,7 +17,7 @@ const releases = [
 	title="Changelog — Signalint"
 	description="Published Signalint package versions and the current GitHub Releases record."
 	eyebrow="Release / npm"
-	lede="Package publication history, newest first. Formal release notes will be linked from GitHub Releases as they are created."
-	note="The releases feed currently contains no release objects. The entries below use the public npm registry's publication timestamps and link to the corresponding package versions."
+	lede="Package publication history, newest first. Release notes are fetched directly from GitHub Releases."
+	note="The entries below are fetched at build time from the GitHub repository releases feed."
 	releases={releases}
 />

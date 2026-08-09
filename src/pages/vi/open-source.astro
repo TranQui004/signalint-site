@@ -1,5 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { fetchLiveNpmVersion } from '../../data/liveData';
+
+const currentVersion = await fetchLiveNpmVersion();
 ---
 
 <BaseLayout
@@ -28,7 +31,7 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 	<section class="proof-strip" aria-label="Thông tin dự án mã nguồn mở">
 		<div class="shell proof-strip__grid">
 			<div class="proof-stat" data-reveal><span class="micro-label">Giấy phép</span><strong>MIT</strong><p>Sử dụng, chỉnh sửa và phân phối theo giấy phép của repository.</p></div>
-			<div class="proof-stat" data-reveal><span class="micro-label">Bản phát hành</span><strong>0.2.0</strong><p>Phiên bản <code>latest</code> hiện tại trên npm registry công khai.</p></div>
+			<div class="proof-stat" data-reveal><span class="micro-label">Bản phát hành</span><strong>{currentVersion}</strong><p>Phiên bản <code>latest</code> hiện tại trên npm registry công khai.</p></div>
 			<div class="proof-stat" data-reveal><span class="micro-label">Ma trận CI</span><strong>4</strong><p>Windows, macOS, Ubuntu Node 22 và Ubuntu Node 20.19.</p></div>
 			<div class="proof-stat" data-reveal><span class="micro-label">Transport</span><strong>stdio</strong><p>Giao diện MCP cục bộ không phụ thuộc hosted runtime.</p></div>
 		</div>
