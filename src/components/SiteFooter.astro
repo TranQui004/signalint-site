@@ -1,4 +1,6 @@
 ---
+import { fetchLiveNpmVersion } from '../data/liveData';
+
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
 interface Props {
@@ -8,6 +10,7 @@ interface Props {
 
 const { stickyReveal = false, locale = 'en' } = Astro.props;
 const prefix = locale === 'vi' ? 'vi/' : '';
+const currentVersion = await fetchLiveNpmVersion();
 ---
 
 <footer class:list={['site-footer', { 'site-footer--sticky': stickyReveal }]} data-footer-reveal={stickyReveal ? '' : undefined}>
@@ -34,7 +37,7 @@ const prefix = locale === 'vi' ? 'vi/' : '';
 		</div>
 	</div>
 	<div class="shell footer-bottom" data-footer-item={stickyReveal ? '' : undefined}>
-		<span>signalint-mcp@0.2.0 / schema 1.1</span>
+		<span>signalint-mcp@{currentVersion} / schema 1.1</span>
 		<span>{locale === 'vi' ? 'JavaScript + TypeScript / phát triển công khai' : 'JavaScript + TypeScript / built in public'}</span>
 	</div>
 </footer>

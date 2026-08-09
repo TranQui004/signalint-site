@@ -6,10 +6,13 @@ const antigravity = `{
     "signalint": {
       "command": "cmd",
       "args": ["/c", "npx", "--no-install", "signalint-mcp"],
-      "cwd": "C:\\absolute\\path\\to\\project"
+      "cwd": "C:/path/to/project"
     }
   }
 }`;
+const codexConfig = `[mcp_servers.signalint]
+command = "npx"
+args = ["--no-install", "signalint-mcp"]`;
 ---
 
 <DocsLayout
@@ -30,6 +33,10 @@ const antigravity = `{
 		For Antigravity, use this shape:
 	</p>
 	<pre><code>{antigravity}</code></pre>
+
+	<p>For Codex CLI, check <code>~/.codex/config.toml</code> or <code>.codex/config.toml</code>:</p>
+	<pre><code>{codexConfig}</code></pre>
+
 	<p>
 		For an npm-link development build whose <code>.cmd</code> shim still fails, bypass the shim:
 	</p>

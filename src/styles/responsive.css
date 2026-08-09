@@ -5,7 +5,7 @@
 img, svg, video, canvas { max-width: 100%; }
 pre, .code-frame, .client-command, .table-scroll { max-width: 100%; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
 .prose a, .prose code, .blog-post a { overflow-wrap: anywhere; }
-.table-scroll { display: block; width: 100%; max-width: 100%; margin: 24px 0; border-radius: var(--card-radius); overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
+.table-scroll { display: block; width: 100%; max-width: 100%; margin: 24px 0; overflow-x: auto; overscroll-behavior-inline: contain; -webkit-overflow-scrolling: touch; }
 .table-scroll table, .table-scroll .schema-table, .table-scroll .engine-table, .table-scroll .repository-map { display: table; min-width: 540px; width: 100%; margin: 0; }
 
 /* Rounded corners stay restrained: no shadows, glows, or gradient surfaces. */

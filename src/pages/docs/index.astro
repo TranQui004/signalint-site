@@ -15,6 +15,9 @@ const cursor = `{
     }
   }
 }`;
+const codexConfig = `[mcp_servers.signalint]
+command = "npx"
+args = ["--no-install", "signalint-mcp"]`;
 ---
 
 <DocsLayout
@@ -54,6 +57,11 @@ const cursor = `{
 		On native Windows, set <code>command</code> to <code>cmd</code> and set{' '}
 		<code>args</code> to <code>["/c", "npx", "--no-install", "signalint-mcp"]</code>.
 	</p>
+
+	<h3>Codex CLI</h3>
+	<p>Add to <code>~/.codex/config.toml</code> (global) or <code>.codex/config.toml</code> (project):</p>
+	<pre><code>{codexConfig}</code></pre>
+	<p>Or use the quick-add command: <code>codex mcp add signalint -- npx --no-install signalint-mcp</code></p>
 
 	<h3>Antigravity</h3>
 	<p>
