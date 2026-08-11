@@ -2,6 +2,7 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import BlogCard from '../../../components/blog/BlogCard.astro';
 import { compactDiagnosticsVi } from '../../../content/blog/vi/compactDiagnostics';
+import { toolDescriptionsVi } from '../../../content/blog/vi/toolDescriptions';
 ---
 
 <BaseLayout
@@ -19,6 +20,7 @@ import { compactDiagnosticsVi } from '../../../content/blog/vi/compactDiagnostic
 				</div>
 			</header>
 			<div class="blog-grid" data-motion-group>
+				<BlogCard post={toolDescriptionsVi} locale="vi" />
 				<BlogCard post={compactDiagnosticsVi} locale="vi" />
 			</div>
 		</div>

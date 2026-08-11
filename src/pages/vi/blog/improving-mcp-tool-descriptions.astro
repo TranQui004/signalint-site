@@ -1,0 +1,11 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import BlogPostView from '../../../components/blog/BlogPostView.astro';
+import { toolDescriptionsVi } from '../../../content/blog/vi/toolDescriptions';
+---
+
+<BaseLayout title={`${toolDescriptionsVi.title} — Signalint`} description={toolDescriptionsVi.dek} locale="vi">
+	<div class="shell blog-post-shell">
+		<BlogPostView post={toolDescriptionsVi} locale="vi" />
+	</div>
+</BaseLayout>
