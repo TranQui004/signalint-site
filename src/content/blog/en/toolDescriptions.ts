@@ -10,8 +10,8 @@ export const toolDescriptionsEn: BlogPost = {
 	displayDate: '11 August 2026',
 	readingTime: '6 min read',
 	tags: ['MCP', 'Tool descriptions', 'TDQS'],
-	discussionNumber: 6,
-	discussionUrl: 'https://github.com/TranQui004/signalint-site/discussions/6',
+	discussionNumber: 17,
+	discussionUrl: 'https://github.com/TranQui004/signalint-site/discussions/17',
 	sections: [
 		{
 			heading: 'What the rubric measures',
@@ -24,7 +24,7 @@ export const toolDescriptionsEn: BlogPost = {
 		{
 			heading: 'Where Signalint scored before v0.3.4',
 			paragraphs: [
-				'Before the v0.3.4 rewrite, Signalint\'s five tools had one-sentence descriptions. The overall server-level score placed it in B tier. The single weakest tool was check_files, which scored 2.7 out of 5 — the lowest of the five — with Behavioral Transparency and Completeness both at 2/5.',
+				'Before the v0.3.4 rewrite, Signalint\'s five tools had one-sentence descriptions. The overall server-level score placed it in B tier. The single weakest tool was check_files, which scored 2.7 out of 5 (the lowest of the five), with Behavioral Transparency and Completeness both at 2/5.',
 				'check_files had the shortest description of any tool at the time: "Checks changed files with per-engine content and configuration caching." That sentence notes that caching exists but does not explain what the cache key is, whether the tool is read-only, what happens on invalid paths, when to prefer it over check_project, or what "relative file paths" means in practice.',
 				'The Behavioral Transparency weakness was consistent across all five tools, not just check_files. None of the descriptions disclosed whether the tool modifies state, what happens on an invalid argument, or what a stale reference looks like.',
 			],
@@ -40,11 +40,11 @@ export const toolDescriptionsEn: BlogPost = {
 		{
 			heading: 'What each change addresses',
 			paragraphs: [
-				'"Runs Oxlint and TypeScript (and optionally Biome) lint and type diagnostics" — Purpose Clarity. The original "checks" was too generic for a tool that names and runs specific engines; the rubric scored it 4/5 for this reason.',
-				'"Use this for incremental checks after editing specific files; use check_project for a full project scan" — Usage Guidelines. Before the rewrite, no tool description told the calling agent when to prefer one tool over another.',
-				'"The files parameter expects relative file paths (not glob patterns)" — Parameter Semantics. The original wording said "changed files", which implies git status; the real constraint is file-content-hash-based caching, unrelated to git.',
-				'"Read-only; no files are written or modified" and "absolute paths or paths outside the root return an error response" — Behavioral Transparency, the dimension that was consistently 2–3/5 across all five tools before the rewrite.',
-				'"Caching is file-content-hash-based: a file is re-checked only when its content or the engine\'s config file has changed since the last call, not based on git status. TypeScript is a whole-program engine: it re-runs whenever any TypeScript file in the request has changed content." — Contextual Completeness. This is the actual caching contract that determines when work is skipped; the original said only "per-engine content and configuration caching" without explaining the mechanism.',
+				'"Runs Oxlint and TypeScript (and optionally Biome) lint and type diagnostics": Purpose Clarity. The original "checks" was too generic for a tool that names and runs specific engines; the rubric scored it 4/5 for this reason.',
+				'"Use this for incremental checks after editing specific files; use check_project for a full project scan": Usage Guidelines. Before the rewrite, no tool description told the calling agent when to prefer one tool over another.',
+				'"The files parameter expects relative file paths (not glob patterns)": Parameter Semantics. The original wording said "changed files", which implies git status; the real constraint is file-content-hash-based caching, unrelated to git.',
+				'"Read-only; no files are written or modified" and "absolute paths or paths outside the root return an error response": Behavioral Transparency, the dimension that was consistently 2 to 3/5 across all five tools before the rewrite.',
+				'"Caching is file-content-hash-based: a file is re-checked only when its content or the engine\'s config file has changed since the last call, not based on git status. TypeScript is a whole-program engine: it re-runs whenever any TypeScript file in the request has changed content.": Contextual Completeness. This is the actual caching contract that determines when work is skipped; the original said only "per-engine content and configuration caching" without explaining the mechanism.',
 			],
 		},
 		{
