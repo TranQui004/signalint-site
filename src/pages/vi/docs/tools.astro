@@ -72,7 +72,7 @@ const staleResponse = `{
 	<div class="note"><p>Tham số công cụ từ chối các thuộc tính không xác định. Mảng đường dẫn chấp nhận tối đa 512 chuỗi tương đối theo dự án; các đường dẫn tuyệt đối, thoát ra ngoài (escaping), chứa ký tự NUL và bắt đầu bằng dấu gạch ngang đều bị từ chối.</p></div>
 
 	<h2>ping</h2>
-	<p>Xác nhận rằng server stdio cục bộ đã hoàn tất thủ tục bắt tay (handshake) MCP.</p>
+	<p>Kiểm tra xem MCP server Signalint có đang phản hồi không. Chỉ đọc; trả về chuỗi <code>pong</code> mà không có tác dụng phụ. Dùng công cụ này để xác nhận server đã kết nối trước khi chạy chẩn đoán. Tham số không hợp lệ sẽ trả về phản hồi lỗi; không cần xác thực.</p>
 	<div class="table-scroll">
 		<table class="schema-table">
 			<thead><tr><th>Tham số</th><th>Kết quả</th></tr></thead>
@@ -82,28 +82,28 @@ const staleResponse = `{
 
 	<h2>check_project</h2>
 	<p>
-		Kiểm tra các đường dẫn tương đối dự án được cung cấp qua tất cả các engine đã cấu hình. Trường{' '}
+		Chạy và phân nhóm các chẩn đoán lint và kiểu của Oxlint và TypeScript (và tùy chọn Biome) cho một hoặc nhiều đường dẫn dự án. Chỉ đọc; không file nào được ghi hay thay đổi. Trường{' '}
 		<code>paths</code> tùy chọn là một mảng chuỗi tối đa 512 mục và mặc định là{' '}
-		<code>["."]</code>.
+		<code>["."]</code> — đường dẫn phải tương đối và nằm trong thư mục dự án; đường dẫn tuyệt đối hoặc nằm ngoài thư mục gốc sẽ trả về lỗi. Dùng công cụ này để quét toàn bộ dự án; dùng{' '}<code>check_files</code> cho kiểm tra tăng dần nhanh hơn sau khi sửa file cụ thể. Mỗi lần gọi đều chạy lại tất cả engine đã kích hoạt, không dùng cache.
 	</p>
 	<pre><code>{checkProjectArgs}</code></pre>
 	<p>Trả về cấu trúc <a href="#check-response">CheckResponse</a>. Các lỗi tiến trình của engine tích hợp được giữ lại dưới trạng thái <code>engines</code> tương ứng để các chẩn đoán đã hoàn thành khác vẫn tồn tại.</p>
 
 	<h2>check_files</h2>
 	<p>
-		Kiểm tra danh sách các file tương đối dự án (bắt buộc). Các engine kiểm tra theo từng file nhận các trường hợp cache miss; tsc chỉ được gọi với toàn bộ chương trình khi các snapshot liên quan tới TypeScript có sự thay đổi.
+		Chạy các chẩn đoán lint và kiểu của Oxlint và TypeScript (và tùy chọn Biome) trên một danh sách file cụ thể, sử dụng cache theo hash nội dung để bỏ qua các file không thay đổi. Chỉ đọc; không file nào được ghi hay thay đổi. Dùng công cụ này cho kiểm tra tăng dần sau khi sửa file cụ thể; dùng{' '}<code>check_project</code> để quét toàn bộ. Tham số{' '}<code>files</code> nhận đường dẫn file tương đối (không phải glob pattern) trong thư mục dự án — đường dẫn tuyệt đối hoặc nằm ngoài thư mục gốc sẽ trả về lỗi. Cache dựa trên hash nội dung file: file chỉ được kiểm tra lại khi nội dung hoặc file cấu hình engine (như <code>.oxlintrc</code>, <code>tsconfig.json</code>) thay đổi kể từ lần gọi trước, không dựa theo git. TypeScript là engine toàn chương trình: nó chạy lại bất cứ khi nào có file TypeScript nào trong yêu cầu thay đổi nội dung.
 	</p>
 	<pre><code>{checkFilesArgs}</code></pre>
 	<p>Mảng <code>files</code> là bắt buộc và chấp nhận tối đa 512 chuỗi.</p>
 
 	<h2>get_issue_detail</h2>
-	<p>Mở rộng chi tiết của một issue hoặc cluster từ lần kiểm tra thành công mới nhất. Cung cấp chính xác một tham chiếu không rỗng:</p>
+	<p>Trả về danh sách lỗi đầy đủ cho một cluster ID hoặc một issue ID từ lần gọi <code>check_project</code> hoặc <code>check_files</code> gần nhất. Chỉ đọc; không file nào được thay đổi. Cung cấp đúng một tham chiếu không rỗng — cung cấp cả hai hoặc không có tham chiếu nào sẽ trả về lỗi tham số. Nếu cluster hoặc issue không còn tồn tại trong kết quả mới nhất (ví dụ sau khi chạy lại kiểm tra), trả về <code>status: "stale"</code> thay vì lỗi:</p>
 	<pre><code>{issueReference}</code></pre>
 	<p>Kết quả thành công là một mảng các đối tượng <a href="#normalized-issue">NormalizedIssue</a>. Một tham chiếu cũ (stale) sẽ trả về:</p>
 	<pre><code>{staleResponse}</code></pre>
 
 	<h2>get_loop_status</h2>
-	<p>Chấp nhận <code>{'{}'}</code> và báo cáo các chữ ký lỗi hiện đang được phân loại là lặp đi lặp lại (oscillating):</p>
+	<p>Trả về tất cả chữ ký lỗi hiện đang được đánh dấu là lặp đi lặp lại (xuất hiện và biến mất liên tục) trong phiên server này. Chỉ đọc; không file nào được thay đổi. Lịch sử lặp được tích lũy qua tất cả các lần gọi <code>check_project</code> và <code>check_files</code> trong vòng đời tiến trình, và được khôi phục từ <code>.signalint/session.jsonl</code> khi khởi động lại. Chấp nhận <code>{'{}'}</code> và báo cáo các chữ ký lỗi hiện được phân loại là lặp đi lặp lại:</p>
 	<pre><code>{loopStatus}</code></pre>
 
 	<h2 id="check-response">CheckResponse · schema 1.1</h2>

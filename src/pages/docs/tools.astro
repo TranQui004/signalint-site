@@ -70,7 +70,7 @@ const staleResponse = `{
 	<div class="note"><p>Tool arguments reject unknown properties. Path arrays accept at most 512 project-relative strings; absolute, escaping, NUL-containing, and leading-dash paths are refused.</p></div>
 
 	<h2>ping</h2>
-	<p>Confirms that the local stdio server completed its MCP handshake.</p>
+	<p>Checks whether the Signalint MCP server is responsive. Read-only; returns the string <code>pong</code> with no side effects. Use this to verify the server is connected before running diagnostics. Invalid arguments return an error response; no authentication is required.</p>
 	<div class="table-scroll">
 		<table class="schema-table">
 			<thead><tr><th>Arguments</th><th>Result</th></tr></thead>
@@ -80,30 +80,26 @@ const staleResponse = `{
 
 	<h2>check_project</h2>
 	<p>
-		Checks the supplied project-relative paths through all configured engines. The optional{' '}
-		<code>paths</code> field is a string array of at most 512 items and defaults to{' '}
-		<code>["."]</code>.
+		Runs and clusters Oxlint and TypeScript (and optionally Biome) lint and type diagnostics for one or more project paths. Read-only; no files are written or modified. Paths default to the project root (<code>"."</code>) when omitted; paths must be relative and within the project directory — absolute paths or paths outside the root return an error response. Use this for a full project scan; use{' '}<code>check_files</code> instead for faster incremental checks after editing specific files. Each call re-runs all enabled engines with no caching.
 	</p>
 	<pre><code>{checkProjectArgs}</code></pre>
 	<p>Returns the <a href="#check-response">CheckResponse</a> shape. Built-in engine failures are retained under the corresponding <code>engines</code> status so other completed diagnostics survive.</p>
 
 	<h2>check_files</h2>
 	<p>
-		Checks a required list of project-relative files. File-local engines receive cache
-		misses; tsc is invoked against the whole configured program only when supplied
-		TypeScript-relevant snapshots changed.
+		Runs Oxlint and TypeScript (and optionally Biome) lint and type diagnostics on a specific list of files, using per-engine content-hash caching to skip unchanged files. Read-only; no files are written or modified. Use this for incremental checks after editing specific files; use{' '}<code>check_project</code> for a full project scan. The{' '}<code>files</code> parameter expects relative file paths (not glob patterns) within the project directory — absolute paths or paths outside the root return an error response. Caching is file-content-hash-based: a file is re-checked only when its content or the engine's config file (e.g., <code>.oxlintrc</code>, <code>tsconfig.json</code>) has changed since the last call, not based on git status. TypeScript is a whole-program engine: it re-runs whenever any TypeScript file in the request has changed content.
 	</p>
 	<pre><code>{checkFilesArgs}</code></pre>
 	<p>The <code>files</code> array is required and accepts at most 512 strings.</p>
 
 	<h2>get_issue_detail</h2>
-	<p>Expands an issue or cluster from the latest successful check. Supply exactly one non-empty reference:</p>
+	<p>Returns the full issue list for either one cluster ID or one issue ID from the most recent <code>check_project</code> or <code>check_files</code> call. Read-only; no files are written or modified. Supply exactly one non-empty reference — supplying both or neither returns an argument error. If the referenced cluster or issue no longer exists in the latest results (e.g., after re-running a check), returns a <code>status: "stale"</code> response instead of an error:</p>
 	<pre><code>{issueReference}</code></pre>
 	<p>The successful result is an array of <a href="#normalized-issue">NormalizedIssue</a> objects. An old reference returns:</p>
 	<pre><code>{staleResponse}</code></pre>
 
 	<h2>get_loop_status</h2>
-	<p>Accepts <code>{'{}'}</code> and reports issue signatures currently classified as oscillating:</p>
+	<p>Returns all diagnostic issue signatures currently flagged as looping (repeatedly appearing and disappearing) in this server session. Read-only; no files are written or modified. Loop history is accumulated across all <code>check_project</code> and <code>check_files</code> calls in this process lifetime, and is restored from <code>.signalint/session.jsonl</code> on startup. Accepts <code>{'{}'}</code> and reports issue signatures currently classified as oscillating:</p>
 	<pre><code>{loopStatus}</code></pre>
 
 	<h2 id="check-response">CheckResponse · schema 1.1</h2>
