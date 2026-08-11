@@ -8,8 +8,17 @@
 		downloads?: unknown;
 	}
 
-	const endpoint = 'https://api.npmjs.org/downloads/point/last-week/signalint-mcp';
+	// Use a rolling date range rather than npm's "last-week" keyword.
+	// "last-week" is a fixed Mon-Sun calendar window that stays frozen all week;
+	// a date range computed at fetch time always reflects the last 7 days.
+	const yesterday = new Date();
+	yesterday.setUTCDate(yesterday.getUTCDate() - 1);
+	const weekAgo = new Date(yesterday);
+	weekAgo.setUTCDate(yesterday.getUTCDate() - 6);
+	const fmt = (d: Date): string => d.toISOString().split('T')[0];
+	const endpoint = `https://api.npmjs.org/downloads/point/${fmt(weekAgo)}:${fmt(yesterday)}/signalint-mcp`;
 	const numberFormatter = new Intl.NumberFormat('en-US');
+
 
 	const animateCount = (element: HTMLElement, target: number): void => {
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
