@@ -31,12 +31,17 @@ export const fetchLiveReleases = async (): Promise<readonly ReleaseData[]> => {
 			const dateStr = `${dateObj.getDate()} ${monthNames[dateObj.getMonth()]} ${dateObj.getFullYear()}`;
 			const dateTimeStr = dateObj.toISOString().split('T')[0];
 			
-			// Extract bullet points from markdown body
-			const bodyLines = release.body ? release.body.split('\n') : [];
+			// Extract bullet points from the summary section only (before "## What's Changed")
+			const summaryBody = release.body
+				? release.body.split(/^##\s+What's Changed/m)[0]
+				: '';
+			const bodyLines = summaryBody.split('\n');
 			const items = bodyLines
 				.map((line: string) => line.trim())
 				.filter((line: string) => line.startsWith('- ') || line.startsWith('* '))
-				.map((line: string) => line.substring(2).trim());
+				// Strip markdown links: [text](url) -> text
+				.map((line: string) => line.substring(2).trim().replace(/\[([^\]]+)\]\([^)]+\)/g, '$1'))
+				.slice(0, 5);
 
 			return {
 				version: release.tag_name.replace(/^v/, ''),

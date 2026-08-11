@@ -40,7 +40,7 @@
 .changelog-toc__intro > p:last-child { max-width: 34ch; margin: 16px 0 0; color: var(--black-48); font-size: 0.78rem; line-height: 1.62; }
 
 .release-tree, .release-tree ol { margin: 0; padding: 0; list-style: none; }
-.release-tree { margin-top: 28px; }
+.release-tree { margin-top: 28px; max-height: calc(100vh - 280px); overflow-y: auto; padding-right: 4px; }
 .release-tree ol { margin: 14px 0 0 11px; padding-left: 25px; border-left: 1px solid var(--black-16); }
 .release-tree ol ol { margin-top: 12px; }
 .release-tree__year, .release-tree__month, .release-tree__day { display: block; color: var(--black); font-family: var(--font-mono); font-weight: 650; }
