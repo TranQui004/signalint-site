@@ -24,7 +24,7 @@ export const toolDescriptionsEn: BlogPost = {
 		{
 			heading: 'Where Signalint scored before v0.3.4',
 			paragraphs: [
-				'Before the v0.3.4 rewrite, Signalint\'s five tools had one-sentence descriptions. The overall server-level score placed it in B tier. The single weakest tool was check_files, which scored 2.7 out of 5 (the lowest of the five), with Behavioral Transparency and Completeness both at 2/5.',
+				'Before the v0.3.4 rewrite, Signalint\'s five tools had one-sentence descriptions. The Tool Definition Quality component — the server-level TDQS score computed from all five tools — placed it in B tier. The single weakest tool was check_files, which scored 2.7 out of 5 (the lowest of the five), with Behavioral Transparency and Completeness both at 2/5.',
 				'check_files had the shortest description of any tool at the time: "Checks changed files with per-engine content and configuration caching." That sentence notes that caching exists but does not explain what the cache key is, whether the tool is read-only, what happens on invalid paths, when to prefer it over check_project, or what "relative file paths" means in practice.',
 				'The Behavioral Transparency weakness was consistent across all five tools, not just check_files. None of the descriptions disclosed whether the tool modifies state, what happens on an invalid argument, or what a stale reference looks like.',
 			],

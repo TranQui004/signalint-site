@@ -24,7 +24,7 @@ export const toolDescriptionsVi: BlogPost = {
 		{
 			heading: 'Điểm Signalint trước v0.3.4',
 			paragraphs: [
-				'Trước bản viết lại v0.3.4, mỗi công cụ của Signalint chỉ có một câu mô tả. Điểm tổng xếp Signalint vào hạng B. Công cụ kém nhất là check_files với 2,7 trên 5 — thấp nhất trong cả năm — đặc biệt yếu ở hai tiêu chí Behavioral Transparency và Completeness, cả hai chỉ đạt 2/5.',
+				'Trước bản viết lại v0.3.4, mỗi công cụ của Signalint chỉ có một câu mô tả. Thành phần Tool Definition Quality — điểm TDQS cấp server được tính từ cả năm công cụ — xếp Signalint vào hạng B. Công cụ kém nhất là check_files với 2,7 trên 5 (thấp nhất trong cả năm), đặc biệt yếu ở hai tiêu chí Behavioral Transparency và Completeness, cả hai chỉ đạt 2/5.',
 				'check_files có mô tả ngắn nhất vào thời điểm đó: "Checks changed files with per-engine content and configuration caching." Câu này cho biết có dùng cache nhưng không nói cache dựa trên gì, công cụ có ghi file không, đường dẫn sai thì xảy ra điều gì, khi nào nên dùng thay cho check_project, hay "đường dẫn tương đối" cụ thể có nghĩa là gì.',
 				'Điểm thấp về Behavioral Transparency không phải vấn đề riêng của check_files — tất cả năm công cụ đều mắc. Không mô tả nào tiết lộ công cụ có thay đổi trạng thái hệ thống không, tham số sai thì trả về gì, hay phản hồi "stale" (tham chiếu cũ) trông như thế nào.',
 			],
