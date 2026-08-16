@@ -42,7 +42,7 @@ const eyebrow = content.hero.eyebrow.replace('{VERSION}', currentVersion).replac
 				{content.manifestLabels.map((label, index) => <div class="ledger-row"><span>{label}</span><span>{manifestValues[index]}</span></div>)}
 			</div>
 		</div>
-		<div class="hero-command"><div class="shell hero-command__inner"><div class="hero-command__label"><span>{content.hero.installLabel}</span><NpmDownloads /></div><CopyCommand command="npm install --save-dev signalint-mcp && npx signalint-mcp init" /></div></div>
+		<div class="hero-command"><div class="shell hero-command__inner"><div class="hero-command__label"><span>{content.hero.installLabel}</span><NpmDownloads locale={locale} /></div><CopyCommand command="npm install --save-dev signalint-mcp && npx signalint-mcp init" /></div></div>
 	</section>
 
 	<section class="proof-strip" aria-label={content.statsAria}>

@@ -50,7 +50,7 @@ Malformed session lines skipped: 0`;
 			<thead><tr><th>Metric</th><th>What it counts</th></tr></thead>
 			<tbody>
 				<tr><td>Average payload reduction</td><td>Normalized raw JSON bytes versus clustered JSON bytes. Clean checks with zero raw payload are excluded.</td></tr>
-				<tr><td>Engine-file cache hit rate</td><td>Each enabled engine lookup separately—not unique files and not subprocess avoidance.</td></tr>
+				<tr><td>Engine-file cache hit rate</td><td>Each enabled engine lookup separately, not unique files and not subprocess avoidance.</td></tr>
 				<tr><td>Average / max latency</td><td>Handler wall-clock time through validation, cache/engine work, clustering, and loop evaluation; excludes telemetry append and stdio transport.</td></tr>
 				<tr><td>Loop warnings</td><td>Distinct issue signatures that crossed the current oscillation threshold.</td></tr>
 			</tbody>
@@ -59,10 +59,10 @@ Malformed session lines skipped: 0`;
 
 	<h2>Local artifacts</h2>
 	<ul>
-		<li><code>.signalint/cache.sqlite</code> — bounded diagnostic cache.</li>
-		<li><code>.signalint/cache/tsc.tsbuildinfo</code> — TypeScript incremental state.</li>
-		<li><code>.signalint/session.jsonl</code> — loop appearances and check metrics.</li>
-		<li><code>.signalint/session.jsonl.1</code> — one rotated history backup.</li>
+		<li><code>.signalint/cache.sqlite</code>: bounded diagnostic cache.</li>
+		<li><code>.signalint/cache/tsc.tsbuildinfo</code>: TypeScript incremental state.</li>
+		<li><code>.signalint/session.jsonl</code>: loop appearances and check metrics.</li>
+		<li><code>.signalint/session.jsonl.1</code>: one rotated history backup.</li>
 	</ul>
 	<p>Keep the entire <code>.signalint/</code> directory out of version control.</p>
 </DocsLayout>

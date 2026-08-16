@@ -1,6 +1,15 @@
+﻿---
+interface Props {
+	locale?: 'en' | 'vi';
+}
+
+const { locale = 'en' } = Astro.props;
+const label = locale === 'vi' ? 'tổng lượt tải' : 'total downloads';
+---
+
 <span class="npm-downloads" data-npm-downloads>
 	<strong data-npm-download-count aria-live="polite">—</strong>
-	<span>downloads / last 7 days</span>
+	<span>{label}</span>
 </span>
 
 <script>
@@ -8,17 +17,11 @@
 		downloads?: unknown;
 	}
 
-	// Use a rolling date range rather than npm's "last-week" keyword.
-	// "last-week" is a fixed Mon-Sun calendar window that stays frozen all week;
-	// a date range computed at fetch time always reflects the last 7 days.
 	const yesterday = new Date();
 	yesterday.setUTCDate(yesterday.getUTCDate() - 1);
-	const weekAgo = new Date(yesterday);
-	weekAgo.setUTCDate(yesterday.getUTCDate() - 6);
 	const fmt = (d: Date): string => d.toISOString().split('T')[0];
-	const endpoint = `https://api.npmjs.org/downloads/point/${fmt(weekAgo)}:${fmt(yesterday)}/signalint-mcp`;
+	const endpoint = `https://api.npmjs.org/downloads/point/2024-01-01:${fmt(yesterday)}/signalint-mcp`;
 	const numberFormatter = new Intl.NumberFormat('en-US');
-
 
 	const animateCount = (element: HTMLElement, target: number): void => {
 		if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
