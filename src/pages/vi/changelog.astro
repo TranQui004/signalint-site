@@ -1,21 +1,14 @@
----
+﻿---
 import ChangelogPage from '../../components/changelog/ChangelogPage.astro';
 import { changelogVi } from '../../content/site/vi/changelog';
-import { fetchLiveReleases } from '../../data/liveData';
-
-let releases = await fetchLiveReleases();
-if (releases.length === 0) {
-	// @ts-ignore - The structure is compatible enough
-	releases = changelogVi;
-}
 ---
 
 <ChangelogPage
 	locale="vi"
 	title="Lịch sử thay đổi — Signalint"
-	description="Các phiên bản Signalint đã phát hành trên npm."
+	description="Các phiên bản Signalint đã phát hành trên npm và GitHub Releases."
 	eyebrow="Phát hành / npm"
-	lede="Lịch sử xuất bản package, mới nhất ở trên. Ghi chú phát hành được lấy trực tiếp từ GitHub Releases."
-	note="Các mục bên dưới được lấy tại thời điểm build từ GitHub repository."
-	releases={releases}
+	lede="Lịch sử xuất bản package, phiên bản mới nhất ở trên."
+	note="Tất cả các bản phát hành đều được kiểm thử trên ma trận CI 4 nền tảng và xuất bản tự động qua"
+	releases={changelogVi}
 />
