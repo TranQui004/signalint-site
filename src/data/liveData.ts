@@ -1,4 +1,4 @@
-export interface ReleaseData {
+﻿export interface ReleaseData {
 	version: string;
 	date: string;
 	dateTime: string;
@@ -9,11 +9,11 @@ export interface ReleaseData {
 export const fetchLiveNpmVersion = async (): Promise<string> => {
 	try {
 		const res = await fetch('https://registry.npmjs.org/signalint-mcp/latest');
-		if (!res.ok) return '0.3.5';
+		if (!res.ok) return '0.3.6';
 		const data = await res.json();
-		return data.version || '0.3.5';
+		return data.version || '0.3.6';
 	} catch (err) {
-		return '0.3.5';
+		return '0.3.6';
 	}
 };
 
