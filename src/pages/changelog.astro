@@ -1,13 +1,87 @@
----
+﻿---
 import ChangelogPage from '../components/changelog/ChangelogPage.astro';
 import { fetchLiveReleases } from '../data/liveData';
 
 let releases = await fetchLiveReleases();
 if (releases.length === 0) {
 	releases = [
-		{ version: '0.3.3', date: '9 Aug 2026', dateTime: '2026-08-09', title: 'Automated release workflow', items: ['Published via OIDC to MCP registry.'] },
-		{ version: '0.2.0', date: '1 Aug 2026', dateTime: '2026-08-01', title: 'Setup command and current documentation', items: ['Added npx signalint-mcp init for project and MCP-client detection.', 'Published the current architecture, contributor, security, and historical design documentation.', 'Includes all pre-launch cache, fan-out, storage-bound, and security hardening merged before publication.'] },
-		{ version: '0.1.0', date: '1 Aug 2026', dateTime: '2026-08-01', title: 'Initial npm publication', items: ['Local stdio MCP server with Oxlint, TypeScript, and optional Biome adapters.', 'SQLite caching, rule-based clustering, and session loop detection.', 'Claude Code, Cursor, Antigravity, and direct CLI setup paths.'] },
+		{
+			version: '0.3.6',
+			date: '16 Aug 2026',
+			dateTime: '2026-08-16',
+			title: 'Dependency updates and Node 20.19 compatibility',
+			items: [
+				'Updated @modelcontextprotocol/sdk to 1.30.0.',
+				'Updated oxlint to 1.78.0 and hardened adapter against non-JSON output prefixes.',
+				'Updated @biomejs/biome to 2.5.8.',
+				'Retained better-sqlite3 at 12.6.2 for verified Node 20.19 compatibility.',
+			],
+		},
+		{
+			version: '0.3.5',
+			date: '16 Aug 2026',
+			dateTime: '2026-08-16',
+			title: 'Diagnostic compression example and search discovery',
+			items: [
+				'Added before/after diagnostic compression example to README (86.5% payload reduction).',
+				'Reordered README top section so the intro precedes the registry block.',
+				'Expanded package.json keywords for npm search discovery.',
+			],
+		},
+		{
+			version: '0.3.4',
+			date: '11 Aug 2026',
+			dateTime: '2026-08-11',
+			title: 'MCP tool description overhaul for Glama A tier',
+			items: [
+				'Rewrote all 5 MCP tool descriptions for behavioral transparency.',
+				'Clarified file-content-hash caching semantics and read-only guarantees.',
+				'Added glama.json maintainer configuration.',
+			],
+		},
+		{
+			version: '0.3.3',
+			date: '9 Aug 2026',
+			dateTime: '2026-08-09',
+			title: 'Automated release workflow',
+			items: [
+				'Shortened server.json description under 100 characters for MCP Registry.',
+				'Automated release workflow via GitHub OIDC.',
+			],
+		},
+		{
+			version: '0.3.0',
+			date: '8 Aug 2026',
+			dateTime: '2026-08-08',
+			title: 'Engine fan-out and Biome support',
+			items: [
+				'Upgraded check response schema to 1.1 with per-engine statuses.',
+				'Added Biome adapter for linting and formatting diagnostics.',
+				'Preserved surviving engine diagnostics when sibling engines fail.',
+			],
+		},
+		{
+			version: '0.2.0',
+			date: '1 Aug 2026',
+			dateTime: '2026-08-01',
+			title: 'Setup command and documentation suite',
+			items: [
+				'Added npx signalint-mcp init for project and MCP client detection.',
+				'Published architecture, contributor, security, and design documentation.',
+				'Includes all pre-launch cache, fan-out, storage-bound, and security hardening.',
+			],
+		},
+		{
+			version: '0.1.0',
+			date: '1 Aug 2026',
+			dateTime: '2026-08-01',
+			title: 'Initial npm publication',
+			items: [
+				'Local stdio MCP server with Oxlint, TypeScript, and optional Biome adapters.',
+				'SQLite caching, rule-based clustering, and session loop detection.',
+				'Claude Code, Cursor, Antigravity, and direct CLI setup paths.',
+			],
+		},
 	];
 }
 ---
@@ -17,7 +91,7 @@ if (releases.length === 0) {
 	title="Changelog — Signalint"
 	description="Published Signalint package versions and the current GitHub Releases record."
 	eyebrow="Release / npm"
-	lede="Package publication history, newest first. Release notes are fetched directly from GitHub Releases."
-	note="The entries below are fetched at build time from the GitHub repository releases feed."
+	lede="Package publication history, newest first. Release notes are synchronized with GitHub Releases."
+	note="All releases are verified on a 4-platform CI matrix and published via"
 	releases={releases}
 />
