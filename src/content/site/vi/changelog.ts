@@ -8,6 +8,17 @@
 
 export const changelogVi: readonly ReleaseItemVi[] = [
 	{
+		version: '0.3.7',
+		date: '19 tháng 8, 2026',
+		dateTime: '2026-08-19',
+		title: 'Hỗ trợ outputSchema và structuredContent chuẩn MCP 1.30',
+		items: [
+			'Khai báo outputSchema chặt chẽ cho toàn bộ 5 công cụ MCP theo chuẩn SDK 1.30.0.',
+			'Trả về structuredContent có cấu trúc song song với khối text JSON để tương thích ngược 100%.',
+			'Cập nhật tài liệu kỹ thuật về cơ chế phân phối kết quả chẩn đoán.',
+		],
+	},
+	{
 		version: '0.3.6',
 		date: '16 tháng 8, 2026',
 		dateTime: '2026-08-16',

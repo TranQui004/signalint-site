@@ -6,6 +6,17 @@ let releases = await fetchLiveReleases();
 if (releases.length === 0) {
 	releases = [
 		{
+			version: '0.3.7',
+			date: '19 Aug 2026',
+			dateTime: '2026-08-19',
+			title: 'MCP outputSchema and structuredContent support',
+			items: [
+				'Added strict outputSchema declarations across all five MCP tools.',
+				'Delivered structuredContent in CallToolResult alongside backwards-compatible text content.',
+				'Updated architecture and technical documentation for structured responses.',
+			],
+		},
+		{
 			version: '0.3.6',
 			date: '16 Aug 2026',
 			dateTime: '2026-08-16',

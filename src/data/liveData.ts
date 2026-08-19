@@ -9,11 +9,11 @@
 export const fetchLiveNpmVersion = async (): Promise<string> => {
 	try {
 		const res = await fetch('https://registry.npmjs.org/signalint-mcp/latest');
-		if (!res.ok) return '0.3.6';
+		if (!res.ok) return '0.3.7';
 		const data = await res.json();
-		return data.version || '0.3.6';
+		return data.version || '0.3.7';
 	} catch (err) {
-		return '0.3.6';
+		return '0.3.7';
 	}
 };
 
