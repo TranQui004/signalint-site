@@ -14,7 +14,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
 
 	<div class="architecture-stack" aria-label="Signalint layer diagram">
 		<div class="architecture-row"><strong>MCP client</strong><span>Calls a strict tool contract over stdio.</span></div>
-		<div class="architecture-row"><strong>MCP server</strong><span>Validates arguments, loads configuration, coordinates checks, and serializes schema 1.1 responses.</span></div>
+		<div class="architecture-row"><strong>MCP server</strong><span>Validates arguments, loads configuration, coordinates checks, and serializes schema 1.2 responses.</span></div>
 		<div class="architecture-row"><strong>Adapters</strong><span>Oxlint, tsc, and Biome subprocess boundaries with timeouts and output ceilings.</span></div>
 		<div class="architecture-row"><strong>Cache</strong><span>SQLite file results and whole-program state, keyed by content, config, Signalint version, and engine version.</span></div>
 		<div class="architecture-row"><strong>Clusters</strong><span>Rule-first grouping, priority assignment, distinct samples, and response truncation.</span></div>
@@ -31,7 +31,7 @@ import DocsLayout from '../../layouts/DocsLayout.astro';
 		<li>tsc is skipped only when supplied TypeScript-relevant snapshots still match the latest whole-program result.</li>
 		<li>Enabled engines settle independently, so one failure does not discard another engine's diagnostics.</li>
 		<li>Issues are normalized, filtered, clustered, sorted with priority 1 first, and limited to ten clusters by default.</li>
-		<li>Loop state and metrics are recorded before the JSON response is returned.</li>
+		<li>Loop and churn state and metrics are recorded before the JSON response is returned.</li>
 	</ol>
 
 	<h2>Engine invocation strategy</h2>

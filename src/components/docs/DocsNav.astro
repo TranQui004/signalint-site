@@ -6,30 +6,30 @@ interface Props {
 	locale?: 'en' | 'vi';
 }
 
-const { version = '0.2.0', locale = 'en' } = Astro.props;
+const { version = '0.4.0', locale = 'en' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const currentPath = Astro.url.pathname;
 const localePrefix = locale === 'vi' ? 'vi/' : '';
 const links = [
-	{ label: locale === 'vi' ? 'Bắt đầu' : 'Getting started', path: 'docs/' },
-	{ label: locale === 'vi' ? 'Cài đặt & client' : 'Setup & clients', path: 'docs/setup/' },
-	{ label: locale === 'vi' ? 'Cấu hình' : 'Configuration', path: 'docs/configuration/' },
+	{ label: locale === 'vi' ? 'Báº¯t Ä‘áº§u' : 'Getting started', path: 'docs/' },
+	{ label: locale === 'vi' ? 'CÃ i Ä‘áº·t & client' : 'Setup & clients', path: 'docs/setup/' },
+	{ label: locale === 'vi' ? 'Cáº¥u hÃ¬nh' : 'Configuration', path: 'docs/configuration/' },
 	{ label: 'MCP tools', path: 'docs/tools/' },
-	{ label: locale === 'vi' ? 'CLI & số liệu' : 'CLI & metrics', path: 'docs/cli/' },
-	{ label: locale === 'vi' ? 'Kiến trúc' : 'Architecture', path: 'docs/architecture/' },
-	{ label: locale === 'vi' ? 'Bảo mật' : 'Security model', path: 'docs/security/' },
+	{ label: locale === 'vi' ? 'CLI & sá»‘ liá»‡u' : 'CLI & metrics', path: 'docs/cli/' },
+	{ label: locale === 'vi' ? 'Kiáº¿n trÃºc' : 'Architecture', path: 'docs/architecture/' },
+	{ label: locale === 'vi' ? 'Báº£o máº­t' : 'Security model', path: 'docs/security/' },
 	{ label: 'FAQ', path: 'docs/faq/' },
-	{ label: locale === 'vi' ? 'Khắc phục lỗi' : 'Troubleshooting', path: 'docs/troubleshooting/' },
+	{ label: locale === 'vi' ? 'Kháº¯c phá»¥c lá»—i' : 'Troubleshooting', path: 'docs/troubleshooting/' },
 ];
 
 const hrefFor = (path: string) => `${base}${localePrefix}${path}`;
 const normalizedCurrent = currentPath.endsWith('/') ? currentPath : `${currentPath}/`;
 ---
 
-<aside class="docs-sidebar" aria-label={locale === 'vi' ? 'Điều hướng tài liệu' : 'Documentation navigation'}>
+<aside class="docs-sidebar" aria-label={locale === 'vi' ? 'Äiá»u hÆ°á»›ng tÃ i liá»‡u' : 'Documentation navigation'}>
 	<div class="docs-sidebar__head">
-		<p class="docs-sidebar-title">{locale === 'vi' ? 'Tài liệu' : 'Documentation'}</p>
-		<span class="docs-sidebar-meta">v{version} / {version === '0.1.0' ? 'archive' : 'schema 1.1'}</span>
+		<p class="docs-sidebar-title">{locale === 'vi' ? 'TÃ i liá»‡u' : 'Documentation'}</p>
+		<span class="docs-sidebar-meta">v{version} / {version === '0.1.0' ? 'archive' : 'schema 1.2'}</span>
 		<DocsVersionPicker version={version} locale={locale} />
 	</div>
 	<nav>

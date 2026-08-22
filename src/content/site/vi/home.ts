@@ -8,7 +8,7 @@ const cacheKey = `sha256(nội dung file)
 const loopWarning = `{
   "signature": "no-unused-vars:<identifier> is unused",
   "occurrences": 3,
-  "hint": "Lỗi này đã được sửa rồi quay lại 3 lần — nên thử cách khác"
+  "hint": "This issue was fixed and reappeared 3 times — consider a different approach"
 }`;
 const fanout = `"engines": {
   "oxlint": { "status": "ok" },
@@ -17,21 +17,21 @@ const fanout = `"engines": {
 }`;
 
 export const homeVi: HomeContent = {
-	title: 'Signalint — phản hồi chẩn đoán gọn cho coding agent',
+	title: 'Signalint — chẩn đoán tinh gọn cho coding agent',
 	description: 'MCP server cục bộ, có cache và loop detection cho chẩn đoán JavaScript/TypeScript.',
-	hero: { eyebrow: 'MCP stdio chạy cục bộ / signalint-mcp@0.2.0', title: 'Chẩn đoán từ engine.', emphasis: 'Phản hồi vừa tầm agent.', lede: 'Signalint chạy Oxlint, TypeScript và Biome ngay trong máy; phần việc không đổi được cache, lỗi lặp được gom lại, còn vòng lặp sửa–hỏng được cảnh báo trước khi phản hồi quay về coding agent.', primaryAction: 'Đọc hướng dẫn', secondaryAction: 'Xem mã nguồn ↗', manifestTitle: 'Thông tin runtime', manifestState: 'tiến trình cục bộ', installLabel: 'Cài từ npm' },
+	hero: { eyebrow: 'Local stdio MCP / signalint-mcp@0.2.0', title: 'Chẩn đoán chuẩn xác.', emphasis: 'Phản hồi vừa vặn cho agent.', lede: 'Signalint là MCP server chạy qua stdio cục bộ thực thi Oxlint, TypeScript và Biome (tùy chọn)—sau đó cache phần việc chưa đổi, gom cụm lỗi lặp lại và phát hiện vòng lặp sửa lỗi trước khi trả phản hồi có phiên bản cho agent.', primaryAction: 'Xem hướng dẫn cài đặt', secondaryAction: 'Xem mã nguồn ↗', manifestTitle: 'Thông tin runtime', manifestState: 'tiến trình cục bộ', installLabel: 'Cài đặt từ npm' },
 	manifestLabels: ['Transport', 'Package', 'Engine', 'Phản hồi', 'Giấy phép'],
-	statsAria: 'Số liệu đã đo và giới hạn đã cam kết',
+	statsAria: 'Số liệu đo được và quy chuẩn',
 	stats: [
 		{ label: 'Giảm payload', value: 86.53, decimals: 2, suffix: '%', detail: 'Fixture hiện tại: 9.151 B dữ liệu thô còn 1.233 B sau khi gom cụm.' },
-		{ label: 'Kiểm tra tăng dần', value: 3.10, decimals: 2, suffix: ' ms', detail: 'Kết quả acceptance gần nhất; ngưỡng bắt buộc là dưới 300 ms.' },
-		{ label: 'Gom lỗi fixture', value: 40, suffix: ' → ', secondaryValue: 4, detail: 'Bốn mươi lỗi thô được thu về bốn cụm theo rule.' },
-		{ label: 'Giới hạn đầu vào', value: 512, suffix: '', detail: 'Số đường dẫn tương đối tối đa trong một lần gọi MCP.' },
+		{ label: 'Check tăng dần', value: 3.10, decimals: 2, suffix: ' ms', detail: 'Lần chạy acceptance gần nhất; trần tối đa là 300 ms cho fixture 50 file.' },
+		{ label: 'Nén fixture', value: 40, suffix: ' → ', secondaryValue: 4, detail: 'Bốn mươi lỗi thô được gom thành bốn cụm theo rule.' },
+		{ label: 'Giới hạn đầu vào', value: 512, suffix: '', detail: 'Số đường dẫn tương đối tối đa được chấp nhận trong một lần gọi MCP.' },
 	],
-	storyHeading: { index: '01 / phản hồi', title: 'Xem đúng thứ agent nhận được.', body: 'Cuộn qua fixture 40 lỗi để thấy các dòng đã chuẩn hóa trở thành phản hồi schema 1.1 có giới hạn rõ ràng.' },
-	diagnostic: { ariaLabel: 'Minh họa cuộn về cách nén chẩn đoán', steps: [
-		{ kicker: '01 / output từ engine', title: 'Bốn mươi lỗi hợp lệ vẫn có thể là một phản hồi tệ.', body: 'Engine vẫn là nguồn sự thật. Signalint trước tiên chuẩn hóa vị trí, rule ID, severity và message.' },
-		{ kicker: '02 / gom theo rule', title: 'Các triệu chứng lặp lại trở thành một mục cần xem.', body: 'Nhóm rule lớn trải trên nhiều file nhận một root-cause summary cùng các issue ID mẫu không trùng nhau.' },
+	storyHeading: { index: '01 / phản hồi', title: 'Xem đúng thứ agent nhận được.', body: 'Cuộn qua fixture 40 lỗi để thấy các dòng đã chuẩn hóa trở thành phản hồi schema 1.2 có giới hạn rõ ràng.' },
+	diagnostic: { ariaLabel: 'Minh họa nén chẩn đoán theo thao tác cuộn', steps: [
+		{ kicker: '01 / đầu ra engine', title: 'Bốn mươi lỗi thật vẫn có thể là phản hồi kém cho agent.', body: 'Các engine luôn giữ quyền phán quyết. Signalint chuẩn hóa vị trí, mã rule, mức độ nghiêm trọng và thông điệp trước.' },
+		{ kicker: '02 / gom nhóm theo rule', title: 'Các triệu chứng lặp lại trở thành một mục tiêu xem xét.', body: 'Nhóm rule lớn trải rộng nhiều file nhận một tóm tắt nguyên nhân gốc và danh sách mẫu issue ID riêng biệt.' },
 		{ kicker: '03 / phản hồi có giới hạn', title: 'Agent nhận bốn cụm, không phải bốn mươi dòng.', body: 'Fixture kiểm soát giảm từ 9.151 byte còn 1.233 byte mà vẫn giữ trạng thái engine và tham chiếu issue.' },
 	], rawStatus: 'thô / 40 lỗi', clusteredStatus: 'đã gom / 4 cụm', additionalIssues: '34 lỗi chuẩn hóa khác', clusterCount: '10 lỗi / 10 file', priorityLabel: 'ưu tiên 1 đứng trước', rawIssuesLabel: 'lỗi thô', clustersLabel: 'cụm', playbackLabel: 'tự chạy', scrollLabel: 'cuộn để theo dõi' },
 	pipelineHeading: { index: '02 / cơ chế', title: 'Pipeline cục bộ với ranh giới rõ ràng.', body: 'Signalint giữ engine chẩn đoán làm nguồn sự thật và biểu diễn rõ trạng thái cache, lỗi tiến trình cùng loop detection.' },
@@ -39,11 +39,11 @@ export const homeVi: HomeContent = {
 		{ kicker: 'Ranh giới tin cậy', title: 'Kiểm tra trước khi đọc.', body: 'Zod từ chối argument sai shape. Canonical path check giữ mọi file đã chấp nhận bên trong project root.', result: 'chấp nhận 3 đường dẫn' },
 		{ kicker: 'Chạy song song engine', title: 'Giữ đúng mô hình của từng engine.', body: 'Engine theo file chỉ nhận cache miss. TypeScript nhìn toàn bộ chương trình đã cấu hình khi file liên quan thay đổi.' },
 		{ kicker: 'Contract chung', title: 'Chuẩn hóa rồi mới gom cụm.', body: 'Diagnostic riêng của engine trở thành normalized issue trước khi nhóm theo rule, gán priority và issue reference.', result: '40 lỗi → 4 cụm' },
-		{ kicker: 'Phản hồi có giới hạn', title: 'Trả lại phần đã hoàn thành.', body: 'Schema 1.1 giữ outcome của từng engine, nên một engine lỗi không xóa chẩn đoán từ engine khác.', result: 'schemaVersion 1.1' },
+		{ kicker: 'Phản hồi có giới hạn', title: 'Trả lại phần đã hoàn thành.', body: 'Schema 1.2 giữ outcome của từng engine, nên một engine lỗi không xóa chẩn đoán từ engine khác.', result: 'schemaVersion 1.2' },
 	], engineResults: [{ name: 'oxlint', value: '1 cache miss' }, { name: 'tsc', value: 'toàn project' }, { name: 'biome', value: 'đang tắt' }], outcomes: [{ name: 'oxlint', value: 'ok' }, { name: 'tsc', value: 'ok' }, { name: 'biome', value: 'đang tắt', muted: true }], outcomeNote: 'Chẩn đoán đã hoàn thành vẫn còn nguyên khi một engine khác gặp lỗi.' },
 	capabilities: [
 		{ number: '01', kicker: 'cache identity', title: 'Dùng lại kết quả có nhận diện phiên bản', body: 'Kết quả chỉ được dùng lại khi nội dung file, cấu hình engine, phiên bản Signalint và phiên bản engine vẫn trùng khớp.', code: cacheKey, wide: true },
-		{ number: '02', kicker: 'loop memory', title: 'Lỗi quay lại sẽ được nhìn thấy', body: 'Một lỗi biến mất rồi xuất hiện nhiều lần tạo cảnh báo hẹp, không suy diễn về toàn bộ cuộc trò chuyện của agent.', code: loopWarning },
+		{ number: '02', kicker: 'loop memory', title: 'Lỗi quay lại sẽ được nhìn thấy', body: 'Một lỗi biến mất rồi xuất hiện nhiều lần tạo cảnh báo dao động; lỗi lặp lại trên cùng file qua nhiều lần check tạo cảnh báo churn hẹp.', code: loopWarning },
 		{ number: '03', kicker: 'engine fan-out', title: 'Kết quả từng phần vẫn được giữ', body: 'Một engine có thể lỗi mà không làm mất chẩn đoán engine khác đã hoàn thành.', code: fanout },
 		{ number: '04', kicker: 'ranh giới tiến trình', title: 'Thời gian chạy có giới hạn', body: 'Mặc định Oxlint 30 giây, tsc 120 giây và Biome 30 giây. Timeout hoặc hủy request đều kết thúc cây tiến trình.' },
 		{ number: '05', kicker: 'lưu trữ', title: 'Trạng thái cục bộ không tăng vô hạn', body: 'SQLite cache loại hàng ít dùng nhất khi vượt 10.000 mục. Session log chỉ đọc phần đuôi gần nhất và giữ một bản .1 sau khi rotate.' },

@@ -2,16 +2,16 @@
 import DocsLayout from '../../../layouts/DocsLayout.astro';
 
 const checkProjectArgs = `{
-  "paths": ["."]
+  "paths": ["src/"]
 }`;
 const checkFilesArgs = `{
   "files": ["src/index.ts", "src/config.ts"]
 }`;
-const issueReference = `// Chọn đúng một trong hai dạng sau
-{ "clusterId": "c1" }
-{ "issueId": "d7f6..." }`;
+const issueReference = `{
+  "clusterId": "c1"
+}`;
 const checkResponse = `{
-  "schemaVersion": "1.1",
+  "schemaVersion": "1.2",
   "status": "issues_found",
   "engines": {
     "oxlint": { "status": "ok" },
@@ -21,16 +21,17 @@ const checkResponse = `{
   "totalIssues": 10,
   "clusters": [{
     "clusterId": "c1",
-    "rootCauseSummary": "10 lỗi TS2322 trên 10 file",
+    "rootCauseSummary": "10 TS2322 issues across 10 files",
     "ruleIds": ["TS2322"],
     "issueCount": 10,
     "fileCount": 10,
     "priority": 1,
-    "suggestedAction": "Xem xét nguyên nhân chung của TS2322 trên 10 file",
+    "suggestedAction": "Review the shared cause of TS2322 across 10 files",
     "sampleIssueIds": ["ts-01", "ts-02"]
   }],
   "truncated": false,
-  "loopWarning": null
+  "loopWarning": null,
+  "fileRuleChurnWarning": null
 }`;
 const normalizedIssue = `{
   "issueId": "d7f6...",
@@ -49,30 +50,31 @@ const loopStatus = `{
   "signatures": [{
     "signature": "no-unused-vars:<identifier> is unused",
     "occurrences": 3,
-    "hint": "Lỗi này đã được sửa và xuất hiện lại 3 lần — nên xem xét phương pháp khác"
-  }]
+    "hint": "This issue was fixed and reappeared 3 times — consider a different approach"
+  }],
+  "fileChurning": false,
+  "fileRuleChurns": []
 }`;
 const timeoutResponse = `{
   "status": "timeout",
   "engine": "tsc",
-  "message": "tsc không hoàn thành trong vòng 120s"
+  "message": "tsc did not complete within 120s"
 }`;
 const staleResponse = `{
   "status": "stale",
-  "message": "Cluster/issue này không còn tồn tại; hãy chạy lại check_project."
+  "message": "This cluster/issue no longer exists; run check_project again."
 }`;
 ---
 
 <DocsLayout
-	title="Tham khảo công cụ MCP"
+	title="Tài liệu MCP tool"
 	description="Cấu trúc tham số nghiêm ngặt và quy chuẩn phản hồi có phiên bản cho từng công cụ MCP của Signalint."
-	eyebrow="Công cụ MCP"
 	locale="vi"
 >
-	<div class="note"><p>Tham số công cụ từ chối các thuộc tính không xác định. Mảng đường dẫn chấp nhận tối đa 512 chuỗi tương đối theo dự án; các đường dẫn tuyệt đối, thoát ra ngoài (escaping), chứa ký tự NUL và bắt đầu bằng dấu gạch ngang đều bị từ chối.</p></div>
+	<div class="note"><p>Các tham số công cụ từ chối các thuộc tính không xác định. Mảng đường dẫn chấp nhận tối đa 512 chuỗi tương đối theo dự án; các đường dẫn tuyệt đối, thoát ra ngoài, chứa NUL và có dấu gạch ngang ở đầu đều bị từ chối. Mọi công cụ đều khai báo <code>outputSchema</code> rõ ràng và trả về <code>structuredContent</code> song song với khối text.</p></div>
 
 	<h2>ping</h2>
-	<p>Kiểm tra xem MCP server Signalint có đang phản hồi không. Chỉ đọc; trả về chuỗi <code>pong</code> mà không có tác dụng phụ. Dùng công cụ này để xác nhận server đã kết nối trước khi chạy chẩn đoán. Tham số không hợp lệ sẽ trả về phản hồi lỗi; không cần xác thực.</p>
+	<p>Kiểm tra xem Signalint MCP server có đang phản hồi hay không. Chỉ đọc; trả về chuỗi <code>pong</code> và không có tác dụng phụ. Sử dụng để xác minh server đã kết nối trước khi chạy chẩn đoán. Tham số không hợp lệ sẽ trả về phản hồi lỗi; không yêu cầu xác thực.</p>
 	<div class="table-scroll">
 		<table class="schema-table">
 			<thead><tr><th>Tham số</th><th>Kết quả</th></tr></thead>
@@ -82,16 +84,14 @@ const staleResponse = `{
 
 	<h2>check_project</h2>
 	<p>
-		Chạy và phân nhóm các chẩn đoán lint và kiểu của Oxlint và TypeScript (và tùy chọn Biome) cho một hoặc nhiều đường dẫn dự án. Chỉ đọc; không file nào được ghi hay thay đổi. Trường{' '}
-		<code>paths</code> tùy chọn là một mảng chuỗi tối đa 512 mục và mặc định là{' '}
-		<code>["."]</code> — đường dẫn phải tương đối và nằm trong thư mục dự án; đường dẫn tuyệt đối hoặc nằm ngoài thư mục gốc sẽ trả về lỗi. Dùng công cụ này để quét toàn bộ dự án; dùng{' '}<code>check_files</code> cho kiểm tra tăng dần nhanh hơn sau khi sửa file cụ thể. Mỗi lần gọi đều chạy lại tất cả engine đã kích hoạt, không dùng cache.
+		Chạy và gom cụm các chẩn đoán lint và kiểu của Oxlint và TypeScript (và tùy chọn Biome) cho một hoặc nhiều đường dẫn dự án. Chỉ đọc; không file nào được ghi hay thay đổi. Đường dẫn mặc định là gốc dự án (<code>"."</code>) khi bỏ qua; đường dẫn phải tương đối và nằm trong thư mục dự án — đường dẫn tuyệt đối hoặc nằm ngoài gốc sẽ trả về lỗi. Dùng công cụ này để quét toàn bộ dự án; dùng{' '}<code>check_files</code> để kiểm tra tăng dần nhanh hơn sau khi sửa file cụ thể. Mỗi lần gọi sẽ chạy lại toàn bộ engine đã bật mà không dùng cache.
 	</p>
 	<pre><code>{checkProjectArgs}</code></pre>
 	<p>Trả về cấu trúc <a href="#check-response">CheckResponse</a>. Các lỗi tiến trình của engine tích hợp được giữ lại dưới trạng thái <code>engines</code> tương ứng để các chẩn đoán đã hoàn thành khác vẫn tồn tại.</p>
 
 	<h2>check_files</h2>
 	<p>
-		Chạy các chẩn đoán lint và kiểu của Oxlint và TypeScript (và tùy chọn Biome) trên một danh sách file cụ thể, sử dụng cache theo hash nội dung để bỏ qua các file không thay đổi. Chỉ đọc; không file nào được ghi hay thay đổi. Dùng công cụ này cho kiểm tra tăng dần sau khi sửa file cụ thể; dùng{' '}<code>check_project</code> để quét toàn bộ. Tham số{' '}<code>files</code> nhận đường dẫn file tương đối (không phải glob pattern) trong thư mục dự án — đường dẫn tuyệt đối hoặc nằm ngoài thư mục gốc sẽ trả về lỗi. Cache dựa trên hash nội dung file: file chỉ được kiểm tra lại khi nội dung hoặc file cấu hình engine (như <code>.oxlintrc</code>, <code>tsconfig.json</code>) thay đổi kể từ lần gọi trước, không dựa theo git. TypeScript là engine toàn chương trình: nó chạy lại bất cứ khi nào có file TypeScript nào trong yêu cầu thay đổi nội dung.
+		Chạy các chẩn đoán lint và kiểu của Oxlint và TypeScript (và tùy chọn Biome) trên một danh sách file cụ thể, sử dụng cache theo hash nội dung để bỏ qua các file không thay đổi. Chỉ đọc; không file nào được ghi hay thay đổi. Dùng công cụ này cho kiểm tra tăng dần sau khi sửa file cụ thể; dùng{' '}<code>check_project</code> để quét toàn bộ. Tham số{' '}<code>files</code> nhận đường dẫn file tương đối (không phải glob pattern) trong thư mục dự án — đường dẫn tuyệt đối hoặc nằm ngoài thư mục gốc sẽ trả về lỗi. Cache dựa trên hash nội dung file: file chỉ được kiểm tra lại khi nội dung hoặc file cấu hình engine (như <code>.oxlintrc</code>, <code>tsconfig.json</code>) thay đổi kể từ lần gọi trước, không dựa theo git. TypeScript là engine toàn chương trình: nó chạy lại bất cứ khi nào có file TypeScript nào trong yêu cầu thay đổi nội dung. Ngoài ra, kiểm tra tăng dần theo dõi hiện tượng churn theo cặp (file, rule): nếu cùng một file/rule phát sinh lỗi qua 3+ lần gọi riêng biệt, <code>fileRuleChurnWarning</code> sẽ được kích hoạt.
 	</p>
 	<pre><code>{checkFilesArgs}</code></pre>
 	<p>Mảng <code>files</code> là bắt buộc và chấp nhận tối đa 512 chuỗi.</p>
@@ -103,22 +103,23 @@ const staleResponse = `{
 	<pre><code>{staleResponse}</code></pre>
 
 	<h2>get_loop_status</h2>
-	<p>Trả về tất cả chữ ký lỗi hiện đang được đánh dấu là lặp đi lặp lại (xuất hiện và biến mất liên tục) trong phiên server này. Chỉ đọc; không file nào được thay đổi. Lịch sử lặp được tích lũy qua tất cả các lần gọi <code>check_project</code> và <code>check_files</code> trong vòng đời tiến trình, và được khôi phục từ <code>.signalint/session.jsonl</code> khi khởi động lại. Chấp nhận <code>{'{}'}</code> và báo cáo các chữ ký lỗi hiện được phân loại là lặp đi lặp lại:</p>
+	<p>Trả về tất cả chữ ký lỗi hiện đang được đánh dấu là lặp đi lặp lại (xuất hiện và biến mất liên tục) và các cặp file/rule bị churn qua 3+ lần gọi <code>check_files</code> riêng biệt trong phiên server này. Chỉ đọc; không file nào được thay đổi. Lịch sử được tích lũy qua tất cả các lần gọi kiểm tra trong vòng đời tiến trình, và được khôi phục từ <code>.signalint/session.jsonl</code> khi khởi động lại. Chấp nhận <code>{'{}'}</code> và báo cáo trạng thái vòng lặp cùng churn độc lập:</p>
 	<pre><code>{loopStatus}</code></pre>
 
-	<h2 id="check-response">CheckResponse · schema 1.1</h2>
+	<h2 id="check-response">CheckResponse · schema 1.2</h2>
 	<pre><code>{checkResponse}</code></pre>
 	<div class="table-scroll">
 		<table class="schema-table">
 			<thead><tr><th>Trường</th><th>Kiểu</th><th>Quy chuẩn</th></tr></thead>
 			<tbody>
-				<tr><td><code>schemaVersion</code></td><td><code>"1.1"</code></td><td>Phiên bản quy chuẩn phản hồi hiện tại.</td></tr>
+				<tr><td><code>schemaVersion</code></td><td><code>"1.2"</code></td><td>Phiên bản quy chuẩn phản hồi hiện tại.</td></tr>
 				<tr><td><code>status</code></td><td><code>"clean" | "issues_found"</code></td><td>Cho biết liệu các issue đã chuẩn hóa có còn lại sau khi lọc hay không.</td></tr>
 				<tr><td><code>engines</code></td><td>record</td><td>Bao gồm chính xác <code>oxlint</code>, <code>tsc</code> và <code>biome</code>; mỗi mục là <code>ok</code>, <code>error</code> hoặc <code>disabled</code>, kèm thông điệp tùy chọn.</td></tr>
 				<tr><td><code>totalIssues</code></td><td>integer</td><td>Tổng số issue chuẩn hóa thô trước khi cắt giảm cluster.</td></tr>
 				<tr><td><code>clusters</code></td><td>Cluster[]</td><td>Các cụm lỗi sắp xếp theo thứ tự ưu tiên tăng dần; ưu tiên 1 là cao nhất. Mặc định trả về 10 cụm.</td></tr>
 				<tr><td><code>truncated</code></td><td>boolean</td><td>Bằng true khi số cụm tồn tại vượt quá giới hạn phản hồi.</td></tr>
-				<tr><td><code>loopWarning</code></td><td>LoopWarning | null</td><td>Cảnh báo vòng lặp hiện tại, nếu có.</td></tr>
+				<tr><td><code>loopWarning</code></td><td>LoopWarning | null</td><td>Cảnh báo dao động chữ ký chính xác hiện tại, nếu có.</td></tr>
+				<tr><td><code>fileRuleChurnWarning</code></td><td>FileRuleChurnWarning | null</td><td>Cảnh báo churn theo cặp (file, rule) khi lỗi lặp lại qua 3+ lần gọi check_files riêng biệt, hoặc null.</td></tr>
 			</tbody>
 		</table>
 	</div>
@@ -136,6 +137,31 @@ const staleResponse = `{
 				<tr><td><code>priority</code></td><td>integer</td></tr>
 				<tr><td><code>suggestedAction</code></td><td>string</td></tr>
 				<tr><td><code>sampleIssueIds</code></td><td>string[]</td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3>LoopWarning</h3>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Trường</th><th>Kiểu</th><th>Mô tả</th></tr></thead>
+			<tbody>
+				<tr><td><code>signature</code></td><td>string</td><td>Chữ ký <code>rule:message</code> đã chuẩn hóa (loại bỏ identifier và số).</td></tr>
+				<tr><td><code>occurrences</code></td><td>integer</td><td>Số lần chữ ký lỗi này đã biến mất rồi xuất hiện trở lại.</td></tr>
+				<tr><td><code>hint</code></td><td>string</td><td>Gợi ý hành động để agent cân nhắc phương pháp tiếp cận khác.</td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3>FileRuleChurnWarning</h3>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Trường</th><th>Kiểu</th><th>Mô tả</th></tr></thead>
+			<tbody>
+				<tr><td><code>file</code></td><td>string</td><td>Đường dẫn file tương đối trong dự án.</td></tr>
+				<tr><td><code>rule</code></td><td>string</td><td>Mã định danh rule chẩn đoán (ví dụ <code>TS2345</code>).</td></tr>
+				<tr><td><code>checkCount</code></td><td>integer</td><td>Số lần gọi <code>check_files</code> riêng biệt phát hiện cặp này (≥ 3).</td></tr>
+				<tr><td><code>hint</code></td><td>string</td><td>Cảnh báo agent có thể đang bị mắc kẹt khi sửa file này.</td></tr>
 			</tbody>
 		</table>
 	</div>

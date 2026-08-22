@@ -16,10 +16,10 @@ const { content, locale } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const prefix = locale === 'vi' ? 'vi/' : '';
 const currentVersion = await fetchLiveNpmVersion();
-const manifestValues = ['local / stdio', `signalint-mcp@${currentVersion}`, 'oxlint / tsc / biome', 'schemaVersion 1.1', 'MIT'];
+const manifestValues = ['local / stdio', `signalint-mcp@${currentVersion}`, 'oxlint / tsc / biome', 'schemaVersion 1.2', 'MIT'];
 
 const numberWordsEn = ['zero', 'one', 'two', 'three', 'four', 'five', 'six'];
-const numberWordsVi = ['không', 'một', 'hai', 'ba', 'bốn', 'năm', 'sáu'];
+const numberWordsVi = ['khÃ´ng', 'má»™t', 'hai', 'ba', 'bá»‘n', 'nÄƒm', 'sÃ¡u'];
 const word = locale === 'vi' ? numberWordsVi[content.clients.length] : numberWordsEn[content.clients.length];
 const clientsBody = content.clientsHeading.body.replace('{COUNT}', word);
 const eyebrow = content.hero.eyebrow.replace('{VERSION}', currentVersion).replace('0.2.0', currentVersion);
@@ -72,7 +72,7 @@ const eyebrow = content.hero.eyebrow.replace('{VERSION}', currentVersion).replac
 		<div class="capability-grid">
 			{content.capabilities.map((capability) => (
 				<article class:list={['capability-card', { wide: capability.wide }]} data-reveal>
-					<span class="capability-card__number">{capability.number} — {capability.kicker}</span><h3>{capability.title}</h3><p>{capability.body}</p>
+					<span class="capability-card__number">{capability.number} â€” {capability.kicker}</span><h3>{capability.title}</h3><p>{capability.body}</p>
 					{capability.code && <pre><code>{capability.code}</code></pre>}
 				</article>
 			))}

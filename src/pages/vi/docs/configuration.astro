@@ -17,26 +17,26 @@ const defaultConfig = `{
 ---
 
 <DocsLayout
-	title="Tham khảo cấu hình"
-	description="Tất cả các trường được hỗ trợ trong signalint.config.json, bao gồm giá trị mặc định và hành vi xác thực."
-	eyebrow="Cấu hình"
+	title="Tham kháº£o cáº¥u hÃ¬nh"
+	description="Táº¥t cáº£ cÃ¡c trÆ°á»ng Ä‘Æ°á»£c há»— trá»£ trong signalint.config.json, bao gá»“m giÃ¡ trá»‹ máº·c Ä‘á»‹nh vÃ  hÃ nh vi xÃ¡c thá»±c."
+	eyebrow="Cáº¥u hÃ¬nh"
 	locale="vi"
 >
 	<p>
-		Signalint đọc file <code>signalint.config.json</code> từ gốc dự án được kiểm tra.
-		File này là tùy chọn; các trường bị bỏ qua sẽ nhận giá trị mặc định bên dưới. Các key không xác định
-		và kiểu dữ liệu không chính xác sẽ báo lỗi cấu hình.
+		Signalint Ä‘á»c file <code>signalint.config.json</code> tá»« gá»‘c dá»± Ã¡n Ä‘Æ°á»£c kiá»ƒm tra.
+		File nÃ y lÃ  tÃ¹y chá»n; cÃ¡c trÆ°á»ng bá»‹ bá» qua sáº½ nháº­n giÃ¡ trá»‹ máº·c Ä‘á»‹nh bÃªn dÆ°á»›i. CÃ¡c key khÃ´ng xÃ¡c Ä‘á»‹nh
+		vÃ  kiá»ƒu dá»¯ liá»‡u khÃ´ng chÃ­nh xÃ¡c sáº½ bÃ¡o lá»—i cáº¥u hÃ¬nh.
 	</p>
 	<pre><code>{defaultConfig}</code></pre>
 
-	<h2>Các trường cấp cao nhất</h2>
+	<h2>CÃ¡c trÆ°á»ng cáº¥p cao nháº¥t</h2>
 	<div class="table-scroll">
 		<table class="schema-table">
-			<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th><th>Ý nghĩa</th></tr></thead>
+			<thead><tr><th>TrÆ°á»ng</th><th>Kiá»ƒu</th><th>Máº·c Ä‘á»‹nh</th><th>Ã nghÄ©a</th></tr></thead>
 			<tbody>
-				<tr><td><code>engines</code></td><td>object</td><td>Xem bên dưới</td><td>Bật hoặc tắt từng engine tích hợp.</td></tr>
-				<tr><td><code>ignore</code></td><td>string[]</td><td><code>node_modules/**</code>, <code>dist/**</code>, <code>.signalint/**</code></td><td>Các đường dẫn tương đối bị loại bỏ khỏi danh sách file yêu cầu và kết quả chẩn đoán cuối cùng.</td></tr>
-				<tr><td><code>timeoutsMs</code></td><td>object</td><td>Xem bên dưới</td><td>Thời hạn giới hạn tiến trình con (tính bằng miligiây, số nguyên dương).</td></tr>
+				<tr><td><code>engines</code></td><td>object</td><td>Xem bÃªn dÆ°á»›i</td><td>Báº­t hoáº·c táº¯t tá»«ng engine tÃ­ch há»£p.</td></tr>
+				<tr><td><code>ignore</code></td><td>string[]</td><td><code>node_modules/**</code>, <code>dist/**</code>, <code>.signalint/**</code></td><td>CÃ¡c Ä‘Æ°á»ng dáº«n tÆ°Æ¡ng Ä‘á»‘i bá»‹ loáº¡i bá» khá»i danh sÃ¡ch file yÃªu cáº§u vÃ  káº¿t quáº£ cháº©n Ä‘oÃ¡n cuá»‘i cÃ¹ng.</td></tr>
+				<tr><td><code>timeoutsMs</code></td><td>object</td><td>Xem bÃªn dÆ°á»›i</td><td>Thá»i háº¡n giá»›i háº¡n tiáº¿n trÃ¬nh con (tÃ­nh báº±ng miligiÃ¢y, sá»‘ nguyÃªn dÆ°Æ¡ng).</td></tr>
 			</tbody>
 		</table>
 	</div>
@@ -44,52 +44,52 @@ const defaultConfig = `{
 	<h2>engines</h2>
 	<div class="table-scroll">
 		<table class="schema-table">
-			<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th><th>Hành vi</th></tr></thead>
+			<thead><tr><th>TrÆ°á»ng</th><th>Kiá»ƒu</th><th>Máº·c Ä‘á»‹nh</th><th>HÃ nh vi</th></tr></thead>
 			<tbody>
-				<tr><td><code>oxlint</code></td><td>boolean</td><td><code>true</code></td><td>Chạy chẩn đoán Oxlint theo từng file.</td></tr>
-				<tr><td><code>tsc</code></td><td>boolean</td><td><code>true</code></td><td>Chạy chẩn đoán TypeScript toàn bộ chương trình từ tsconfig gốc.</td></tr>
-				<tr><td><code>biome</code></td><td>boolean</td><td><code>false</code></td><td>Chạy chẩn đoán Biome theo từng file.</td></tr>
+				<tr><td><code>oxlint</code></td><td>boolean</td><td><code>true</code></td><td>Cháº¡y cháº©n Ä‘oÃ¡n Oxlint theo tá»«ng file.</td></tr>
+				<tr><td><code>tsc</code></td><td>boolean</td><td><code>true</code></td><td>Cháº¡y cháº©n Ä‘oÃ¡n TypeScript toÃ n bá»™ chÆ°Æ¡ng trÃ¬nh tá»« tsconfig gá»‘c.</td></tr>
+				<tr><td><code>biome</code></td><td>boolean</td><td><code>false</code></td><td>Cháº¡y cháº©n Ä‘oÃ¡n Biome theo tá»«ng file.</td></tr>
 			</tbody>
 		</table>
 	</div>
-	<p>Các key engine bị bỏ qua vẫn giữ giá trị mặc định riêng; chúng không bị ép về false.</p>
+	<p>CÃ¡c key engine bá»‹ bá» qua váº«n giá»¯ giÃ¡ trá»‹ máº·c Ä‘á»‹nh riÃªng; chÃºng khÃ´ng bá»‹ Ã©p vá» false.</p>
 
 	<h2>ignore</h2>
 	<p>
-		Mỗi mục phải là một mẫu glob đường dẫn tương đối không rỗng. Signalint hỗ trợ <code>*</code>,{' '}
-		<code>**</code> và <code>?</code>, đồng thời chuẩn hóa ký tự phân cách đường dẫn Windows. Vì tsc
-		là kiểm tra toàn bộ chương trình, nó vẫn thấy toàn bộ chương trình đã cấu hình khi được gọi;
-		các chẩn đoán khớp với mẫu ignore sẽ được loại bỏ khỏi phản hồi.
+		Má»—i má»¥c pháº£i lÃ  má»™t máº«u glob Ä‘Æ°á»ng dáº«n tÆ°Æ¡ng Ä‘á»‘i khÃ´ng rá»—ng. Signalint há»— trá»£ <code>*</code>,{' '}
+		<code>**</code> vÃ  <code>?</code>, Ä‘á»“ng thá»i chuáº©n hÃ³a kÃ½ tá»± phÃ¢n cÃ¡ch Ä‘Æ°á»ng dáº«n Windows. VÃ¬ tsc
+		lÃ  kiá»ƒm tra toÃ n bá»™ chÆ°Æ¡ng trÃ¬nh, nÃ³ váº«n tháº¥y toÃ n bá»™ chÆ°Æ¡ng trÃ¬nh Ä‘Ã£ cáº¥u hÃ¬nh khi Ä‘Æ°á»£c gá»i;
+		cÃ¡c cháº©n Ä‘oÃ¡n khá»›p vá»›i máº«u ignore sáº½ Ä‘Æ°á»£c loáº¡i bá» khá»i pháº£n há»“i.
 	</p>
 	<div class="note">
-		<p>Các chẩn đoán có đường dẫn chứa phân đoạn <code>node_modules</code> sẽ luôn bị loại trừ, bất kể cài đặt này.</p>
+		<p>CÃ¡c cháº©n Ä‘oÃ¡n cÃ³ Ä‘Æ°á»ng dáº«n chá»©a phÃ¢n Ä‘oáº¡n <code>node_modules</code> sáº½ luÃ´n bá»‹ loáº¡i trá»«, báº¥t ká»ƒ cÃ i Ä‘áº·t nÃ y.</p>
 	</div>
 
 	<h2>timeoutsMs</h2>
 	<div class="table-scroll">
 		<table class="schema-table">
-			<thead><tr><th>Trường</th><th>Kiểu</th><th>Mặc định</th></tr></thead>
+			<thead><tr><th>TrÆ°á»ng</th><th>Kiá»ƒu</th><th>Máº·c Ä‘á»‹nh</th></tr></thead>
 			<tbody>
-				<tr><td><code>oxlint</code></td><td>số nguyên dương</td><td>30.000 ms</td></tr>
-				<tr><td><code>tsc</code></td><td>số nguyên dương</td><td>120.000 ms</td></tr>
-				<tr><td><code>biome</code></td><td>số nguyên dương</td><td>30.000 ms</td></tr>
+				<tr><td><code>oxlint</code></td><td>sá»‘ nguyÃªn dÆ°Æ¡ng</td><td>30.000 ms</td></tr>
+				<tr><td><code>tsc</code></td><td>sá»‘ nguyÃªn dÆ°Æ¡ng</td><td>120.000 ms</td></tr>
+				<tr><td><code>biome</code></td><td>sá»‘ nguyÃªn dÆ°Æ¡ng</td><td>30.000 ms</td></tr>
 			</tbody>
 		</table>
 	</div>
 	<p>
-		Khi hết thời gian timeout, Signalint sẽ chấm dứt cây tiến trình của engine đó. Trong phản hồi
-		chẩn đoán schema 1.1, engine đó sẽ nhận <code>{'{ "status": "error", "message": "…" }'}</code>{' '}
-		dưới mục <code>engines</code>, trong khi chẩn đoán từ các engine đã hoàn thành khác vẫn được giữ nguyên.
+		Khi háº¿t thá»i gian timeout, Signalint sáº½ cháº¥m dá»©t cÃ¢y tiáº¿n trÃ¬nh cá»§a engine Ä‘Ã³. Trong pháº£n há»“i
+		cháº©n Ä‘oÃ¡n schema 1.2, engine Ä‘Ã³ sáº½ nháº­n <code>{'{ "status": "error", "message": "â€¦" }'}</code>{' '}
+		dÆ°á»›i má»¥c <code>engines</code>, trong khi cháº©n Ä‘oÃ¡n tá»« cÃ¡c engine Ä‘Ã£ hoÃ n thÃ nh khÃ¡c váº«n Ä‘Æ°á»£c giá»¯ nguyÃªn.
 	</p>
 
-	<h2>Cấu hình gốc của engine</h2>
+	<h2>Cáº¥u hÃ¬nh gá»‘c cá»§a engine</h2>
 	<p>
-		Giữ các quy tắc lint và compiler trong file cấu hình gốc của chúng. Cache hash v1 nhận diện các file gốc{' '}
+		Giá»¯ cÃ¡c quy táº¯c lint vÃ  compiler trong file cáº¥u hÃ¬nh gá»‘c cá»§a chÃºng. Cache hash v1 nháº­n diá»‡n cÃ¡c file gá»‘c{' '}
 		<code>.oxlintrc</code>, <code>.oxlintrc.json</code>, <code>oxlint.json</code>,{' '}
-		<code>tsconfig.json</code>, <code>biome.json</code> và <code>biome.jsonc</code>.
-		Thay đổi một trong các file này sẽ làm mất hiệu lực cache của engine tương ứng.
+		<code>tsconfig.json</code>, <code>biome.json</code> vÃ  <code>biome.jsonc</code>.
+		Thay Ä‘á»•i má»™t trong cÃ¡c file nÃ y sáº½ lÃ m máº¥t hiá»‡u lá»±c cache cá»§a engine tÆ°Æ¡ng á»©ng.
 	</p>
 	<div class="note">
-		<p>Các nguồn hợp lệ khác (bao gồm <code>.oxlintrc.jsonc</code>, cấu hình mở rộng và cấu hình package lồng nhau) không nằm trong hash cache của v1. Hãy xóa <code>.signalint/</code> sau khi thay đổi một trong những file đó.</p>
+		<p>CÃ¡c nguá»“n há»£p lá»‡ khÃ¡c (bao gá»“m <code>.oxlintrc.jsonc</code>, cáº¥u hÃ¬nh má»Ÿ rá»™ng vÃ  cáº¥u hÃ¬nh package lá»“ng nhau) khÃ´ng náº±m trong hash cache cá»§a v1. HÃ£y xÃ³a <code>.signalint/</code> sau khi thay Ä‘á»•i má»™t trong nhá»¯ng file Ä‘Ã³.</p>
 	</div>
 </DocsLayout>

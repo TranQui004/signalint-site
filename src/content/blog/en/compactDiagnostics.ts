@@ -25,7 +25,7 @@ export const compactDiagnosticsEn: BlogPost = {
 				'That distinction matters for trust: compression removes repetition, not evidence.',
 			],
 			code: `{
-  "schemaVersion": "1.1",
+  "schemaVersion": "1.2",
   "engines": {
     "oxlint": { "status": "ok" },
     "tsc": { "status": "error", "message": "timed out" }
@@ -34,10 +34,10 @@ export const compactDiagnosticsEn: BlogPost = {
 }`,
 		},
 		{
-			heading: 'Cache according to the tool’s real scope',
+			heading: 'Cache according to the toolâ€™s real scope',
 			paragraphs: [
 				'File-local linting and whole-program type checking do not share an execution model. A file hash can safely skip an unchanged Oxlint invocation. For TypeScript it should only decide whether the compiler needs to run; when it runs, the compiler still needs the complete project graph.',
-				'Good MCP tooling exposes those boundaries instead of hiding them behind one generic “fast” path.',
+				'Good MCP tooling exposes those boundaries instead of hiding them behind one generic â€œfastâ€ path.',
 			],
 		},
 		{

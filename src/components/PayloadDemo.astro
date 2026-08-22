@@ -15,7 +15,7 @@ const rawPayload = `[
 ]`;
 
 const clusteredPayload = `{
-  "schemaVersion": "1.1",
+  "schemaVersion": "1.2",
   "status": "issues_found",
   "engines": {
     "oxlint": { "status": "ok" },
@@ -34,7 +34,8 @@ const clusteredPayload = `{
     "sampleIssueIds": ["ts-01", "ts-02"]
   }, ... 3 more clusters],
   "truncated": false,
-  "loopWarning": null
+  "loopWarning": null,
+  "fileRuleChurnWarning": null
 }`;
 ---
 
@@ -54,7 +55,7 @@ const clusteredPayload = `{
 			<div><span>raw issues</span><strong>40</strong></div>
 			<div><span>clusters</span><strong>4</strong></div>
 			<div><span>reduction</span><strong>86.53%</strong></div>
-			<div><span>schema</span><strong>1.1</strong></div>
+			<div><span>schema</span><strong>1.2</strong></div>
 		</div>
 		<div class="payload-code">
 			<pre id="payload-panel-raw" role="tabpanel" aria-labelledby="payload-tab-raw" data-payload-panel="raw"><code>{rawPayload}</code></pre>

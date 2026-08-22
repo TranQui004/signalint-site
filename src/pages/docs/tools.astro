@@ -2,16 +2,16 @@
 import DocsLayout from '../../layouts/DocsLayout.astro';
 
 const checkProjectArgs = `{
-  "paths": ["."]
+  "paths": ["src/"]
 }`;
 const checkFilesArgs = `{
   "files": ["src/index.ts", "src/config.ts"]
 }`;
-const issueReference = `// Exactly one of these shapes
-{ "clusterId": "c1" }
-{ "issueId": "d7f6..." }`;
+const issueReference = `{
+  "clusterId": "c1"
+}`;
 const checkResponse = `{
-  "schemaVersion": "1.1",
+  "schemaVersion": "1.2",
   "status": "issues_found",
   "engines": {
     "oxlint": { "status": "ok" },
@@ -30,7 +30,8 @@ const checkResponse = `{
     "sampleIssueIds": ["ts-01", "ts-02"]
   }],
   "truncated": false,
-  "loopWarning": null
+  "loopWarning": null,
+  "fileRuleChurnWarning": null
 }`;
 const normalizedIssue = `{
   "issueId": "d7f6...",
@@ -50,7 +51,9 @@ const loopStatus = `{
     "signature": "no-unused-vars:<identifier> is unused",
     "occurrences": 3,
     "hint": "This issue was fixed and reappeared 3 times — consider a different approach"
-  }]
+  }],
+  "fileChurning": false,
+  "fileRuleChurns": []
 }`;
 const timeoutResponse = `{
   "status": "timeout",
@@ -67,7 +70,7 @@ const staleResponse = `{
 	title="MCP tools reference"
 	description="Strict argument shapes and versioned response contracts for every Signalint MCP tool."
 >
-	<div class="note"><p>Tool arguments reject unknown properties. Path arrays accept at most 512 project-relative strings; absolute, escaping, NUL-containing, and leading-dash paths are refused.</p></div>
+	<div class="note"><p>Tool arguments reject unknown properties. Path arrays accept at most 512 project-relative strings; absolute, escaping, NUL-containing, and leading-dash paths are refused. All tools declare explicit <code>outputSchema</code> definitions and deliver <code>structuredContent</code> alongside text content blocks.</p></div>
 
 	<h2>ping</h2>
 	<p>Checks whether the Signalint MCP server is responsive. Read-only; returns the string <code>pong</code> with no side effects. Use this to verify the server is connected before running diagnostics. Invalid arguments return an error response; no authentication is required.</p>
@@ -87,7 +90,7 @@ const staleResponse = `{
 
 	<h2>check_files</h2>
 	<p>
-		Runs Oxlint and TypeScript (and optionally Biome) lint and type diagnostics on a specific list of files, using per-engine content-hash caching to skip unchanged files. Read-only; no files are written or modified. Use this for incremental checks after editing specific files; use{' '}<code>check_project</code> for a full project scan. The{' '}<code>files</code> parameter expects relative file paths (not glob patterns) within the project directory — absolute paths or paths outside the root return an error response. Caching is file-content-hash-based: a file is re-checked only when its content or the engine's config file (e.g., <code>.oxlintrc</code>, <code>tsconfig.json</code>) has changed since the last call, not based on git status. TypeScript is a whole-program engine: it re-runs whenever any TypeScript file in the request has changed content.
+		Runs Oxlint and TypeScript (and optionally Biome) lint and type diagnostics on a specific list of files, using per-engine content-hash caching to skip unchanged files. Read-only; no files are written or modified. Use this for incremental checks after editing specific files; use{' '}<code>check_project</code> for a full project scan. The{' '}<code>files</code> parameter expects relative file paths (not glob patterns) within the project directory — absolute paths or paths outside the root return an error response. Caching is file-content-hash-based: a file is re-checked only when its content or the engine's config file (e.g., <code>.oxlintrc</code>, <code>tsconfig.json</code>) has changed since the last call, not based on git status. TypeScript is a whole-program engine: it re-runs whenever any TypeScript file in the request has changed content. Incremental checks also track file-rule churn: if the same (file, rule) produces issues across 3+ separate calls, a <code>fileRuleChurnWarning</code> is raised.
 	</p>
 	<pre><code>{checkFilesArgs}</code></pre>
 	<p>The <code>files</code> array is required and accepts at most 512 strings.</p>
@@ -99,22 +102,23 @@ const staleResponse = `{
 	<pre><code>{staleResponse}</code></pre>
 
 	<h2>get_loop_status</h2>
-	<p>Returns all diagnostic issue signatures currently flagged as looping (repeatedly appearing and disappearing) in this server session. Read-only; no files are written or modified. Loop history is accumulated across all <code>check_project</code> and <code>check_files</code> calls in this process lifetime, and is restored from <code>.signalint/session.jsonl</code> on startup. Accepts <code>{'{}'}</code> and reports issue signatures currently classified as oscillating:</p>
+	<p>Returns all diagnostic issue signatures currently flagged as looping (repeatedly appearing and disappearing) and file/rule pairs flagged as churning across 3+ separate <code>check_files</code> calls. Read-only; no files are written or modified. History is accumulated across all check calls in this process lifetime, and is restored from <code>.signalint/session.jsonl</code> on startup. Accepts <code>{'{}'}</code> and reports the independent loop and churn state:</p>
 	<pre><code>{loopStatus}</code></pre>
 
-	<h2 id="check-response">CheckResponse · schema 1.1</h2>
+	<h2 id="check-response">CheckResponse · schema 1.2</h2>
 	<pre><code>{checkResponse}</code></pre>
 	<div class="table-scroll">
 		<table class="schema-table">
 			<thead><tr><th>Field</th><th>Type</th><th>Contract</th></tr></thead>
 			<tbody>
-				<tr><td><code>schemaVersion</code></td><td><code>"1.1"</code></td><td>Current response contract version.</td></tr>
+				<tr><td><code>schemaVersion</code></td><td><code>"1.2"</code></td><td>Current response contract version.</td></tr>
 				<tr><td><code>status</code></td><td><code>"clean" | "issues_found"</code></td><td>Whether normalized issues remain after filtering.</td></tr>
 				<tr><td><code>engines</code></td><td>record</td><td>Exactly <code>oxlint</code>, <code>tsc</code>, and <code>biome</code>; each is <code>ok</code>, <code>error</code>, or <code>disabled</code>, with optional message.</td></tr>
 				<tr><td><code>totalIssues</code></td><td>integer</td><td>Raw normalized issue count before cluster truncation.</td></tr>
 				<tr><td><code>clusters</code></td><td>Cluster[]</td><td>Priority-ascending clusters; priority 1 is highest. Ten are returned by default.</td></tr>
 				<tr><td><code>truncated</code></td><td>boolean</td><td>True when more clusters existed than the response limit.</td></tr>
-				<tr><td><code>loopWarning</code></td><td>LoopWarning | null</td><td>The current oscillation warning, when applicable.</td></tr>
+				<tr><td><code>loopWarning</code></td><td>LoopWarning | null</td><td>The current exact-signature oscillation warning, when applicable.</td></tr>
+				<tr><td><code>fileRuleChurnWarning</code></td><td>FileRuleChurnWarning | null</td><td>The current file-rule churn warning (when an issue on the same file and rule recurs across 3+ separate check_files calls), or null.</td></tr>
 			</tbody>
 		</table>
 	</div>
@@ -132,6 +136,31 @@ const staleResponse = `{
 				<tr><td><code>priority</code></td><td>integer</td></tr>
 				<tr><td><code>suggestedAction</code></td><td>string</td></tr>
 				<tr><td><code>sampleIssueIds</code></td><td>string[]</td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3>LoopWarning</h3>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+			<tbody>
+				<tr><td><code>signature</code></td><td>string</td><td>Normalized <code>rule:message</code> signature (identifiers and numbers stripped).</td></tr>
+				<tr><td><code>occurrences</code></td><td>integer</td><td>Number of times this issue signature disappeared and reappeared.</td></tr>
+				<tr><td><code>hint</code></td><td>string</td><td>Actionable guidance for the agent to consider an alternative approach.</td></tr>
+			</tbody>
+		</table>
+	</div>
+
+	<h3>FileRuleChurnWarning</h3>
+	<div class="table-scroll">
+		<table class="schema-table">
+			<thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+			<tbody>
+				<tr><td><code>file</code></td><td>string</td><td>Project-relative file path.</td></tr>
+				<tr><td><code>rule</code></td><td>string</td><td>Diagnostic rule identifier (e.g. <code>TS2345</code>).</td></tr>
+				<tr><td><code>checkCount</code></td><td>integer</td><td>Number of separate <code>check_files</code> calls that encountered this pair (≥ 3).</td></tr>
+				<tr><td><code>hint</code></td><td>string</td><td>Warning that the agent may be stuck modifying this file.</td></tr>
 			</tbody>
 		</table>
 	</div>

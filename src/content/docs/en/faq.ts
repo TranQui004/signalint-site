@@ -5,7 +5,7 @@ export const faqEn = [
 	{ question: 'Does Signalint apply fixes?', answer: 'No. It reports fixable: true only when an engine supplies a structured fix, but v1 does not modify source files.' },
 	{ question: 'Is Signalint a security scanner?', answer: 'No. It is not a SAST tool and does not claim to find vulnerabilities. Signalint’s own MCP argument boundary is documented in the repository threat model.' },
 	{ question: 'How do monorepos work?', answer: 'The tsc adapter requires one tsconfig.json at the project root. Monorepos should provide a solution-style root config using TypeScript Project References.' },
-	{ question: 'What does loop detection track?', answer: 'Only normalized lint, type, and test issue signatures that disappear and return repeatedly. It does not classify the agent’s general conversation.' },
+	{ question: 'What does loop detection track?', answer: 'Two independent mechanisms: (1) exact-signature oscillation warnings for diagnostic signatures that disappear and reappear repeatedly, and (2) file-rule churn warnings when the same (file, rule) pair produces issues across 3+ separate check_files calls. It does not classify the agent’s general conversation.' },
 	{ question: 'Is there an IDE extension?', answer: 'Not yet. Current integrations use MCP clients or the command-line check and stats commands.' },
 	{ question: 'What does it cost?', answer: 'Signalint is free and open source under the MIT License. It runs locally and has no hosted pricing tier.' },
 ] as const;
