@@ -1,10 +1,24 @@
-﻿---
+---
 import ChangelogPage from '../components/changelog/ChangelogPage.astro';
 import { fetchLiveReleases } from '../data/liveData';
 
 let releases = await fetchLiveReleases();
 if (releases.length === 0) {
 	releases = [
+		{
+			version: '0.4.0',
+			date: '22 Aug 2026',
+			dateTime: '2026-08-22',
+			title: 'File-rule churn detection and schemaVersion 1.2',
+			items: [
+				'Added file-rule churn detection as a second, independent loop warning kind.',
+				'When the same (file, rule) pair appears in 3+ separate check_files calls, a distinct fileRuleChurnWarning is surfaced regardless of exact message variation.',
+				'Added fileChurning: boolean and fileRuleChurns array to LoopStatus — independent of looping and signatures (exact-signature oscillation unchanged).',
+				'Added fileRuleChurnWarning: FileRuleChurnWarning | null to CheckResponse. schemaVersion bumped to 1.2.',
+				'Churn counters reset to 0 when a (file, rule) pair is absent from a check_files result; check_project calls do not affect churn counters.',
+				'Churn state persisted to session.jsonl via activeFileRulePairs and replayed on startup.',
+			],
+		},
 		{
 			version: '0.3.7',
 			date: '19 Aug 2026',
