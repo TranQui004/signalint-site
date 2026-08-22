@@ -1,4 +1,4 @@
-﻿export interface ReleaseItemVi {
+export interface ReleaseItemVi {
 	version: string;
 	date: string;
 	dateTime: string;
@@ -7,6 +7,20 @@
 }
 
 export const changelogVi: readonly ReleaseItemVi[] = [
+	{
+		version: '0.4.0',
+		date: '22 tháng 8, 2026',
+		dateTime: '2026-08-22',
+		title: 'Phát hiện churn theo cặp (file, rule) và schemaVersion 1.2',
+		items: [
+			'Bổ sung cơ chế phát hiện churn theo cặp (file, rule) — loại cảnh báo vòng lặp thứ hai, độc lập với cơ chế chữ ký chính xác đã có.',
+			'Khi cùng một cặp (file, rule) xuất hiện trong 3+ lần gọi check_files, hệ thống phát ra fileRuleChurnWarning bất kể thông điệp chính xác có thay đổi.',
+			'Bổ sung fileChurning: boolean và mảng fileRuleChurns vào LoopStatus — hoàn toàn độc lập với looping và signatures.',
+			'Bổ sung fileRuleChurnWarning: FileRuleChurnWarning | null vào CheckResponse. Nâng schemaVersion lên 1.2.',
+			'Bộ đếm churn đặt lại về 0 khi cặp (file, rule) vắng mặt trong kết quả check_files; lệnh check_project không ảnh hưởng đến bộ đếm.',
+			'Trạng thái churn được lưu vào session.jsonl qua trường activeFileRulePairs và phục hồi khi khởi động lại.',
+		],
+	},
 	{
 		version: '0.3.7',
 		date: '19 tháng 8, 2026',
