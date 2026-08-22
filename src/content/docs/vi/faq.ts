@@ -7,7 +7,7 @@ export const faqQuestionsVi = [
 	{ question: 'Signalint có tự sửa code không?', answer: 'Không. fixable chỉ cho biết engine có đưa ra structured fix hay không; Signalint v1 không ghi thay đổi vào mã nguồn.' },
 	{ question: 'Đây có phải công cụ quét bảo mật không?', answer: 'Không. Signalint không phải SAST và không tuyên bố tìm lỗ hổng. Phần bảo mật của chính MCP server được mô tả trong threat model.' },
 	{ question: 'Dự án monorepo cần cấu hình thế nào?', answer: 'tsc adapter cần một tsconfig.json ở root. Monorepo nên dùng root solution config với TypeScript Project References.' },
-	{ question: 'Loop detection theo dõi điều gì?', answer: 'Chỉ theo dõi signature của lỗi lint, type và test đã biến mất rồi quay lại. Nó không đánh giá vòng lặp trong toàn bộ hội thoại của agent.' },
+	{ question: 'Loop detection theo dõi điều gì?', answer: 'Hai cơ chế độc lập: (1) cảnh báo dao động chữ ký chính xác khi một signature lỗi biến mất rồi xuất hiện lại nhiều lần, và (2) cảnh báo churn theo cặp (file, rule) khi cùng một file/rule phát sinh lỗi qua 3+ lần gọi check_files riêng biệt. Nó không đánh giá vòng lặp hội thoại chung của agent.' },
 	{ question: 'Đã có extension cho IDE chưa?', answer: 'Chưa. Hiện tại Signalint tích hợp qua MCP client hoặc các lệnh check và stats.' },
 	{ question: 'Signalint có mất phí không?', answer: 'Không. Dự án miễn phí, mã nguồn mở theo MIT License và chạy cục bộ.' },
 ] as const;

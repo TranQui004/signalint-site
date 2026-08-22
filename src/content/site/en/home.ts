@@ -28,7 +28,7 @@ export const homeEn: HomeContent = {
 		{ label: 'Fixture compression', value: 40, suffix: ' → ', secondaryValue: 4, detail: 'Forty raw issues grouped into four rule-first clusters.' },
 		{ label: 'Input boundary', value: 512, suffix: '', detail: 'Maximum project-relative paths accepted in one MCP call.' },
 	],
-	storyHeading: { index: '01 / response', title: 'See what the agent sees.', body: 'Scroll through the recorded 40-issue fixture as normalized rows become a bounded schema 1.1 response.' },
+	storyHeading: { index: '01 / response', title: 'See what the agent sees.', body: 'Scroll through the recorded 40-issue fixture as normalized rows become a bounded schema 1.2 response.' },
 	diagnostic: { ariaLabel: 'Scroll-driven diagnostic compression demo', steps: [
 		{ kicker: '01 / engine output', title: 'Forty valid issues can still be a poor agent response.', body: 'The engines stay authoritative. Signalint first normalizes their locations, rule IDs, severity, and messages.' },
 		{ kicker: '02 / rule-first grouping', title: 'Repeated symptoms become one review target.', body: 'Large rule groups spanning multiple files receive one root-cause summary and distinct sample issue IDs.' },
@@ -39,11 +39,11 @@ export const homeEn: HomeContent = {
 		{ kicker: 'Trust boundary', title: 'Validate before reading.', body: 'Zod schemas reject malformed arguments. Canonical path checks keep every accepted file inside the project root.', result: '3 paths accepted' },
 		{ kicker: 'Engine fan-out', title: "Preserve each engine's model.", body: 'File-local engines receive misses. TypeScript runs against the complete configured program when relevant files change.' },
 		{ kicker: 'Common contract', title: 'Normalize, then cluster.', body: 'Engine-native diagnostics become normalized issues before rule-first grouping assigns priority and distinct issue references.', result: '40 issues → 4 clusters' },
-		{ kicker: 'Bounded response', title: 'Return what completed.', body: "Schema 1.1 keeps each engine's outcome explicit, so one failure cannot erase another engine's diagnostics.", result: 'schemaVersion 1.1' },
+		{ kicker: 'Bounded response', title: 'Return what completed.', body: "Schema 1.2 keeps each engine's outcome explicit, so one failure cannot erase another engine's diagnostics.", result: 'schemaVersion 1.2' },
 	], engineResults: [{ name: 'oxlint', value: '1 cache miss' }, { name: 'tsc', value: 'whole project' }, { name: 'biome', value: 'disabled' }], outcomes: [{ name: 'oxlint', value: 'ok' }, { name: 'tsc', value: 'ok' }, { name: 'biome', value: 'disabled', muted: true }], outcomeNote: 'Completed diagnostics remain available even when another engine errors.' },
 	capabilities: [
 		{ number: '01', kicker: 'cache identity', title: 'Version-aware reuse', body: 'A result is reused only when file content, the recognized root engine-config hash, Signalint code version, and the installed engine version still match.', code: cacheKey, wide: true },
-		{ number: '02', kicker: 'loop memory', title: 'Oscillation is visible', body: 'An issue that disappears and returns repeatedly produces a narrow warning, not a guess about the wider conversation.', code: loopWarning },
+		{ number: '02', kicker: 'loop memory', title: 'Oscillation is visible', body: 'An issue that disappears and returns repeatedly produces a narrow oscillation warning; recurring issues in the same file across checks trigger churn detection.', code: loopWarning },
 		{ number: '03', kicker: 'engine fan-out', title: 'Partial results survive', body: 'One engine can fail without discarding diagnostics another engine already completed.', code: fanout },
 		{ number: '04', kicker: 'process boundary', title: 'Bounded execution', body: 'Default deadlines are 30 seconds for Oxlint, 120 seconds for tsc, and 30 seconds for Biome. Timeout and cancellation terminate the process tree.' },
 		{ number: '05', kicker: 'storage', title: 'Local state stays bounded', body: 'The SQLite cache evicts least-recently-used rows above 10,000 entries. Session history replays a bounded tail and rotates to a single .1 backup.' },
