@@ -1,7 +1,7 @@
 export const openSourceVi = {
 	facts: [
 		{ label: 'Giấy phép', value: 'MIT', detail: 'Được dùng, sửa và phân phối theo LICENSE của repository.' },
-		{ label: 'Bản phát hành', value: '0.4.0', detail: 'Phiên bản latest hiện có trên npm registry.' },
+		{ label: 'Bản phát hành', value: '0.4.1', detail: 'Phiên bản latest hiện có trên npm registry.' },
 		{ label: 'Ma trận CI', value: '4', detail: 'Windows, macOS, Ubuntu Node 22 và Ubuntu Node 20.19.' },
 		{ label: 'Transport', value: 'stdio', detail: 'MCP cục bộ, không phụ thuộc hosted runtime.' },
 	],
