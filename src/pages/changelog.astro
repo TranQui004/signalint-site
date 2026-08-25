@@ -6,6 +6,17 @@ let releases = await fetchLiveReleases();
 if (releases.length === 0) {
 	releases = [
 		{
+			version: '0.4.1',
+			date: '25 Aug 2026',
+			dateTime: '2026-08-25',
+			title: 'MCP tool annotations',
+			items: [
+				'Added readOnlyHint, destructiveHint, idempotentHint, and openWorldHint to all five tools.',
+				'All four hints are set explicitly as booleans (true, false, true, false) to satisfy distribution channels such as the OpenAI MCP directory that require every hint to be present.',
+				'No behavioral change and no schemaVersion change — annotations are transport-level tools/list metadata, not response shape fields.',
+			],
+		},
+		{
 			version: '0.4.0',
 			date: '22 Aug 2026',
 			dateTime: '2026-08-22',

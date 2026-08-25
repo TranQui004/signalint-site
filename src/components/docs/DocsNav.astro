@@ -6,7 +6,7 @@ interface Props {
 	locale?: 'en' | 'vi';
 }
 
-const { version = '0.4.0', locale = 'en' } = Astro.props;
+const { version = '0.4.1', locale = 'en' } = Astro.props;
 const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 const currentPath = Astro.url.pathname;
 const localePrefix = locale === 'vi' ? 'vi/' : '';

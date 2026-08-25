@@ -8,6 +8,17 @@ export interface ReleaseItemVi {
 
 export const changelogVi: readonly ReleaseItemVi[] = [
 	{
+		version: '0.4.1',
+		date: '25 tháng 8, 2026',
+		dateTime: '2026-08-25',
+		title: 'Bổ sung annotation cho công cụ MCP',
+		items: [
+			'Bổ sung readOnlyHint, destructiveHint, idempotentHint và openWorldHint cho cả 5 công cụ.',
+			'Bốn hint được khai báo tường minh dưới dạng boolean (true, false, true, false) để đáp ứng yêu cầu của các kênh phân phối như OpenAI MCP directory.',
+			'Không thay đổi hành vi và không nâng schemaVersion — annotation là metadata ở tầng tools/list, không ảnh hưởng đến cấu trúc response.',
+		],
+	},
+	{
 		version: '0.4.0',
 		date: '22 tháng 8, 2026',
 		dateTime: '2026-08-22',
