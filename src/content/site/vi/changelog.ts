@@ -8,6 +8,17 @@ export interface ReleaseItemVi {
 
 export const changelogVi: readonly ReleaseItemVi[] = [
 	{
+		version: '0.4.2',
+		date: '5 tháng 9, 2026',
+		dateTime: '2026-09-05',
+		title: 'Mở rộng hash tsconfig và cache kết quả --showConfig',
+		items: [
+			'Mở rộng hash cấu hình tsc để theo dõi toàn bộ chuỗi extends và references đệ quy — thay đổi trong tsconfig.base.json hoặc bất kỳ project tsconfig được tham chiếu nào sẽ làm mất hiệu lực cache whole-program.',
+			'Thêm cache kết quả tsc --showConfig ở phạm vi process, khóa theo SHA-256 của nội dung file tsconfig gốc — loại bỏ lần spawn --showConfig dư thừa trước mỗi lần chạy tsc --noEmit khi config không thay đổi.',
+			'Không thay đổi schemaVersion. Không thay đổi hành vi đối với người dùng.',
+		],
+	},
+	{
 		version: '0.4.1',
 		date: '25 tháng 8, 2026',
 		dateTime: '2026-08-25',
